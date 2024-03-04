@@ -21,7 +21,6 @@
 }
 .logo {
   width: 120px;
-  cursor: pointer;
   border-radius: 60px;
 }
 
@@ -100,4 +99,5 @@ button:hover {
 .footer i {
   color: #fff;
   margin: 10px;
+  cursor: pointer;
 }
