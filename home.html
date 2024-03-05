@@ -36,6 +36,22 @@
   font-family: Arial;
 }
 
+/* Navbar container */
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  font-family: Arial;
+}
+
+/* Links inside the navbar */
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
 
 /* The dropdown container */
 .dropdown {
@@ -53,6 +69,11 @@
   background-color: inherit;
   font-family: inherit; /* Important for vertical align on mobile phones */
   margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Add a red background color to navbar links on hover */
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
 }
 
 /* Dropdown content (hidden by default) */
@@ -90,17 +111,19 @@
     <nav>
         <ul class="nav">
             <div class="navbar-brand" style="float:left">
+                <a href="home.html">
                 <figure class="image is-96x96">
                     <img src="logo.jpg" class="is-rounded" width="100px" alt="">
                 </figure>
+                </a>
             </div>
             <div class="navbar-end" style="float:right; ">
                 <div class="dropdown">
-                    
+                    <a href="#">
                         <figure class="image is-96x96">
                             <img src="profile.png" class="is-rounded" width="100px" alt="">
                         </figure>
-                    
+                    </a>
                     <div class="dropdown-content">
                         <a href="#">Link 1</a>
                         <a href="#">Link 2</a>
