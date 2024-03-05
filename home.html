@@ -36,23 +36,6 @@
   font-family: Arial;
 }
 
-/* Navbar container */
-.navbar {
-  overflow: hidden;
-  background-color: #333;
-  font-family: Arial;
-}
-
-/* Links inside the navbar */
-.navbar a {
-  float: left;
-  font-size: 16px;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
 /* The dropdown container */
 .dropdown {
   float: left;
@@ -69,11 +52,6 @@
   background-color: inherit;
   font-family: inherit; /* Important for vertical align on mobile phones */
   margin: 0; /* Important for vertical align on mobile phones */
-}
-
-/* Add a red background color to navbar links on hover */
-.navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: red;
 }
 
 /* Dropdown content (hidden by default) */
@@ -104,7 +82,7 @@
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
-}
+} 
     </style>
 </head>
 <body>
@@ -130,6 +108,23 @@
                         <a href="#">Link 3</a>
                   </div>
                 </div>
+                <div class="dropdown is-hoverable">
+                    <div class="dropdown-trigger">
+                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                        <span>Hover me</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                      <div class="dropdown-content">
+                        <div class="dropdown-item">
+                          <p>You can insert <strong>any type of content</strong> within the dropdown menu.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
             </div>
         </ul>
             </nav>
