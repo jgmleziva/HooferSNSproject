@@ -31,14 +31,18 @@
         <form action="" id="signup_form">
           <div class="field">
             <label class="label has-text-white">Email</label>
-            <div class="control">
+            <p class="control has-icons-left">
               <input
                 id="email"
                 class="input"
                 type="email"
-                placeholder="e.g. johndoe@gmail.com"
+                placeholder="jdoe@wisc.edu"
               />
-            </div>
+              <span class="icon is-small is-left">
+                <i class="fa-solid fa-user"></i>
+              </span>
+            </p>
+            <div class="control"></div>
           </div>
           <div class="field">
             <label class="label has-text-white">Password</label>
@@ -54,11 +58,28 @@
               </span>
             </p>
           </div>
-          <!-- Submit Button -->
-          <button class="button is-primary">Submit</button>
-          <!-- Reset Button -->
-          <button class="button is-danger ml-3">Reset</button>
+          <div class="field">
+            <label class="label has-text-white">Address</label>
+            <p class="control has-icons-left">
+              <input
+                class="input"
+                type="text"
+                placeholder="Address"
+                id="address"
+              />
+              <span class="icon is-small is-left">
+                <i class="fa-solid fa-house"></i>
+              </span>
+            </p>
+          </div>
+          <div class="pt-4">
+            <!-- Submit Button -->
+            <button class="button is-primary">Submit</button>
+            <!-- Reset Button -->
+            <button class="button is-danger ml-3">Reset</button>
+          </div>
         </form>
+        <button class="modal-close is-large" aria-label="close"></button>
       </div>
     </div>
     <div class="mybanner">

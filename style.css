@@ -59,7 +59,7 @@
   overflow: hidden;
 }
 
-span {
+.mycontent span {
   background-color: #31ada6;
   height: 100%;
   width: 0%;
@@ -71,11 +71,11 @@ span {
   transition: 0.5s;
 }
 
-button:hover span {
+.mycontent button:hover span {
   width: 100%;
 }
 
-button:hover {
+.mycontent button:hover {
   border: none;
 }
 
