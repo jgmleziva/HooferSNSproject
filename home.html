@@ -36,13 +36,10 @@
   font-family: Arial;
 }
 
-/* The dropdown container */
 .dropdown {
   float: left;
   overflow: hidden;
 }
-
-/* Dropdown button */
 .dropdown .dropbtn {
   font-size: 16px; 
   border: none;
@@ -50,21 +47,18 @@
   color: white;
   padding: 14px 16px;
   background-color: inherit;
-  font-family: inherit; /* Important for vertical align on mobile phones */
-  margin: 0; /* Important for vertical align on mobile phones */
+  font-family: inherit;
+  margin: 0; 
 }
-
-/* Dropdown content (hidden by default) */
 .dropdown-content {
   display: none;
-  position: absolute;
+  position: fixed;
+  top: 150px;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
-
-/* Links inside the dropdown */
 .dropdown-content a {
   float: none;
   color: black;
@@ -73,13 +67,9 @@
   display: block;
   text-align: left;
 }
-
-/* Add a grey background color to dropdown links on hover */
 .dropdown-content a:hover {
   background-color: #ddd;
 }
-
-/* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
 } 
@@ -104,27 +94,10 @@
                     </a>
                     <div class="dropdown-content">
                         <a href="#">My Trips</a>
-                        <a href="#">Link 2</a>
-                        <a href="#">Link 3</a>
+                        <a href="#">My Information</a>
+                        <a href="#">Sign Out</a>
                   </div>
                 </div>
-                <div class="dropdown is-hoverable">
-                    <div class="dropdown-trigger">
-                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-                        <span>Hover me</span>
-                        <span class="icon is-small">
-                          <i class="fas fa-angle-down" aria-hidden="true"></i>
-                        </span>
-                      </button>
-                    </div>
-                    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                      <div class="dropdown-content">
-                        <div class="dropdown-item">
-                          <p>You can insert <strong>any type of content</strong> within the dropdown menu.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
             </div>
         </ul>
             </nav>
