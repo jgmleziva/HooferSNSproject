@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ski Trip Sign Up</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <style>
+      /* Custom Styles */
+      .accent-color {
+        background-color: #4fc2be;
+        color: #fff;
+      }
+
+      .accent-color:hover {
+        background-color: #48b2ab;
+      }
+
+      .capacity-box {
+        border-radius: 8px;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+      }
+
+      .capacity-green {
+        background-color: #aaffaa;
+        color: #006600;
+      }
+
+      .capacity-yellow {
+        background-color: #ffff99;
+        color: #666600;
+      }
+
+      .capacity-red {
+        background-color: #ff9999;
+        color: #660000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="p-5">
+      <section class="section">
+        <div class="container">
+          <h1 class="title has-text-centered">Trips Available for Sign Up</h1>
+
+          <!-- Ski Trip Table -->
+          <div class="box">
+            <table class="table is-fullwidth has-text-centered">
+              <thead>
+                <tr>
+                  <th>Price</th>
+                  <th>Location</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Action</th>
+                  <th>Capacity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Sample trip 1 -->
+                <tr>
+                  <td>$100</td>
+                  <td>Mountain Resort A</td>
+                  <td>March 15, 2024</td>
+                  <td>10:00 AM</td>
+                  <td>
+                    <button class="button is-info">More Details</button>
+                    <button class="button accent-color">Sign Up</button>
+                  </td>
+                  <td class="capacity-box capacity-green">1/8</td>
+                </tr>
+                <!-- Sample trip 2 -->
+                <tr>
+                  <td>$100</td>
+                  <td>Mountain Resort B</td>
+                  <td>March 20, 2024</td>
+                  <td>9:00 AM</td>
+                  <td>
+                    <button class="button is-info">More Details</button>
+                    <button class="button accent-color">Sign Up</button>
+                  </td>
+                  <td class="capacity-box capacity-yellow">5/8</td>
+                </tr>
+                <!-- Sample trip 3 -->
+                <tr>
+                  <td>$100</td>
+                  <td>Mountain Resort C</td>
+                  <td>March 25, 2024</td>
+                  <td>9:00 AM</td>
+                  <td>
+                    <button class="button is-info">More Details</button>
+                    <button class="button accent-color">Sign Up</button>
+                  </td>
+                  <td class="capacity-box capacity-red">8/8</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
