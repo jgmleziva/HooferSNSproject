@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trip Details</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <style>
+      .nav {
+        list-style-type: none;
+        margin: 1rem 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #58c1bc;
+        font-size: 18px;
+      }
+      .nav a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 20px 20px;
+        text-decoration: none;
+      }
+      h1 {
+        font-size: 30px;
+        text-align: center;
+      }
+      nav li a:hover {
+        background-color: lightgrey;
+        color: white;
+      }
+      .navbar {
+        overflow: hidden;
+        background-color: #333;
+        font-family: Arial;
+      }
+
+      .dropdown {
+        float: left;
+        overflow: hidden;
+      }
+      .dropdown .dropbtn {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 16px;
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+      }
+      .dropdown-content {
+        display: none;
+        position: fixed;
+        top: 150px;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+      .dropdown-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+      .dropdown-content a:hover {
+        background-color: #ddd;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+      .accent-color {
+        background-color: #4fc2be;
+        color: #fff;
+      }
+
+      .accent-color:hover {
+        background-color: #48b2ab;
+      }
+
+      .capacity-box {
+        border-radius: 8px;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+      }
+
+      .capacity-green {
+        background-color: #caedda;
+        color: #006600;
+      }
+
+      .capacity-yellow {
+        background-color: #f7f0bd;
+        color: #666600;
+      }
+
+      .capacity-red {
+        background-color: #f0d4d5;
+        color: #660000;
+      }
+
+      /* Add this new class */
+      .row-highlight {
+        transition: background-color 0.3s ease;
+      }
+
+      /* Add hover effect to the whole row */
+      .row-highlight:hover {
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul class="nav">
+        <div class="navbar-brand" style="float: left">
+          <a href="home.html">
+            <figure class="image is-96x96">
+              <img src="logo.jpg" class="is-rounded" width="100px" alt="" />
+            </figure>
+          </a>
+        </div>
+        <div class="navbar-end" style="float: right">
+          <div class="dropdown">
+            <a href="#">
+              <figure class="image is-96x96">
+                <img
+                  src="profile.png"
+                  class="is-rounded"
+                  width="100px"
+                  alt=""
+                />
+              </figure>
+            </a>
+            <div class="dropdown-content">
+              <a href="#">My Trips</a>
+              <a href="#">My Information</a>
+              <a href="#">Sign Out</a>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </nav>
+    <div class="columns">
+      <div class="column">
+        First column Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </div>
+      <div class="column">
+        Second column Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </div>
+      <div class="column">
+        Third column Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </div>
+      <div class="column">
+        Fourth column Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+      </div>
+    </div>
+  </body>
+</html>
