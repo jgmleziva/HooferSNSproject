@@ -23,7 +23,7 @@
         display: block;
         color: white;
         text-align: center;
-        padding: 30px 30px;
+        padding: 20px 20px;
         text-decoration: none;
       }
       h1 {
@@ -33,6 +33,88 @@
       nav li a:hover {
         background-color: lightgrey;
         color: white;
+      }
+      .navbar {
+        overflow: hidden;
+        background-color: #333;
+        font-family: Arial;
+      }
+
+      .dropdown {
+        float: left;
+        overflow: hidden;
+      }
+      .dropdown .dropbtn {
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 16px;
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+      }
+      .dropdown-content {
+        display: none;
+        position: fixed;
+        top: 150px;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+      .dropdown-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+      .dropdown-content a:hover {
+        background-color: #ddd;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+      .accent-color {
+        background-color: #4fc2be;
+        color: #fff;
+      }
+
+      .accent-color:hover {
+        background-color: #48b2ab;
+      }
+
+      .capacity-box {
+        border-radius: 8px;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+      }
+
+      .capacity-green {
+        background-color: #caedda;
+        color: #006600;
+      }
+
+      .capacity-yellow {
+        background-color: #f7f0bd;
+        color: #666600;
+      }
+
+      .capacity-red {
+        background-color: #f0d4d5;
+        color: #660000;
+      }
+
+      /* Add this new class */
+      .row-highlight {
+        transition: background-color 0.3s ease;
+      }
+
+      /* Add hover effect to the whole row */
+      .row-highlight:hover {
+        background-color: #f5f5f5;
       }
     </style>
   </head>
@@ -67,5 +149,112 @@
         <td>Mexico</td>
       </tr>
     </table>
+        <div class="navbar-brand" style="float: left">
+          <a href="home.html">
+            <figure class="image is-96x96">
+              <img src="logo.jpg" class="is-rounded" width="100px" alt="" />
+            </figure>
+          </a>
+        </div>
+        <div class="navbar-end" style="float: right">
+          <div class="dropdown">
+            <a href="#">
+              <figure class="image is-96x96">
+                <img
+                  src="profile.png"
+                  class="is-rounded"
+                  width="100px"
+                  alt=""
+                />
+              </figure>
+            </a>
+            <div class="dropdown-content">
+              <a href="#">My Trips</a>
+              <a href="#">My Information</a>
+              <a href="#">Sign Out</a>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </nav>
+    <div class="p-5">
+      <section class="section">
+        <div class="container">
+          <h1 class="title has-text-centered">Trips Available for Sign Up</h1>
+
+          <!-- Ski Trip Table -->
+          <div class="box">
+            <table class="table is-fullwidth has-text-centered">
+              <thead>
+                <tr>
+                  <th class="has-text-centered">Price</th>
+                  <th class="has-text-centered">Location</th>
+                  <th class="has-text-centered">Date</th>
+                  <th class="has-text-centered">Time</th>
+                  <th class="has-text-centered">Action</th>
+                  <th class="has-text-centered">Capacity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Sample trip 1 -->
+                <tr class="row-highlight">
+                  <!-- Added row-highlight class here -->
+                  <td>$100</td>
+                  <td>Mountain Resort A</td>
+                  <td>March 15, 2024</td>
+                  <td>10:00 AM</td>
+                  <td>
+                    <button
+                      style="background-color: #4f8cc2"
+                      class="button is-info"
+                    >
+                      More Details
+                    </button>
+                    <button class="button accent-color">Sign Up</button>
+                  </td>
+                  <td class="capacity-box capacity-green">1/8</td>
+                </tr>
+                <!-- Sample trip 2 -->
+                <tr class="row-highlight">
+                  <!-- Added row-highlight class here -->
+                  <td>$100</td>
+                  <td>Mountain Resort B</td>
+                  <td>March 20, 2024</td>
+                  <td>9:00 AM</td>
+                  <td>
+                    <button
+                      style="background-color: #4f8cc2"
+                      class="button is-info"
+                    >
+                      More Details
+                    </button>
+                    <button class="button accent-color">Sign Up</button>
+                  </td>
+                  <td class="capacity-box capacity-yellow">5/8</td>
+                </tr>
+                <!-- Sample trip 3 -->
+                <tr class="row-highlight">
+                  <!-- Added row-highlight class here -->
+                  <td>$100</td>
+                  <td>Mountain Resort C</td>
+                  <td>March 25, 2024</td>
+                  <td>9:00 AM</td>
+                  <td>
+                    <button
+                      style="background-color: #4f8cc2"
+                      class="button is-info"
+                    >
+                      More Details
+                    </button>
+                    <button class="button accent-color">Sign Up</button>
+                  </td>
+                  <td class="capacity-box capacity-red">8/8</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
   </body>
 </html>
