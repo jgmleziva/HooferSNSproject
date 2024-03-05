@@ -15,7 +15,7 @@
     font-size: 18px;
         }
         .nav a{
-    float: left;
+        float: left;
         display: block;
         color: white;
         text-align: center;
@@ -30,18 +30,101 @@
         background-color: lightgrey;
         color:white;
     }
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  font-family: Arial;
+}
+
+/* The dropdown container */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+  font-size: 16px; 
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+} 
     </style>
 </head>
 <body>
     <nav>
         <ul class="nav">
-            <img src="logo.jpg" style="float:left;" width="100px" alt="">
-            <div class="hover">
-            <li><a href=""> Home </a></li>
-            <li><a href=""> Trip Details</a></li>
-            <li><a href=""> Payment </a></li>
-            <li><a href="">Contact</a></li>
-            <li><a href="">Sign Out</a></li>
+            <div class="navbar-brand" style="float:left">
+                <a href="home.html">
+                <figure class="image is-96x96">
+                    <img src="logo.jpg" class="is-rounded" width="100px" alt="">
+                </figure>
+                </a>
+            </div>
+            <div class="navbar-end" style="float:right; ">
+                <div class="dropdown">
+                    <a href="#">
+                        <figure class="image is-96x96">
+                            <img src="profile.png" class="is-rounded" width="100px" alt="">
+                        </figure>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#">My Trips</a>
+                        <a href="#">Link 2</a>
+                        <a href="#">Link 3</a>
+                  </div>
+                </div>
+                <div class="dropdown is-hoverable">
+                    <div class="dropdown-trigger">
+                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                        <span>Hover me</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                      <div class="dropdown-content">
+                        <div class="dropdown-item">
+                          <p>You can insert <strong>any type of content</strong> within the dropdown menu.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
             </div>
         </ul>
             </nav>
