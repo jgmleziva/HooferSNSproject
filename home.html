@@ -11,22 +11,37 @@
     <style>
       .nav {
         list-style-type: none;
-        margin: 1rem 0;
+        margin: 0rem 0;
         padding: 0;
         overflow: hidden;
-        background-image: url("trees.png");
-        font-size: 18px;
-
+        background-image: url("mountains.jpg");
       }
       @media screen and (max-width: 800px) {
         .nav {
             background-size: cover;
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
+        .nav h1{
+        padding-left: 150px;
+        font-size: 30px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        color:black;
+      }
       }
       @media screen and (min-width: 800px) {
         .nav {
             background-size: cover;
             zoom: -20%;
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+        .nav h1{
+            padding-left: 200px;
+            font-size: 60px;
+            padding-top: 15px;
+            color:black;
         }
       }
       .nav a {
@@ -42,7 +57,7 @@
         text-align: center;
       }
       nav li a:hover {
-        background-color: lightgrey;
+        background-color: #31ABA6;
         color: white;
       }
       .navbar {
@@ -50,7 +65,6 @@
         background-color: #333;
         font-family: Arial;
       }
-
       .dropdown {
         float: left;
         overflow: hidden;
@@ -85,7 +99,7 @@
         position: right;
       }
       .dropdown-content a:hover {
-        background-color: #ddd;
+        background-color: #31ABA6;
       }
       .dropdown:hover .dropdown-content {
         display: block;
@@ -129,21 +143,27 @@
       .row-highlight:hover {
         background-color: #f5f5f5;
       }
+      h1 {
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      }
     </style>
   </head>
   <body>
     <nav>
       <ul class="nav">
-        <h1 style= "text-align: center; float:center;"class="is-size-2 has-text-weight-bold has-text-black">Ski and Snowboard Local Trips
-        </h1>
-        <div class="navbar-brand" style="float: left">
+        <div class="navbar-start" style="float: inline-start">
           <a href="home.html">
             <figure class="image is-96x96">
               <img src="logo.jpg" class="is-rounded" width="100px" alt="" />
             </figure>
           </a>
+          <div class="navbar-item">
+            <h1 style= "float: center;" class="has-text-weight-bold">Ski and Snowboard Local Trips
+            </h1>
+            </div>
         </div>
-        <div class="navbar-end" style="float:right">
+
+        <div class="navbar-end" style="float:inline-end">
           <div class="dropdown">
             <a href="#">
               <figure class="image is-96x96">
