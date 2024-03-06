@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Page</title>
+    <title>Ski and Snowboard Local Trips</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
@@ -16,12 +16,17 @@
         overflow: hidden;
         background-image: url("trees.png");
         font-size: 18px;
-        background-image: 100%;
 
       }
       @media screen and (max-width: 800px) {
         .nav {
-            background-size: 100%;
+            background-size: cover;
+        }
+      }
+      @media screen and (min-width: 800px) {
+        .nav {
+            background-size: cover;
+            zoom: -20%;
         }
       }
       .nav a {
@@ -129,6 +134,8 @@
   <body>
     <nav>
       <ul class="nav">
+        <h1 style= "text-align: center; float:center;"class="is-size-2 has-text-weight-bold has-text-black">Ski and Snowboard Local Trips
+        </h1>
         <div class="navbar-brand" style="float: left">
           <a href="home.html">
             <figure class="image is-96x96">
@@ -149,7 +156,7 @@
               </figure>
             </a>
             <div class="dropdown-content ">
-                <a href="#">My Info</a>
+                <a href="#">Account Info</a>
                 <a href="#">My Trips</a>
                 <a href="#">Sign Out</a>
             </div>
