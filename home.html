@@ -16,14 +16,10 @@
         overflow: hidden;
         background-image: url("trees.png");
         font-size: 18px;
+        background-image: 100%;
 
       }
       @media screen and (max-width: 800px) {
-        .nav {
-            background-size: 100%;
-        }
-      }
-      @media screen and (min-width: 800px) {
         .nav {
             background-size: 100%;
         }
@@ -77,9 +73,11 @@
         float: none;
         color: black;
         padding: 12px 16px;
+        margin-right: 30px;
         text-decoration: none;
         display: block;
         text-align: left;
+        position: right;
       }
       .dropdown-content a:hover {
         background-color: #ddd;
@@ -138,7 +136,7 @@
             </figure>
           </a>
         </div>
-        <div class="navbar-end" style="float: right">
+        <div class="navbar-end" style="float:right">
           <div class="dropdown">
             <a href="#">
               <figure class="image is-96x96">
@@ -150,10 +148,10 @@
                 />
               </figure>
             </a>
-            <div class="dropdown-content">
-              <a href="#">My Trips</a>
-              <a href="#">My Information</a>
-              <a href="#">Sign Out</a>
+            <div class="dropdown-content ">
+                <a href="#">My Info</a>
+                <a href="#">My Trips</a>
+                <a href="#">Sign Out</a>
             </div>
           </div>
         </div>
