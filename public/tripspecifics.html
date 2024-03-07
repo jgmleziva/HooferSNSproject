@@ -9,16 +9,44 @@
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
     <style>
+      .footer {
+        background-color: green;
+        padding: 1rem;
+      }
       .nav {
         list-style-type: none;
-        margin: 1rem 0;
+        margin: 0rem 0;
         padding: 0;
         overflow: hidden;
-        background-color: #58c1bc;
-        font-size: 18px;
+        background-image: url("mountains.jpg");
       }
-      .bg_color {
-        background-color: #58c1bc;
+      @media screen and (max-width: 800px) {
+        .nav {
+          background-size: cover;
+          padding-top: 20px;
+          padding-bottom: 20px;
+        }
+        .nav h1 {
+          padding-left: 150px;
+          font-size: 30px;
+          padding-top: 30px;
+          padding-bottom: 30px;
+          color: black;
+        }
+      }
+      @media screen and (min-width: 800px) {
+        .nav {
+          background-size: cover;
+          zoom: -20%;
+          padding-top: 30px;
+          padding-bottom: 30px;
+        }
+        .nav h1 {
+          padding-left: 200px;
+          font-size: 60px;
+          padding-top: 15px;
+          color: black;
+        }
       }
       .nav a {
         float: left;
@@ -33,7 +61,7 @@
         text-align: center;
       }
       nav li a:hover {
-        background-color: lightgrey;
+        background-color: #31aba6;
         color: white;
       }
       .navbar {
@@ -41,7 +69,6 @@
         background-color: #333;
         font-family: Arial;
       }
-
       .dropdown {
         float: left;
         overflow: hidden;
@@ -69,12 +96,14 @@
         float: none;
         color: black;
         padding: 12px 16px;
+        margin-right: 30px;
         text-decoration: none;
         display: block;
         text-align: left;
+        position: right;
       }
       .dropdown-content a:hover {
-        background-color: #ddd;
+        background-color: #31aba6;
       }
       .dropdown:hover .dropdown-content {
         display: block;
@@ -118,19 +147,28 @@
       .row-highlight:hover {
         background-color: #f5f5f5;
       }
+      h1 {
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      }
     </style>
   </head>
   <body>
     <nav>
       <ul class="nav">
-        <div class="navbar-brand" style="float: left">
+        <div class="navbar-start" style="float: inline-start">
           <a href="home.html">
             <figure class="image is-96x96">
               <img src="logo.jpg" class="is-rounded" width="100px" alt="" />
             </figure>
           </a>
+          <div class="navbar-item">
+            <h1 style="float: center" class="has-text-weight-bold">
+              Ski and Snowboard Local Trips
+            </h1>
+          </div>
         </div>
-        <div class="navbar-end" style="float: right">
+
+        <div class="navbar-end" style="float: inline-end">
           <div class="dropdown">
             <a href="#">
               <figure class="image is-96x96">
@@ -143,15 +181,14 @@
               </figure>
             </a>
             <div class="dropdown-content">
+              <a href="#">Account Info</a>
               <a href="#">My Trips</a>
-              <a href="#">My Information</a>
               <a href="#">Sign Out</a>
             </div>
           </div>
         </div>
       </ul>
     </nav>
-
     <!-- <div class="columns">
       <div class="column">
         First column Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -170,20 +207,25 @@
       <div class="container is-fluid">
         <div class="columns">
           <div class="column">
-            <div class="has-text-centered box">
-              <div class="title is-3 is-underlined is-marginless">
-                Trip Location
+            <div class="box">
+              <div class="has-text-centered">
+                <div class="title is-3 is-underlined is-marginless">
+                  Trip Location
+                </div>
+
+                <div class="is-size-3">Mountain Resort A</div>
               </div>
 
-              <div class="is-size-3">Mountain Resort A</div>
-            </div>
-
-            <div class="box">
-              <span class="title is-4">Date: </span>
-              <span class="is-size-4">03/12/2024</span>
-              <span class="title is-4">Availability: </span>
-              <span class="is-size-4">13/18</span>
-
+              <div>
+                <div class="mt-3">
+                  <span class="title is-4">Date: </span>
+                  <span class="is-size-4">03/12/2024</span>
+                </div>
+                <div>
+                  <span class="title is-4">Availability: </span>
+                  <span class="is-size-4">13/18</span>
+                </div>
+              </div>
               <div class="has-text-centered mt-3">
                 <div class="title is-4 is-underlined is-marginless">
                   Trip Description
@@ -219,8 +261,8 @@
               <div class="has-text-centered">
                 <div class="title is-4">Car 3</div>
               </div>
-              <div class="is-size-5">Driver: </div>
-              <div ></div>
+              <div class="is-size-5">Driver:</div>
+              <div></div>
             </div>
           </div>
         </div>
