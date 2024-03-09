@@ -3,19 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Page</title>
+    <title>Ski and Snowboard Local Trips</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
     />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/8a80b728dc.js"
+      crossorigin="anonymous"
+    ></script>
     <style>
+      .footer {
+        background-color: green;
+        padding: 1rem;
+      }
       .nav {
         list-style-type: none;
-        margin: 1rem 0;
+        margin: 0rem 0;
         padding: 0;
         overflow: hidden;
-        background-color: #58c1bc;
-        font-size: 18px;
+        background-image: url("mountain.png");
+      }
+      @media screen and (max-width: 800px) {
+        .nav {
+          background-size: cover;
+        }
+        .nav h1 {
+          padding-left: 150px;
+          font-size: 30px;
+          padding-top: 30px;
+          padding-bottom: 30px;
+          color: black;
+        }
+      }
+      @media screen and (min-width: 800px) {
+        .nav {
+          background-size: cover;
+          zoom: -20%;
+        }
+        .nav h1 {
+          padding-left: 200px;
+          font-size: 60px;
+          padding-top: 15px;
+          color: black;
+        }
       }
       .nav a {
         float: left;
@@ -30,7 +62,7 @@
         text-align: center;
       }
       nav li a:hover {
-        background-color: lightgrey;
+        background-color: #31aba6;
         color: white;
       }
       .navbar {
@@ -38,7 +70,6 @@
         background-color: #333;
         font-family: Arial;
       }
-
       .dropdown {
         float: left;
         overflow: hidden;
@@ -66,12 +97,14 @@
         float: none;
         color: black;
         padding: 12px 16px;
+        margin-right: 30px;
         text-decoration: none;
         display: block;
         text-align: left;
+        position: right;
       }
       .dropdown-content a:hover {
-        background-color: #ddd;
+        background-color: #31aba6;
       }
       .dropdown:hover .dropdown-content {
         display: block;
@@ -92,17 +125,17 @@
       }
 
       .capacity-green {
-        background-color: #aaffaa;
+        background-color: #caedda;
         color: #006600;
       }
 
       .capacity-yellow {
-        background-color: #ffff99;
+        background-color: #f7f0bd;
         color: #666600;
       }
 
       .capacity-red {
-        background-color: #ff9999;
+        background-color: #f0d4d5;
         color: #660000;
       }
 
@@ -115,19 +148,28 @@
       .row-highlight:hover {
         background-color: #f5f5f5;
       }
+      h1 {
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      }
     </style>
   </head>
   <body>
     <nav>
       <ul class="nav">
-        <div class="navbar-brand" style="float: left">
+        <div class="navbar-start" style="float: inline-start">
           <a href="home.html">
             <figure class="image is-96x96">
               <img src="logo.jpg" class="is-rounded" width="100px" alt="" />
             </figure>
           </a>
+          <div class="navbar-item">
+            <h1 style="float: center" class="has-text-weight-bold">
+              Ski and Snowboard Local Trips
+            </h1>
+          </div>
         </div>
-        <div class="navbar-end" style="float: right">
+
+        <div class="navbar-end" style="float: inline-end">
           <div class="dropdown">
             <a href="#">
               <figure class="image is-96x96">
@@ -140,8 +182,8 @@
               </figure>
             </a>
             <div class="dropdown-content">
+              <a href="#">Account Info</a>
               <a href="#">My Trips</a>
-              <a href="#">My Information</a>
               <a href="#">Sign Out</a>
             </div>
           </div>
@@ -175,7 +217,12 @@
                   <td>March 15, 2024</td>
                   <td>10:00 AM</td>
                   <td>
-                    <button class="button is-info">More Details</button>
+                    <button
+                      style="background-color: #4f8cc2"
+                      class="button is-info"
+                    >
+                      More Details
+                    </button>
                     <button class="button accent-color">Sign Up</button>
                   </td>
                   <td class="capacity-box capacity-green">1/8</td>
@@ -188,7 +235,12 @@
                   <td>March 20, 2024</td>
                   <td>9:00 AM</td>
                   <td>
-                    <button class="button is-info">More Details</button>
+                    <button
+                      style="background-color: #4f8cc2"
+                      class="button is-info"
+                    >
+                      More Details
+                    </button>
                     <button class="button accent-color">Sign Up</button>
                   </td>
                   <td class="capacity-box capacity-yellow">5/8</td>
@@ -201,7 +253,12 @@
                   <td>March 25, 2024</td>
                   <td>9:00 AM</td>
                   <td>
-                    <button class="button is-info">More Details</button>
+                    <button
+                      style="background-color: #4f8cc2"
+                      class="button is-info"
+                    >
+                      More Details
+                    </button>
                     <button class="button accent-color">Sign Up</button>
                   </td>
                   <td class="capacity-box capacity-red">8/8</td>
@@ -211,6 +268,24 @@
           </div>
         </div>
       </section>
+    </div>
+    <div class="navbar has-background-grey p-5 is-fixed-bottom">
+      <div class="navbar-start">
+        <p class="has-text-black m-auto is-vcentered">Copyright &copy; 2024</p>
+      </div>
+      <div class="navbar-end">
+        <a href="https://www.facebook.com/hoofersns/"
+          ><i class="fa-brands fa-facebook fa-2x has-text-white px-3 m-auto"></i
+        ></a>
+        <a href="https://www.instagram.com/hoofer_sns/"
+          ><i
+            class="fa-brands fa-instagram fa-2x has-text-white px-3 m-auto"
+          ></i
+        ></a>
+        <a href="#">
+          <img src="venmo_icon.png" class="px-3" style="height: 32px" alt="" />
+        </a>
+      </div>
     </div>
   </body>
 </html>

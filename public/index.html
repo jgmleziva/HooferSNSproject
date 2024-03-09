@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: hidden">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Local Ski Trip Sign Ups</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/8a80b728dc.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- Sign-Up Modal -->
+    <div class="modal" id="signup_modal">
+      <div class="modal-background" id="sumodalbg"></div>
+      <div
+        class="modal-content p-6 is-bordered"
+        style="
+          backdrop-filter: blur(8px);
+          border: 2px solid #31ada6;
+          border-radius: 20px;
+        "
+      >
+        <h1 class="subtitle has-text-weight-bold has-text-white">Sign Up</h1>
+        <form action="" id="signup_form">
+          <div class="field">
+            <label class="label has-text-white">Email</label>
+            <div class="control">
+              <input
+                id="email"
+                class="input"
+                type="email"
+                placeholder="e.g. johndoe@gmail.com"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Password</label>
+            <p class="control has-icons-left">
+              <input
+                class="input"
+                type="password"
+                placeholder="Password"
+                id="password"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+          <!-- Submit Button -->
+          <button class="button is-primary">Submit</button>
+          <!-- Reset Button -->
+          <button class="button is-danger ml-3">Reset</button>
+        </form>
+      </div>
+    </div>
+    <div class="mybanner">
+      <div class="mynavbar">
+        <img src="logo.jpg" class="mylogo" alt="" />
+      </div>
+      <div class="mycontent">
+        <p class="welcome">Welcome!</p>
+        <p>Please Sign In to Continue.</p>
+        <div>
+          <button type="button"><span></span>Sign Up</button>
+          <button type="button"><span></span>Sign In</button>
+        </div>
+      </div>
+      <div class="myfooter">
+        <p>Copyright &copy; 2024</p>
+        <div>
+          <a href="https://www.facebook.com/hoofersns/"
+            ><i class="fa-brands fa-facebook fa-2x"></i
+          ></a>
+          <a href="https://www.instagram.com/hoofer_sns/"
+            ><i class="fa-brands fa-instagram fa-2x"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
