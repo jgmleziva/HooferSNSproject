@@ -8,6 +8,11 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
     />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/8a80b728dc.js"
+      crossorigin="anonymous"
+    ></script>
     <style>
       .footer {
         background-color: green;
@@ -22,26 +27,26 @@
       }
       @media screen and (max-width: 800px) {
         .nav {
-            background-size: cover;
+          background-size: cover;
         }
-        .nav h1{
-        padding-left: 150px;
-        font-size: 30px;
-        padding-top: 30px;
-        padding-bottom: 30px;
-        color:black;
-      }
+        .nav h1 {
+          padding-left: 150px;
+          font-size: 30px;
+          padding-top: 30px;
+          padding-bottom: 30px;
+          color: black;
+        }
       }
       @media screen and (min-width: 800px) {
         .nav {
-            background-size: cover;
-            zoom: -20%;
+          background-size: cover;
+          zoom: -20%;
         }
-        .nav h1{
-            padding-left: 200px;
-            font-size: 60px;
-            padding-top: 15px;
-            color:black;
+        .nav h1 {
+          padding-left: 200px;
+          font-size: 60px;
+          padding-top: 15px;
+          color: black;
         }
       }
       .nav a {
@@ -57,7 +62,7 @@
         text-align: center;
       }
       nav li a:hover {
-        background-color: #31ABA6;
+        background-color: #31aba6;
         color: white;
       }
       .navbar {
@@ -99,7 +104,7 @@
         position: right;
       }
       .dropdown-content a:hover {
-        background-color: #31ABA6;
+        background-color: #31aba6;
       }
       .dropdown:hover .dropdown-content {
         display: block;
@@ -144,7 +149,7 @@
         background-color: #f5f5f5;
       }
       h1 {
-        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
       }
     </style>
   </head>
@@ -158,12 +163,13 @@
             </figure>
           </a>
           <div class="navbar-item">
-            <h1 style= "float: center;" class="has-text-weight-bold">Ski and Snowboard Local Trips
+            <h1 style="float: center" class="has-text-weight-bold">
+              Ski and Snowboard Local Trips
             </h1>
-            </div>
+          </div>
         </div>
 
-        <div class="navbar-end" style="float:inline-end">
+        <div class="navbar-end" style="float: inline-end">
           <div class="dropdown">
             <a href="#">
               <figure class="image is-96x96">
@@ -175,10 +181,10 @@
                 />
               </figure>
             </a>
-            <div class="dropdown-content ">
-                <a href="#">Account Info</a>
-                <a href="#">My Trips</a>
-                <a href="#">Sign Out</a>
+            <div class="dropdown-content">
+              <a href="#">Account Info</a>
+              <a href="#">My Trips</a>
+              <a href="#">Sign Out</a>
             </div>
           </div>
         </div>
@@ -262,6 +268,24 @@
           </div>
         </div>
       </section>
+    </div>
+    <div class="navbar has-background-grey p-5 is-fixed-bottom">
+      <div class="navbar-start">
+        <p class="has-text-black m-auto is-vcentered">Copyright &copy; 2024</p>
+      </div>
+      <div class="navbar-end">
+        <a href="https://www.facebook.com/hoofersns/"
+          ><i class="fa-brands fa-facebook fa-2x has-text-white px-3 m-auto"></i
+        ></a>
+        <a href="https://www.instagram.com/hoofer_sns/"
+          ><i
+            class="fa-brands fa-instagram fa-2x has-text-white px-3 m-auto"
+          ></i
+        ></a>
+        <a href="#">
+          <img src="venmo_icon.png" class="px-3" style="height: 32px" alt="" />
+        </a>
+      </div>
     </div>
   </body>
 </html>
