@@ -1,5 +1,3 @@
-var originalhtml = r_e("Content").innerHTML;
-
 function r_e(id) {
   return document.querySelector(`#${id}`);
 }
@@ -79,16 +77,108 @@ firebase.auth().onAuthStateChanged(function (user) {
     r_e("signedin").classList.remove("is-hidden");
 
     r_e("signedout").classList.add("is-hidden");
-    // Sign out users
+    document.getElementById("html").style.overflow = "";
   } else {
     r_e("signedin").classList.add("is-hidden");
 
     r_e("signedout").classList.remove("is-hidden");
+    document.getElementById("html").style.overflow = "hidden";
   }
 });
 
-console.log(originalhtml);
-
+// Sign out Users
 r_e("signoutbutton").addEventListener("click", () => {
   auth.signOut().then(() => {});
+});
+
+r_e("moredetailsbtn").addEventListener("click", () => {
+  r_e("main").innerHTML = `<section class="section">
+  <div class="container is-fluid">
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <div class="has-text-centered">
+            <div class="title is-3 is-underlined is-marginless">
+              Trip Location
+            </div>
+
+            <div class="is-size-3">Mountain Resort A</div>
+          </div>
+
+          <div>
+            <div class="mt-3">
+              <span class="title is-4">Date: </span>
+              <span class="is-size-4">03/12/2024</span>
+            </div>
+            <div>
+              <span class="title is-4">Availability: </span>
+              <span class="is-size-4">13/18</span>
+            </div>
+          </div>
+          <div class="has-text-centered mt-3">
+            <div class="title is-4 is-underlined is-marginless">
+              Trip Description
+            </div>
+          </div>
+
+          <div class="is-size-6">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+            Aliquid voluptatem harum itaque adipisci suscipit quisquam ea
+            dolores temporibus incidunt consequatur, ducimus unde
+            exercitationem fuga? Tempora.
+          </div>
+          <div class="has-text-centered mt-3">
+            <span class="button is-success">Sign Up</span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box">
+          <div class="has-text-centered">
+            <div class="title is-4">Car 1</div>
+          </div>
+          <div class="is-size-5">
+            <span>Driver:</span>
+            <span>Name</span>
+          </div>
+          <div class="is-size-5">
+            <span>Pickup Location:</span>
+            <span>Union South</span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box">
+          <div class="has-text-centered">
+            <div class="title is-4">Car 2</div>
+          </div>
+          <div class="is-size-5">
+            <span>Driver:</span>
+            <span>Name</span>
+          </div>
+          <div class="is-size-5">
+            <span>Pickup Location:</span>
+            <span>Memorial Union</span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box">
+          <div class="has-text-centered">
+            <div class="title is-4">Car 3</div>
+          </div>
+          <div class="is-size-5">
+            <span>Driver:</span>
+            <span>Name</span>
+          </div>
+          <div class="is-size-5">
+            <span>Pickup Location:</span>
+            <span>Memorial Union South</span>
+          </div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`;
 });

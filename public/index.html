@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="overflow: hidden">
+<html id="html" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,6 +16,8 @@
     ></script>
   </head>
   <body>
+    <!--  Modals -->
+
     <!-- Sign-Up Modal -->
     <div class="modal" id="signup_modal">
       <div class="modal-background" id="sumodalbg"></div>
@@ -124,8 +126,11 @@
       </div>
     </div>
 
-    <!-- Content -->
+    <!-- End of Modals -->
+
+    <!-- Start of Content -->
     <div id="Content">
+      <!-- Signed Out Content -->
       <div id="signedout">
         <div class="mybanner">
           <div class="mynavbar">
@@ -156,59 +161,71 @@
           </div>
         </div>
       </div>
-      <div id="signedin" class="is-hidden">
-        <nav>
-          <ul class="nav">
-            <div
-              class="navbar-brand"
-              style="
-                float: inline-start;
-                padding-left: 20px;
-                padding-bottom: 20px;
-                padding-top: 20px;
-              "
-            >
-              <a href="home.html">
-                <figure class="image is-96x96">
-                  <img src="logo.jpg" class="is-rounded" width="100px" alt="" />
-                </figure>
-              </a>
-            </div>
-            <div
-              style="
-                float: right;
-                padding-right: 20px;
-                padding-bottom: 20px;
-                padding-top: 20px;
-              "
-            >
-              <div class="dropdown">
-                <a href="#">
+
+      <!-- Signed In Content -->
+      <div id="signedin">
+        <!-- Navbar -->
+        <div id="navbar">
+          <nav>
+            <ul class="nav">
+              <div
+                class="navbar-brand"
+                style="
+                  float: inline-start;
+                  padding-left: 20px;
+                  padding-bottom: 20px;
+                  padding-top: 20px;
+                "
+              >
+                <a href="index.html">
                   <figure class="image is-96x96">
                     <img
-                      src="profile.png"
+                      src="logo.jpg"
                       class="is-rounded"
                       width="100px"
                       alt=""
                     />
                   </figure>
                 </a>
-                <div class="dropdown-content">
-                  <a href="#">Account Info</a>
-                  <a href="#">My Trips</a>
-                  <a href="#" id="signoutbutton">Sign Out</a>
+              </div>
+              <div
+                style="
+                  float: right;
+                  padding-right: 20px;
+                  padding-bottom: 20px;
+                  padding-top: 20px;
+                "
+              >
+                <div class="dropdown">
+                  <a href="#">
+                    <figure class="image is-96x96">
+                      <img
+                        src="profile.png"
+                        class="is-rounded"
+                        width="100px"
+                        alt=""
+                      />
+                    </figure>
+                  </a>
+                  <div class="dropdown-content">
+                    <a href="#">Account Info</a>
+                    <a href="#">My Trips</a>
+                    <a href="#" id="signoutbutton">Sign Out</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <h1
-              style="text-align: center; float: center"
-              class="has-text-weight-bold"
-            >
-              Ski and Snowboard Local Trips
-            </h1>
-          </ul>
-        </nav>
-        <div class="p-5">
+              <h1
+                style="text-align: center; float: center"
+                class="has-text-weight-bold"
+              >
+                Ski and Snowboard Local Trips
+              </h1>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Main -->
+        <div id="main" class="p-5">
           <section class="section">
             <div class="container">
               <h1 class="title has-text-centered">
@@ -240,6 +257,7 @@
                         <button
                           style="background-color: #4f8cc2"
                           class="button is-info"
+                          id="moredetailsbtn"
                         >
                           More Details
                         </button>
@@ -289,7 +307,9 @@
             </div>
           </section>
         </div>
-        <div class="navbar has-background-grey p-5 is-fixed-bottom">
+
+        <!-- Footer -->
+        <div id="footer" class="navbar has-background-grey p-5 is-fixed-bottom">
           <div class="navbar-start">
             <p class="has-text-black m-auto is-vcentered">
               Copyright &copy; 2024
@@ -318,6 +338,9 @@
         </div>
       </div>
     </div>
+
+    <!-- End of Content -->
+
     <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
@@ -354,7 +377,7 @@
       // define a storage reference
       let ref = firebase.storage().ref();
     </script>
+    <!-- make sure to add your own js file as the last line in index.html file -->
+    <script src="app.js"></script>
   </body>
-  <!-- make sure to add your own js file as the last line in index.html file -->
-  <script src="app.js"></script>
 </html>
