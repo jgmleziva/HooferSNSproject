@@ -32,6 +32,17 @@
         <p class="subtitle has-text-weight-bold has-text-white">Sign Up</p>
         <form action="" id="signup_form">
           <div class="field">
+            <label class="label has-text-white">Name</label>
+            <div class="control">
+              <input
+                id="name"
+                class="input"
+                type="text"
+                placeholder="e.g. John Doe"
+              />
+            </div>
+          </div>
+          <div class="field">
             <label class="label has-text-white">Email</label>
             <div class="control">
               <input
@@ -44,7 +55,7 @@
           </div>
           <div class="field">
             <label class="label has-text-white">Password</label>
-            <p class="control has-icons-left">
+            <div class="control has-icons-left">
               <input
                 class="input"
                 type="password"
@@ -54,12 +65,58 @@
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
-            </p>
+            </div>
           </div>
-          <!-- Submit Button -->
-          <button class="button is-primary">Submit</button>
-          <!-- Reset Button -->
-          <button class="button is-danger ml-3">Reset</button>
+          <div class="field">
+            <label class="label has-text-white">Address</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="e.g. 123 Main St, City, Country"
+                id="address"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Telephone Number</label>
+            <div class="control">
+              <input
+                class="input"
+                type="tel"
+                placeholder="e.g. +1234567890"
+                id="phone"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">RecHub Username</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="e.g. recHubUser123"
+                id="rechub_username"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Do you own or rent skis?</label>
+            <div class="control">
+              <div class="select">
+                <select id="ski_ownership">
+                  <option value="own">Own</option>
+                  <option value="rent">Rent</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="pt-4">
+            <!-- Submit Button -->
+            <button class="button is-primary">Submit</button>
+            <!-- Reset Button -->
+            <button class="button is-danger ml-3">Reset</button>
+          </div>
         </form>
         <button
           class="modal-close is-large"

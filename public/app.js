@@ -40,6 +40,16 @@ r_e("signup_form").addEventListener("submit", (e) => {
   auth
     .createUserWithEmailAndPassword(email, password)
     .then((user) => {
+      // add the user to the user database
+      db.collection("users").add({
+        name: r_e("name").value,
+        email: email,
+        address: r_e("address").value,
+        phone: r_e("phone").value,
+        rechub_username: r_e("rechub_username").value,
+        ski_ownership: r_e("ski_ownership").value,
+      });
+
       // reset the form
       r_e("signup_form").reset();
 
