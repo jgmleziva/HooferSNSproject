@@ -101,3 +101,131 @@
   margin: 10px;
   cursor: pointer;
 }
+
+.footer {
+  background-color: green;
+  padding: 1rem;
+}
+.nav {
+  list-style-type: none;
+  margin: 0rem 0;
+  overflow: hidden;
+  background-image: url("mountain.png");
+}
+@media screen and (max-width: 800px) {
+  .nav {
+    background-size: cover;
+  }
+  .nav h1 {
+    font-size: 30px;
+    padding-top: 50px;
+    color: black;
+  }
+}
+@media screen and (min-width: 800px) {
+  .nav {
+    background-size: cover;
+    zoom: -20%;
+  }
+  .nav h1 {
+    font-size: 60px;
+    padding-top: 30px;
+    color: black;
+  }
+}
+.nav a {
+  display: block;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+}
+nav li a:hover {
+  background-color: #31aba6;
+  color: white;
+}
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  font-family: Arial;
+}
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+.dropdown-content {
+  display: none;
+  position: fixed;
+  top: 120px;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  margin-right: 30px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  position: right;
+}
+.dropdown-content a:hover {
+  background-color: #31aba6;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.accent-color {
+  background-color: #4fc2be;
+  color: #fff;
+}
+
+.accent-color:hover {
+  background-color: #48b2ab;
+}
+
+.capacity-box {
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}
+
+.capacity-green {
+  background-color: #caedda;
+  color: #006600;
+}
+
+.capacity-yellow {
+  background-color: #f7f0bd;
+  color: #666600;
+}
+
+.capacity-red {
+  background-color: #f0d4d5;
+  color: #660000;
+}
+
+/* Add this new class */
+.row-highlight {
+  transition: background-color 0.3s ease;
+}
+
+/* Add hover effect to the whole row */
+.row-highlight:hover {
+  background-color: #f5f5f5;
+}
+h1 {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
