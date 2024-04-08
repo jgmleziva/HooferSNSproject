@@ -210,7 +210,7 @@ function removeContent() {
   r_e(`#${id}`).innerHTML = "";
 }
 
-function f_color() {
+function payment_color() {
 
   if (document.getElementById('payment_status').innerHTML  == 'Paid') { 
      document.getElementById('payment_status').style.color = "Green";
@@ -218,10 +218,25 @@ function f_color() {
   else if (document.getElementById('payment_status').innerHTML == 'Unpaid') {
      document.getElementById('payment_status').style.color = "Red";
   }
-  else if (document.getElementById('trip_status').innerHTML == 'Pending'){
-     document.getElementById('trip_status').style.color = "Yellow";
+  }
+
+function trip_color() {
+  if (document.getElementById('trip_status').innerHTML == 'Pending'){
+    document.getElementById('trip_status').style.color = "Yellow";
   }
   else if (document.getElementById('trip_status').innerHTML == 'Accepted') {
-     document.getElementById('trip_status').style.color = "Green";
+    document.getElementById('trip_status').style.color = "Green";
   }
-  };
+}
+
+function capacity_color() {
+  if (document.getElementById('capacity_status').innerHTML < 18 && document.getElementById('capacity_status').innerHTML > 12){
+    document.getElementById('capacity_status').style.color = "Yellow";
+  }
+  else if (document.getElementById('capacity_status').innerHTML < 18){
+    document.getElementById('capacity_status').style.color = "Green";
+  }
+  else if (document.getElementById('trip_status').innerHTML == 18) {
+    document.getElementById('trip_status').style.color = "Red";
+  }
+}
