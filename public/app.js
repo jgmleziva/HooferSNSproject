@@ -192,3 +192,36 @@ r_e("moredetailsbtn").addEventListener("click", () => {
   </div>
 </section>`;
 });
+
+// function that will return an element with a given ID
+
+function r_e(id, str) {
+  if (str) {
+      alert(str)
+  }
+  return document.querySelector(`#${id}`);
+}
+
+function appendContent(html) {
+  r_e(`#${id}`).innerHTML += html;
+}
+
+function removeContent() {
+  r_e(`#${id}`).innerHTML = "";
+}
+
+function f_color() {
+
+  if (document.getElementById('payment_status').innerHTML  == 'Paid') { 
+     document.getElementById('payment_status').style.color = "Green";
+  }
+  else if (document.getElementById('payment_status').innerHTML == 'Unpaid') {
+     document.getElementById('payment_status').style.color = "Red";
+  }
+  else if (document.getElementById('trip_status').innerHTML == 'Pending'){
+     document.getElementById('trip_status').style.color = "Yellow";
+  }
+  else if (document.getElementById('trip_status').innerHTML == 'Accepted') {
+     document.getElementById('trip_status').style.color = "Green";
+  }
+  };

@@ -182,76 +182,49 @@
     <div class="p-5">
       <section class="section">
         <div class="container">
-          <h1 class="title has-text-centered">Trips Available for Sign Up</h1>
+          <h1 class="title has-text-centered">My Trips</h1>
+          <p>
+          **Please make sure to pay the full trip amount within 48 hours after signing up and before trip date or your reservation will be removed.
+          Venmo Link**
+          </p>
 
           <!-- Ski Trip Table -->
           <div class="box">
             <table class="table is-fullwidth has-text-centered">
               <thead>
                 <tr>
-                  <th class="has-text-centered">Price</th>
+                  <th class="has-text-centered">Trip Date</th>
                   <th class="has-text-centered">Location</th>
-                  <th class="has-text-centered">Date</th>
-                  <th class="has-text-centered">Time</th>
-                  <th class="has-text-centered">Action</th>
-                  <th class="has-text-centered">Capacity</th>
+                  <th class="has-text-centered">Car #</th>
+                  <th class="has-text-centered">Pickup Location</th>
+                  <th class="has-text-centered">Pickup Time</th>
+                  <th class="has-text-centered">Equipment Rentals</th>
+                  <th class="has-text-centered">Payment Status</th>
                 </tr>
               </thead>
               <tbody>
-                <!-- Sample trip 1 -->
+                <!-- Sample Person 1 -->
                 <tr class="row-highlight">
                   <!-- Added row-highlight class here -->
-                  <td>$100</td>
-                  <td>Mountain Resort A</td>
                   <td>March 15, 2024</td>
-                  <td>10:00 AM</td>
-                  <td>
-                    <button
-                      style="background-color: #4f8cc2"
-                      class="button is-info"
-                    >
-                      More Details
-                    </button>
-                    <button class="button accent-color">Sign Up</button>
-                  </td>
-                  <td class="capacity-box capacity-green">1/8</td>
+                  <td>Moutain Resort A</td>
+                  <td>1</td>
+                  <td>Memorial Union</td>
+                  <td>4:00 pm</td>
+                  <td>Yes</td>
+                  <td class="capacity-box capacity-green">Paid</td>
                 </tr>
-                <!-- Sample trip 2 -->
+                <!-- Sample Person 2 -->
                 <tr class="row-highlight">
-                  <!-- Added row-highlight class here -->
-                  <td>$100</td>
-                  <td>Mountain Resort B</td>
-                  <td>March 20, 2024</td>
-                  <td>9:00 AM</td>
-                  <td>
-                    <button
-                      style="background-color: #4f8cc2"
-                      class="button is-info"
-                    >
-                      More Details
-                    </button>
-                    <button class="button accent-color">Sign Up</button>
-                  </td>
-                  <td class="capacity-box capacity-yellow">5/8</td>
-                </tr>
-                <!-- Sample trip 3 -->
-                <tr class="row-highlight">
-                  <!-- Added row-highlight class here -->
-                  <td>$100</td>
-                  <td>Mountain Resort C</td>
-                  <td>March 25, 2024</td>
-                  <td>9:00 AM</td>
-                  <td>
-                    <button
-                      style="background-color: #4f8cc2"
-                      class="button is-info"
-                    >
-                      More Details
-                    </button>
-                    <button class="button accent-color">Sign Up</button>
-                  </td>
-                  <td class="capacity-box capacity-red">8/8</td>
-                </tr>
+                    <!-- Added row-highlight class here -->
+                    <td>March 17, 2024</td>
+                    <td>Moutain Resort A</td>
+                    <td>2</td>
+                    <td>Memorial Union</td>
+                    <td>4:30 pm</td>
+                    <td>No</td>
+                    <td class="capacity-box" id="payment_status">Unpaid</td>
+                  </tr>
               </tbody>
             </table>
           </div>
@@ -277,4 +250,5 @@
       </div>
     </div>
   </body>
+  <script src="app.js"></script>
 </html>
