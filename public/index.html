@@ -126,6 +126,78 @@
       </div>
     </div>
 
+    <!-- Admin Add Trip Modal -->
+    <div class="modal" id="addevent_modal">
+      <div class="modal-background" id="aemodalbg"></div>
+      <div
+        class="modal-content p-6 is-bordered"
+        style="
+          backdrop-filter: blur(8px);
+          border: 2px solid #31ada6;
+          border-radius: 20px;
+        "
+      >
+        <p class="subtitle has-text-weight-bold has-text-white">Add Event</p>
+        <form action="" id="addevent_form">
+          <div class="field">
+            <label class="label has-text-white">Price</label>
+            <div class="control">
+              <input
+                id="trip_price"
+                class="input"
+                type="number"
+                placeholder="$"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Location</label>
+            <p class="control has-icons-left">
+              <input
+                class="input"
+                type="text"
+                placeholder="Mount Everest"
+                id="trip_location"
+              />
+              <span class="icon is-small is-left">
+                <i class="fa-solid fa-location-dot"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Date</label>
+            <p class="control has-icons-left">
+              <input
+                class="input"
+                type="date"
+                placeholder="Mount Everest"
+                id="trip_date"
+              />
+            </p>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Time</label>
+            <p class="control has-icons-left">
+              <input
+                class="input"
+                type="time"
+                placeholder="Mount Everest"
+                id="trip_time"
+              />
+            </p>
+          </div>
+          <!-- Submit Button -->
+          <button class="button is-primary" id="addTrip_Submit">Submit</button>
+          <!-- Reset Button -->
+          <button class="button is-danger ml-3">Reset</button>
+        </form>
+        <button
+          class="modal-close is-large"
+          id="aeclose"
+          aria-label="close"
+        ></button>
+      </div>
+    </div>
     <!-- End of Modals -->
 
     <!-- Start of Content -->
@@ -234,6 +306,7 @@
                 </div>
                 <div class="column has-text-right pr-5">
                   <button
+                    id="addeventbtn"
                     class="button is-small px-6 py-3 is-success is-rounded"
                   >
                     Add Event
@@ -254,7 +327,7 @@
                       <th class="has-text-centered">Capacity</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="upcomingtrips">
                     <!-- Sample trip 1 -->
                     <tr class="row-highlight">
                       <!-- Added row-highlight class here -->
