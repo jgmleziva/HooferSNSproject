@@ -1,3 +1,7 @@
+// Initialize Page
+
+showTrips();
+
 function r_e(id) {
   return document.querySelector(`#${id}`);
 }
@@ -88,6 +92,8 @@ firebase.auth().onAuthStateChanged(function (user) {
 
     r_e("signedout").classList.add("is-hidden");
     document.getElementById("html").style.overflow = "";
+
+    showTrips();
   } else {
     r_e("signedin").classList.add("is-hidden");
 
@@ -452,8 +458,6 @@ function showTrips() {
       r_e("upcomingtrips").innerHTML = html;
     });
 }
-
-showTrips();
 
 function moreDetails(tripid) {
   db.collection("trips")
