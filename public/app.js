@@ -413,3 +413,145 @@ function capacity_color() {
     document.getElementById("trip_status").style.color = "Red";
   }
 }
+
+// Get Upcoming Trips
+
+function showTrips() {
+  db.collection("trips")
+    .orderBy("date")
+    .get()
+    .then((snapshot) => {
+      let trips = snapshot.docs;
+      let html = ``;
+      trips.forEach((trip) => {
+        let price = trip.data().price;
+        let location = trip.data().location;
+        let date = trip.data().date;
+        let time = trip.data().time;
+        let tripID = trip.data().tripID;
+        console.log(typeof time);
+        html += `<tr class="row-highlight">
+      <!-- Added row-highlight class here -->
+      <td>$${price}</td>
+      <td>${location}</td>
+      <td>${date}</td>
+      <td>${time}</td>
+      <td>
+        <button
+          onclick = "moreDetails(${tripID})"
+          style="background-color: #4f8cc2"
+          class="button is-info"
+          id="${tripID}" 
+        >
+          More Details
+        </button>
+      </td>
+      <td class="capacity-box capacity-green">1/8</td>
+    </tr>`;
+      });
+      r_e("upcomingtrips").innerHTML = html;
+    });
+}
+
+showTrips();
+
+function moreDetails(tripid) {
+  db.collection("trips")
+    .where("tripID", "==", tripid)
+    .get()
+    .then((trip) => {
+      let tripdata = trip.docs;
+      let location = tripdata[0].data().location;
+      let date = tripdata[0].data().date;
+      let time = tripdata[0].data().time;
+      r_e("main").innerHTML = `<section class="section">
+  <div class="container is-fluid">
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <div class="has-text-centered">
+            <div class="title is-3 is-underlined is-marginless">
+              Trip Location
+            </div>
+
+            <div class="is-size-3">${location}</div>
+          </div>
+
+          <div>
+            <div class="mt-3">
+              <span class="title is-4">Date: </span>
+              <span class="is-size-4">${date}</span>
+            </div>
+            <div>
+              <span class="title is-4">Availability: </span>
+              <span class="is-size-4">13/18</span>
+            </div>
+          </div>
+          <div class="has-text-centered mt-3">
+            <div class="title is-4 is-underlined is-marginless">
+              Trip Description
+            </div>
+          </div>
+
+          <div class="is-size-6">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+            Aliquid voluptatem harum itaque adipisci suscipit quisquam ea
+            dolores temporibus incidunt consequatur, ducimus unde
+            exercitationem fuga? Tempora.
+          </div>
+          <div class="has-text-centered mt-3">
+            <span class="button is-success">Sign Up</span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box">
+          <div class="has-text-centered">
+            <div class="title is-4">Car 1</div>
+          </div>
+          <div class="is-size-5">
+            <span>Driver:</span>
+            <span>Name</span>
+          </div>
+          <div class="is-size-5">
+            <span>Pickup Location:</span>
+            <span>Union South</span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box">
+          <div class="has-text-centered">
+            <div class="title is-4">Car 2</div>
+          </div>
+          <div class="is-size-5">
+            <span>Driver:</span>
+            <span>Name</span>
+          </div>
+          <div class="is-size-5">
+            <span>Pickup Location:</span>
+            <span>Memorial Union</span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box">
+          <div class="has-text-centered">
+            <div class="title is-4">Car 3</div>
+          </div>
+          <div class="is-size-5">
+            <span>Driver:</span>
+            <span>Name</span>
+          </div>
+          <div class="is-size-5">
+            <span>Pickup Location:</span>
+            <span>Memorial Union South</span>
+          </div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`;
+    });
+}
