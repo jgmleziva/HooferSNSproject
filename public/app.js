@@ -6,9 +6,77 @@ function r_e(id) {
   return document.querySelector(`#${id}`);
 }
 
+function showmytrips(userid) {
+  db.collection("tripsignups")
+    .where("User", "==", userid)
+    .get()
+    .then((snapshot) => {
+      let equipmentrentals = "";
+      let mytrips = snapshot.docs;
+      let html = ``;
+      mytrips.forEach((trip) => {
+        let location = trip.data().location;
+        let date = trip.data().date;
+        let car = trip.data().car;
+        let price = trip.data().Price;
+        let status = trip.data().Status;
+        let pickuplocation = trip.data().pickuplocation;
+        let pickuptime = trip.data().pickuptime;
+        if (trip.data().equipmentrentals == true) {
+          equipmentrentals = "Yes";
+        } else {
+          equipmentrentals = "No";
+        }
+        html += `<tr class="row-highlight">
+        <!-- Added row-highlight class here -->
+        <td>${date}</td>
+        <td>${location}</td>
+        <td>${car}</td>
+        <td>${pickuptime}</td>
+        <td>${pickuplocation}</td>
+        <td>${equipmentrentals}</td>
+        <td>${price}</td>
+        
+        <td class="capacity-box capacity-green">${status}</td>
+      </tr>`;
+      });
+      r_e("main").innerHTML = `<div class="p-5">
+  <section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">My Trips</h1>
+      <p>
+      **Please make sure to pay the full trip amount within 48 hours after signing up and before trip date or your reservation will be removed.
+      Venmo Link**
+      </p>
+
+      <!-- Ski Trip Table -->
+      <div class="box">
+        <table class="table is-fullwidth has-text-centered">
+          <thead>
+            <tr>
+              <th class="has-text-centered">Trip Date</th>
+              <th class="has-text-centered">Location</th>
+              <th class="has-text-centered">Car #</th>
+              <th class="has-text-centered">Pickup Location</th>
+              <th class="has-text-centered">Pickup Time</th>
+              <th class="has-text-centered">Equipment Rentals</th>
+              <th class="has-text-centered">Price</th>
+              <th class="has-text-centered">Payment Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${html}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>`;
+    });
+}
+
 // Show Sign up Modal
 r_e("signupbutton").addEventListener("click", () => {
-  console.log("HI");
   r_e("signup_modal").classList.add("is-active");
   r_e("sumodalbg").addEventListener("click", () => {
     r_e("signup_modal").classList.remove("is-active");
@@ -265,61 +333,7 @@ r_e("accountinfo").addEventListener("click", () => {
 
 // Show My Trips
 r_e("mytrips").addEventListener("click", () => {
-  r_e("main").innerHTML = `<div class="p-5">
-  <section class="section">
-    <div class="container">
-      <h1 class="title has-text-centered">My Trips</h1>
-      <p>
-      **Please make sure to pay the full trip amount within 48 hours after signing up and before trip date or your reservation will be removed.
-      Venmo Link**
-      </p>
-
-      <!-- Ski Trip Table -->
-      <div class="box">
-        <table class="table is-fullwidth has-text-centered">
-          <thead>
-            <tr>
-              <th class="has-text-centered">Trip Date</th>
-              <th class="has-text-centered">Location</th>
-              <th class="has-text-centered">Car #</th>
-              <th class="has-text-centered">Pickup Location</th>
-              <th class="has-text-centered">Pickup Time</th>
-              <th class="has-text-centered">Equipment Rentals</th>
-              <th class="has-text-centered">Price</th>
-              <th class="has-text-centered">Payment Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Sample Person 1 -->
-            <tr class="row-highlight">
-              <!-- Added row-highlight class here -->
-              <td>March 15, 2024</td>
-              <td>Moutain Resort A</td>
-              <td>1</td>
-              <td>Memorial Union</td>
-              <td>4:00 pm</td>
-              <td>Yes</td>
-              <td>$100</td>
-              <td class="capacity-box capacity-green">Paid</td>
-            </tr>
-            <!-- Sample Person 2 -->
-            <tr class="row-highlight">
-                <!-- Added row-highlight class here -->
-                <td>March 17, 2024</td>
-                <td>Moutain Resort A</td>
-                <td>2</td>
-                <td>Memorial Union</td>
-                <td>4:30 pm</td>
-                <td>No</td>
-                <td>$100</td>
-                <td class="capacity-box" id="payment_status">Unpaid</td>
-              </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-</div>`;
+  showmytrips(auth.currentUser.email);
 });
 
 // Show Trip Roster
@@ -435,7 +449,6 @@ function showTrips() {
         let date = trip.data().date;
         let time = trip.data().time;
         let tripID = trip.data().tripID;
-        console.log(typeof time);
         html += `<tr class="row-highlight">
       <!-- Added row-highlight class here -->
       <td>$${price}</td>
