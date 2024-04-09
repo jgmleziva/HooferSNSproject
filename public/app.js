@@ -193,11 +193,186 @@ r_e("moredetailsbtn").addEventListener("click", () => {
 </section>`;
 });
 
+// Show Account Info
+r_e("accountinfo").addEventListener("click", () => {
+  r_e("main").innerHTML = `<div class="p-5">
+  <section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">Account Information</h1>
+      <form>
+        <div class= "field"> 
+            <label class="label"for="myfile">Profile Picture:</label>
+            <div class = "control">
+                <input type="file" id="myfile" name="myfile">
+            </div>
+            </div>
+        <div class= "field"> 
+        <label class = "label"> First Name: </label>
+        <div class = "control">
+            <input class = "input" type="text" name="name" id="stitle" required>
+        </div>
+        </div>
+        <div class= "field"> 
+            <label class = "label"> Last Name: </label>
+            <div class = "control">
+                <input class = "input" type="text" name="name" id="stitle" required>
+            </div>
+            </div>
+            <div class= "field"> 
+                <label class = "label"> Email Address: </label>
+                <div class = "control">
+                    <input class = "input" type="text" name="name" id="stitle" required>
+                </div>
+                </div>    
+                <div class= "field"> 
+                    <label class = "label"> Phone # </label>
+                    <div class = "control">
+                        <input class = "input" type="text" name="name" id="stitle" required>
+                    </div>
+                    </div>  
+                        <div class= "field"> 
+                            <label class = "label"> RecHub Username: </label>
+                            <div class = "control">
+                                <input class = "input" type="text" name="name" id="stitle" required>
+                            </div>
+                            </div>     
+            <div class= "field"> 
+                <label class = "label"> Address: </label>
+                <div class = "control">
+                    <input class = "input" type="text" name="name" id="stitle" required>
+                </div>
+                </div>
+            <br>
+            <div class = "field is-grouped">
+                <div class= "control">
+                    <button type = "button" id="pick_submit" class="button">Save</button>
+                </div>
+            </div>
+            <br>
+        </form>
+    </div>
+    </div>
+    </div>
+  </section>
+</div>`;
+});
+
+// Show My Trips
+r_e("mytrips").addEventListener("click", () => {
+  r_e("main").innerHTML = `<div class="p-5">
+  <section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">My Trips</h1>
+      <p>
+      **Please make sure to pay the full trip amount within 48 hours after signing up and before trip date or your reservation will be removed.
+      Venmo Link**
+      </p>
+
+      <!-- Ski Trip Table -->
+      <div class="box">
+        <table class="table is-fullwidth has-text-centered">
+          <thead>
+            <tr>
+              <th class="has-text-centered">Trip Date</th>
+              <th class="has-text-centered">Location</th>
+              <th class="has-text-centered">Car #</th>
+              <th class="has-text-centered">Pickup Location</th>
+              <th class="has-text-centered">Pickup Time</th>
+              <th class="has-text-centered">Equipment Rentals</th>
+              <th class="has-text-centered">Price</th>
+              <th class="has-text-centered">Payment Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Person 1 -->
+            <tr class="row-highlight">
+              <!-- Added row-highlight class here -->
+              <td>March 15, 2024</td>
+              <td>Moutain Resort A</td>
+              <td>1</td>
+              <td>Memorial Union</td>
+              <td>4:00 pm</td>
+              <td>Yes</td>
+              <td>$100</td>
+              <td class="capacity-box capacity-green">Paid</td>
+            </tr>
+            <!-- Sample Person 2 -->
+            <tr class="row-highlight">
+                <!-- Added row-highlight class here -->
+                <td>March 17, 2024</td>
+                <td>Moutain Resort A</td>
+                <td>2</td>
+                <td>Memorial Union</td>
+                <td>4:30 pm</td>
+                <td>No</td>
+                <td>$100</td>
+                <td class="capacity-box" id="payment_status">Unpaid</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>`;
+});
+
+// Show Trip Roster
+r_e("triproster").addEventListener("click", () => {
+  r_e("main").innerHTML = `<div class="p-5">
+  <section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">Trip Roster</h1>
+
+      <!-- Ski Trip Table -->
+      <div class="box">
+        <table class="table is-fullwidth has-text-centered">
+          <thead>
+            <tr>
+              <th class="has-text-centered">Name</th>
+              <th class="has-text-centered">Phone #</th>
+              <th class="has-text-centered">Email Address</th>
+              <th class="has-text-centered">Trip Date</th>
+              <th class="has-text-centered">Location</th>
+              <th class="has-text-centered">Car #</th>
+              <th class="has-text-centered">Payment Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Person 1 -->
+            <tr class="row-highlight">
+              <!-- Added row-highlight class here -->
+              <td>Bob</td>
+              <td>###-###-####</td>
+              <td>email@gmail.com</td>
+              <td>March 15, 2024</td>
+              <td>Moutain Resort A</td>
+              <td>1</td>
+              <td class="capacity-box capacity-green">Paid</td>
+            </tr>
+            <!-- Sample Person 2 -->
+            <tr class="row-highlight">
+                <!-- Added row-highlight class here -->
+                <td>Sally</td>
+                <td>###-###-####</td>
+                <td>email@gmail.com</td>
+                <td>March 15, 2024</td>
+                <td>Moutain Resort A</td>
+                <td>1</td>
+                <td class="capacity-box capacity-red">Unpaid</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>`;
+});
+
 // function that will return an element with a given ID
 
 function r_e(id, str) {
   if (str) {
-      alert(str)
+    alert(str);
   }
   return document.querySelector(`#${id}`);
 }
@@ -211,32 +386,30 @@ function removeContent() {
 }
 
 function payment_color() {
-
-  if (document.getElementById('payment_status').innerHTML  == 'Paid') { 
-     document.getElementById('payment_status').style.color = "Green";
+  if (document.getElementById("payment_status").innerHTML == "Paid") {
+    document.getElementById("payment_status").style.color = "Green";
+  } else if (document.getElementById("payment_status").innerHTML == "Unpaid") {
+    document.getElementById("payment_status").style.color = "Red";
   }
-  else if (document.getElementById('payment_status').innerHTML == 'Unpaid') {
-     document.getElementById('payment_status').style.color = "Red";
-  }
-  }
+}
 
 function trip_color() {
-  if (document.getElementById('trip_status').innerHTML == 'Pending'){
-    document.getElementById('trip_status').style.color = "Yellow";
-  }
-  else if (document.getElementById('trip_status').innerHTML == 'Accepted') {
-    document.getElementById('trip_status').style.color = "Green";
+  if (document.getElementById("trip_status").innerHTML == "Pending") {
+    document.getElementById("trip_status").style.color = "Yellow";
+  } else if (document.getElementById("trip_status").innerHTML == "Accepted") {
+    document.getElementById("trip_status").style.color = "Green";
   }
 }
 
 function capacity_color() {
-  if (document.getElementById('capacity_status').innerHTML < 18 && document.getElementById('capacity_status').innerHTML > 12){
-    document.getElementById('capacity_status').style.color = "Yellow";
-  }
-  else if (document.getElementById('capacity_status').innerHTML < 18){
-    document.getElementById('capacity_status').style.color = "Green";
-  }
-  else if (document.getElementById('trip_status').innerHTML == 18) {
-    document.getElementById('trip_status').style.color = "Red";
+  if (
+    document.getElementById("capacity_status").innerHTML < 18 &&
+    document.getElementById("capacity_status").innerHTML > 12
+  ) {
+    document.getElementById("capacity_status").style.color = "Yellow";
+  } else if (document.getElementById("capacity_status").innerHTML < 18) {
+    document.getElementById("capacity_status").style.color = "Green";
+  } else if (document.getElementById("trip_status").innerHTML == 18) {
+    document.getElementById("trip_status").style.color = "Red";
   }
 }
