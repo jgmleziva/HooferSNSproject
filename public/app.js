@@ -281,7 +281,7 @@ r_e("accountinfo").addEventListener("click", () => {
           </div>
         </div>
         <div class= "field"> 
-          <label class = "label"> First Name: style</label>
+          <label class = "label"> First Name: </label>
         <div
         id="full_name"
         class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
@@ -329,7 +329,7 @@ r_e("accountinfo").addEventListener("click", () => {
             
             <input type="hidden" value = "${d.data().name}" />
     
-            <button hidden="hidden" onclick= "save_doc(this, '${d.id}' )">Save</button>
+            <button hidden="hidden" onclick= "save_name(this, '${d.id}' )">Save</button>
             
             <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
             </p>`;
@@ -371,7 +371,7 @@ function user_phone_number() {
         
         <input type="hidden" value = "${d.data().phone}" />
 
-        <button hidden="hidden" onclick= "save_doc(this, '${d.id}' )">Save</button>
+        <button hidden="hidden" onclick= "save_phone(this, '${d.id}' )">Save</button>
         
         <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
         </p>`;
@@ -394,7 +394,7 @@ function user_rechub_username() {
         
         <input type="hidden" value = "${d.data().rechub_username}" />
 
-        <button hidden="hidden" onclick= "save_doc(this, '${d.id}' )">Save</button>
+        <button hidden="hidden" onclick= "save_rechub(this, '${d.id}' )">Save</button>
         
         <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
         </p>`;
@@ -418,7 +418,7 @@ function user_address() {
         
         <input type="hidden" value = "${d.data().address}" />
 
-        <button hidden="hidden" onclick= "save_doc(this, '${d.id}' )">Save</button>
+        <button hidden="hidden" onclick= "save_address(this, '${d.id}' )">Save</button>
         
         <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
         </p>`;
@@ -679,18 +679,45 @@ function moreDetails(tripid) {
     });
 }
 
-// update existing document
-
-function save_doc(ele, id) {
+function save_name(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-
+  
   db.collection("users")
     .doc(id)
     .update({
       name: inputs[0].value,
-      city: inputs[1].value,
     })
-    .then(() => alert("info updated"));
+    .then(() => alert("Your account has been updated."));
+}
+function save_phone(ele, id) {
+  let inputs = ele.parentNode.querySelectorAll("input");
+  
+  db.collection("users")
+    .doc(id)
+    .update({
+      phone: inputs[0].value,
+    })
+    .then(() => alert("Your account has been updated."));
+}
+function save_rechub(ele, id) {
+  let inputs = ele.parentNode.querySelectorAll("input");
+  
+  db.collection("users")
+    .doc(id)
+    .update({
+      rechub_username: inputs[0].value,
+    })
+    .then(() => alert("Your account has been updated."));
+}
+function save_address(ele, id) {
+  let inputs = ele.parentNode.querySelectorAll("input");
+  
+  db.collection("users")
+    .doc(id)
+    .update({
+      address: inputs[0].value,
+    })
+    .then(() => alert("Your account has been updated."));
 }
 
 // update documents in the collection
