@@ -481,7 +481,73 @@ function moreDetails(tripid) {
       let location = tripdata[0].data().location;
       let date = tripdata[0].data().date;
       let time = tripdata[0].data().time;
-      r_e("main").innerHTML = `<section class="section">
+      let price = tripdata[0].data().price;
+      let cars = tripdata[0].data().cars;
+      let carColumnsHTML = "";
+      let columnCounter = 1;
+      if (cars.length > 0) {
+        cars.forEach((car, index) => {
+          if (columnCounter % 3 === 0) {
+            carColumnsHTML += '<div class="columns">';
+          }
+
+          let carHTML = `
+          <div id = "car${car}"class="column">
+            <div class="box">
+              <div class="has-text-centered">
+                <div class="title is-4">Car ${index + 1}</div>
+              </div>
+              <div class="is-size-5">
+                <span>Driver:</span>
+                <span>${car.driver}</span>
+              </div>
+              <div class="is-size-5">
+                <span>Pickup Location:</span>
+                <span>${car.pickupLocation}</span>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <div class="has-text-centered">
+                    <figure class="image is-96x96 is-inline-block">
+                      <img
+                        src="logo.jpg"
+                        class="is-rounded"
+                        width="100px"
+                        alt=""
+                      />
+                    </figure>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="has-text-centered">
+                    <figure class="image is-96x96 is-inline-block">
+                      <img
+                        src="logo.jpg"
+                        class="is-rounded"
+                        width="100px"
+                        alt=""
+                      />
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+          carColumnsHTML += carHTML;
+
+          columnCounter++;
+
+          if (columnCounter % 3 === 0) {
+            carColumnsHTML += "</div>";
+          }
+        });
+
+        if (columnCounter % 3 !== 0) {
+          carColumnsHTML += "</div>";
+        }
+      }
+      let mainHTML = `<section class="section">
   <div class="container is-fluid">
     <div class="columns">
       <div class="column">
@@ -496,6 +562,10 @@ function moreDetails(tripid) {
 
           <div>
             <div class="mt-3">
+            <div>
+              <span class="title is-4">Price: </span>
+              <span class="is-size-4">$${price}</span>
+            </div>
               <span class="title is-4">Date: </span>
               <span class="is-size-4">${date}</span>
             </div>
@@ -503,6 +573,7 @@ function moreDetails(tripid) {
               <span class="title is-4">Availability: </span>
               <span class="is-size-4">13/18</span>
             </div>
+            
           </div>
           <div class="has-text-centered mt-3">
             <div class="title is-4 is-underlined is-marginless">
@@ -518,57 +589,14 @@ function moreDetails(tripid) {
           </div>
           <div class="has-text-centered mt-3">
             <span class="button is-success">Sign Up</span>
+            
           </div>
+
         </div>
+        
       </div>
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-4">Car 1</div>
-          </div>
-          <div class="is-size-5">
-            <span>Driver:</span>
-            <span>Name</span>
-          </div>
-          <div class="is-size-5">
-            <span>Pickup Location:</span>
-            <span>Union South</span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-4">Car 2</div>
-          </div>
-          <div class="is-size-5">
-            <span>Driver:</span>
-            <span>Name</span>
-          </div>
-          <div class="is-size-5">
-            <span>Pickup Location:</span>
-            <span>Memorial Union</span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-4">Car 3</div>
-          </div>
-          <div class="is-size-5">
-            <span>Driver:</span>
-            <span>Name</span>
-          </div>
-          <div class="is-size-5">
-            <span>Pickup Location:</span>
-            <span>Memorial Union South</span>
-          </div>
-          <div></div>
-        </div>
-      </div>
-    </div>
-  </div>
+      ${carColumnsHTML}
 </section>`;
+      r_e("main").innerHTML = mainHTML;
     });
 }
