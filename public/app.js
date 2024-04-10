@@ -275,60 +275,166 @@ r_e("accountinfo").addEventListener("click", () => {
       <h1 class="title has-text-centered">Account Information</h1>
       <form>
         <div class= "field"> 
-            <label class="label"for="myfile">Profile Picture:</label>
-            <div class = "control">
-                <input type="file" id="myfile" name="myfile">
-            </div>
-            </div>
-        <div class= "field"> 
-        <label class = "label"> First Name: </label>
-        <div class = "control">
-            <input class = "input" type="text" name="name" id="stitle" required>
-        </div>
+          <label class="label"for="myfile">Profile Picture:</label>
+          <div class = "control">
+              <input type="file" id="myfile" name="myfile">
+          </div>
         </div>
         <div class= "field"> 
-            <label class = "label"> Last Name: </label>
-            <div class = "control">
-                <input class = "input" type="text" name="name" id="stitle" required>
+          <label class = "label"> First Name: style</label>
+        <div
+        id="full_name"
+        class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
+        </div>
+        <div class= "field"> 
+          <label class = "label"> Email Address: </label>
+            <div id="email_address"
+              class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
             </div>
-            </div>
-            <div class= "field"> 
-                <label class = "label"> Email Address: </label>
-                <div class = "control">
-                    <input class = "input" type="text" name="name" id="stitle" required>
-                </div>
-                </div>    
+          </div>    
                 <div class= "field"> 
                     <label class = "label"> Phone # </label>
-                    <div class = "control">
-                        <input class = "input" type="text" name="name" id="stitle" required>
-                    </div>
+                    <div id="phone_number"
+                    class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
+                  </div>
                     </div>  
                         <div class= "field"> 
                             <label class = "label"> RecHub Username: </label>
-                            <div class = "control">
-                                <input class = "input" type="text" name="name" id="stitle" required>
-                            </div>
+                            <div id="rechub"
+                            class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
+                          </div>
                             </div>     
             <div class= "field"> 
                 <label class = "label"> Address: </label>
-                <div class = "control">
-                    <input class = "input" type="text" name="name" id="stitle" required>
+                <div id="user_address"
+                class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
+              </div>
                 </div>
-                </div>
-            <br>
-            <div class = "field is-grouped">
-                <div class= "control">
-                    <button type = "button" id="pick_submit" class="button">Save</button>
-                </div>
-            </div>
-            <br>
         </form>
     </div>
     </div>
     </div>
   </section>
 </div>`;
+    function user_full_name() {
+      db.collection("users")
+        .where("email", "==", auth.currentUser.email)
+        .get()
+        .then((res) => {
+          let data = res.docs;
+    
+          let html = ``;
+          data.forEach((d) => {
+            html += `<p id="${d.id}">${d.data().name}
+            
+            <input type="hidden" value = "${d.data().name}" />
+    
+            <button hidden="hidden" onclick= "save_doc(this, '${d.id}' )">Save</button>
+            
+            <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
+            </p>`;
+          });
+    
+          // append the html variable to the document
+          document.querySelector("#full_name").innerHTML += html;
+        });
+}
+
+
+function user_email_address() {
+  db.collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get()
+    .then((res) => {
+      let data = res.docs;
+
+      let html = ``;
+      data.forEach((d) => {
+        html += `<p id="${d.id}">${d.data().email}
+        </p>`;
+      });
+
+      // append the html variable to the document
+      document.querySelector("#email_address").innerHTML += html;
+    });
+}
+function user_phone_number() {
+  db.collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get()
+    .then((res) => {
+      let data = res.docs;
+
+      let html = ``;
+      data.forEach((d) => {
+        html += `<p id="${d.id}">${d.data().phone}
+        
+        <input type="hidden" value = "${d.data().phone}" />
+
+        <button hidden="hidden" onclick= "save_doc(this, '${d.id}' )">Save</button>
+        
+        <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
+        </p>`;
+      });
+
+      // append the html variable to the document
+      document.querySelector("#phone_number").innerHTML += html;
+    });
+}
+function user_rechub_username() {
+  db.collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get()
+    .then((res) => {
+      let data = res.docs;
+
+      let html = ``;
+      data.forEach((d) => {
+        html += `<p id="${d.id}">${d.data().rechub_username}
+        
+        <input type="hidden" value = "${d.data().rechub_username}" />
+
+        <button hidden="hidden" onclick= "save_doc(this, '${d.id}' )">Save</button>
+        
+        <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
+        </p>`;
+      });
+
+      // append the html variable to the document
+      document.querySelector("#rechub").innerHTML += html;
+    });
+}
+
+function user_address() {
+  db.collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get()
+    .then((res) => {
+      let data = res.docs;
+
+      let html = ``;
+      data.forEach((d) => {
+        html += `<p id="${d.id}">${d.data().address}
+        
+        <input type="hidden" value = "${d.data().address}" />
+
+        <button hidden="hidden" onclick= "save_doc(this, '${d.id}' )">Save</button>
+        
+        <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
+        </p>`;
+      });
+
+      // append the html variable to the document
+      document.querySelector("#user_address").innerHTML += html;
+    });
+}
+
+user_full_name();
+user_email_address();
+user_phone_number();
+user_rechub_username();
+user_address();
+
 });
 
 // Show My Trips
@@ -571,4 +677,31 @@ function moreDetails(tripid) {
   </div>
 </section>`;
     });
+}
+
+// update existing document
+
+function save_doc(ele, id) {
+  let inputs = ele.parentNode.querySelectorAll("input");
+
+  db.collection("users")
+    .doc(id)
+    .update({
+      name: inputs[0].value,
+      city: inputs[1].value,
+    })
+    .then(() => alert("info updated"));
+}
+
+// update documents in the collection
+
+function update_doc(ele, id) {
+  ele.parentNode.querySelectorAll("input").forEach((e) => {
+    e.type = "text";
+  });
+
+  // show the save button
+  ele.parentNode.querySelectorAll("button").forEach((e) => {
+    e.hidden = "";
+  });
 }
