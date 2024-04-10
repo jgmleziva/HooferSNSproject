@@ -529,14 +529,16 @@ function trip_color() {
 
 function capacity_color() {
   if (
-    document.getElementById("capacity_status").innerHTML < 18 &&
-    document.getElementById("capacity_status").innerHTML > 12
+    document.getElementById("capacity_status").innerHTML > 11/12 && 
+    document.getElementById("capacity_status").innerHTML >= 7/12
   ) {
     document.getElementById("capacity_status").style.color = "Yellow";
-  } else if (document.getElementById("capacity_status").innerHTML < 18) {
+  } else if (document.getElementById("capacity_status").innerHTML < 6/12 &&
+    document.getElementById("capacity_status").innerHTML > 0
+  ) {
     document.getElementById("capacity_status").style.color = "Green";
-  } else if (document.getElementById("trip_status").innerHTML == 18) {
-    document.getElementById("trip_status").style.color = "Red";
+  } else if (document.getElementById("capacity_status").innerHTML == 12/12) {
+    document.getElementById("capacity_status").style.color = "Red";
   }
 }
 
@@ -571,13 +573,12 @@ function showTrips() {
           More Details
         </button>
       </td>
-      <td class="capacity-box capacity-green">1/8</td>
+      <td class="capacity-box" id="capacity_status">1/12</td>
     </tr>`;
       });
       r_e("upcomingtrips").innerHTML = html;
     });
 }
-
 function moreDetails(tripid) {
   db.collection("trips")
     .where("tripID", "==", tripid)
