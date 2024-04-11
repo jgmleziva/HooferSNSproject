@@ -23,39 +23,54 @@ function showmodal(tripid) {
 
 function showmytrips(userid) {
   db.collection("tripsignups")
-    .where("User", "==", userid)
+    .where("user", "==", userid)
     .get()
     .then((snapshot) => {
-      let equipmentrentals = "";
-      let mytrips = snapshot.docs;
+      let mysignups = snapshot.docs;
       let html = ``;
-      mytrips.forEach((trip) => {
-        let location = trip.data().location;
-        let date = trip.data().date;
-        let mycar = trip.data().car;
-        let price = trip.data().Price;
-        let status = trip.data().Status;
-        let pickuplocation = trip.data().pickuplocation;
-        let pickuptime = trip.data().pickuptime;
-        if (trip.data().equipmentrentals == true) {
-          equipmentrentals = "Yes";
-        } else {
-          equipmentrentals = "No";
-        }
-        html += `<tr class="row-highlight">
+      mysignups.forEach((signup) => {
+        let mycar = signup.data().carnumber;
+        let status = signup.data().status;
+        let pickuptime = signup.data().pickuptime;
+        let date = "";
+        let location = "";
+        let pickuplocation = "";
+        let price = "";
+        let tripid = signup.data().tripid;
+        db.collection("cars")
+          .where("tripID", "==", tripid)
+          .where("carnumber", "==", parseInt(mycar))
+          .get()
+          .then((snapshot) => {
+            let cars = snapshot.docs;
+            pickuplocation = cars[0].data().pickuplocation;
+          });
+        db.collection("trips")
+          .where("tripID", "==", tripid)
+          .get()
+          .then((snapshot) => {
+            let trip = snapshot.docs;
+            date = trip[0].data().date;
+            location = trip[0].data().location;
+            price = trip[0].data().price;
+          });
+        setTimeout(() => {
+          html += `<tr class="row-highlight">
         <!-- Added row-highlight class here -->
         <td>${date}</td>
         <td>${location}</td>
         <td>${mycar}</td>
-        <td>${pickuptime}</td>
         <td>${pickuplocation}</td>
-        <td>${equipmentrentals}</td>
-        <td>${price}</td>
+        <td>${pickuptime}</td>
+        <td></td>
+        <td>$${price}</td>
         
         <td class="capacity-box capacity-green">${status}</td>
       </tr>`;
+        }, 1000);
       });
-      r_e("main").innerHTML = `<div class="p-5">
+      setTimeout(() => {
+        r_e("main").innerHTML = `<div class="p-5">
   <section class="section">
     <div class="container">
       <h1 class="title has-text-centered">My Trips</h1>
@@ -87,6 +102,7 @@ function showmytrips(userid) {
     </div>
   </section>
 </div>`;
+      }, 2000);
     });
 }
 
@@ -722,7 +738,7 @@ function moreDetails(tripid) {
     "
   >
     <p class="subtitle has-text-weight-bold has-text-white">Trip Sign Up</p>
-    <form action="" id="form${tripid}">
+    <form action="" id="form${tripid}" onsubmit="return false">
       <div class="field">
         <label class="label has-text-white">Car Number:<select oninput= "cardetails(${tripid}, parseInt(r_e('carnumber${tripid}').value) )"  name="car#" id="carnumber${tripid}" class="ml-3 select">
         <option value="1">1</option>
@@ -741,7 +757,7 @@ function moreDetails(tripid) {
       </div>
       <div class="pt-4">
         <!-- Submit Button -->
-        <button class="button is-primary">Submit</button>
+        <button class="button is-primary" id="submit${tripid}" onclick = "submittripsignup(${tripid})">Submit</button>
         
       </div>
     </form>
@@ -829,6 +845,37 @@ function addTrip(trip) {
 
 function addCar(car) {
   db.collection("cars").add(car);
+}
+
+function addsignup(signup) {
+  db.collection("tripsignups").add(signup);
+}
+
+// Get trip sign up info and submit it
+function submittripsignup(tripid) {
+  let doc = "";
+  let user = auth.currentUser.email;
+  let carnumber = r_e("carnumber" + tripid).value;
+  let date = Date();
+
+  let signup = {
+    tripid: tripid,
+    user: user,
+    carnumber: carnumber,
+    date: date,
+  };
+  addsignup(signup);
+
+  // db.collection("cars")
+  //   .where("tripID", "==", tripid)
+  //   .where("carnumber", "==", parseInt(carnumber))
+  //   .get()
+  //   .then((snapshot) => {
+  //     doc = snapshot.docs[0].id;
+  //     db.collection("cars")
+  //       .doc(doc)
+  //       .update({ users: firebase.firestore.FieldValue.arrayUnion(user) });
+  //   });
 }
 
 // Get trip information from submit button
@@ -920,6 +967,7 @@ function showTrips() {
         let date = trip.data().date;
         let time = trip.data().time;
         let tripID = trip.data().tripID;
+        let capacity = trip.data().numberofcars * 5;
         html += `<tr class="row-highlight">
       <!-- Added row-highlight class here -->
       <td>$${price}</td>
@@ -936,7 +984,7 @@ function showTrips() {
           More Details
         </button>
       </td>
-      <td class="capacity-box capacity-green">1/8</td>
+      <td class="capacity-box capacity-green">1/${capacity}</td>
     </tr>`;
       });
       r_e("upcomingtrips").innerHTML = html;
@@ -1074,3 +1122,9 @@ function addoptions(tripid, num) {
     `;
   }
 }
+
+db.collection("cars")
+  .get()
+  .then((snapshot) => {
+    console.log(snapshot.docs[1].id);
+  });
