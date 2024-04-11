@@ -485,13 +485,14 @@ function moreDetails(tripid) {
       let cars = tripdata[0].data().cars;
       let carColumnsHTML = "";
       let columnCounter = 1;
-      if (cars.length > 0) {
-        cars.forEach((car, index) => {
-          if (columnCounter % 3 === 0) {
-            carColumnsHTML += '<div class="columns">';
-          }
+      try {
+        if (cars.length > 0) {
+          cars.forEach((car, index) => {
+            if (columnCounter % 3 === 0) {
+              carColumnsHTML += '<div class="columns">';
+            }
 
-          let carHTML = `
+            let carHTML = `
           <div id = "car${car}"class="column">
             <div class="box">
               <div class="has-text-centered">
@@ -534,19 +535,20 @@ function moreDetails(tripid) {
             </div>
           </div>
         `;
-          carColumnsHTML += carHTML;
+            carColumnsHTML += carHTML;
 
-          columnCounter++;
+            columnCounter++;
 
-          if (columnCounter % 3 === 0) {
+            if (columnCounter % 3 === 0) {
+              carColumnsHTML += "</div>";
+            }
+          });
+
+          if (columnCounter % 3 !== 0) {
             carColumnsHTML += "</div>";
           }
-        });
-
-        if (columnCounter % 3 !== 0) {
-          carColumnsHTML += "</div>";
         }
-      }
+      } catch (error) {}
       let mainHTML = `<section class="section">
   <div class="container is-fluid">
     <div class="columns">
