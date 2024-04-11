@@ -32,10 +32,12 @@ function showmytrips(userid) {
         let mycar = signup.data().carnumber;
         let status = signup.data().status;
         let pickuptime = signup.data().pickuptime;
+        let skis = signup.data().skis;
         let date = "";
         let location = "";
         let pickuplocation = "";
         let price = "";
+        let driver = "";
         let tripid = signup.data().tripid;
         db.collection("cars")
           .where("tripID", "==", tripid)
@@ -44,6 +46,7 @@ function showmytrips(userid) {
           .then((snapshot) => {
             let cars = snapshot.docs;
             pickuplocation = cars[0].data().pickuplocation;
+            driver = cars[0].data().driver;
           });
         db.collection("trips")
           .where("tripID", "==", tripid)
@@ -60,14 +63,15 @@ function showmytrips(userid) {
         <td>${date}</td>
         <td>${location}</td>
         <td>${mycar}</td>
+        <td>${driver}</td>
         <td>${pickuplocation}</td>
         <td>${pickuptime}</td>
-        <td></td>
+        <td>${skis}</td>
         <td>$${price}</td>
         
         <td class="capacity-box capacity-green">${status}</td>
       </tr>`;
-        }, 1000);
+        }, 300);
       });
       setTimeout(() => {
         r_e("main").innerHTML = `<div class="p-5">
@@ -87,9 +91,10 @@ function showmytrips(userid) {
               <th class="has-text-centered">Trip Date</th>
               <th class="has-text-centered">Location</th>
               <th class="has-text-centered">Car #</th>
+              <th class="has-text-centered">Driver</th>
               <th class="has-text-centered">Pickup Location</th>
               <th class="has-text-centered">Pickup Time</th>
-              <th class="has-text-centered">Equipment Rentals</th>
+              <th class="has-text-centered">Skis</th>
               <th class="has-text-centered">Price</th>
               <th class="has-text-centered">Payment Status</th>
             </tr>
@@ -102,7 +107,7 @@ function showmytrips(userid) {
     </div>
   </section>
 </div>`;
-      }, 2000);
+      }, 400);
     });
 }
 
@@ -753,11 +758,18 @@ function moreDetails(tripid) {
         <label id="pickuplocation" class="label has-text-white">Pickup Location: </label>
       </div>
       <div class="field">
+        <label id="pickuplocation" class="label has-text-white">Skis? </label>
+        <p class="has-text-white">
+        <input name="skis" type="radio" class="radio has-text-white mr-1" value="Rent">Rent
+        <input name="skis" type="radio" class="radio has text-white mr-1" value="Own">Own
+        </p>
+      </div>
+      <div class="field">
         <label class="label has-text-white">Payment Link: <a href="https://venmo.com/" > <img src="venmo_icon.png"  style="height: 20px" alt=""><a/></label>
       </div>
       <div class="pt-4">
         <!-- Submit Button -->
-        <button class="button is-primary" id="submit${tripid}" onclick = "submittripsignup(${tripid})">Submit</button>
+        <button class="button is-primary" id="submit${tripid}" onclick = "submittripsignup(${tripid}); closemodal(${tripid}) ">Submit</button>
         
       </div>
     </form>
@@ -857,12 +869,17 @@ function submittripsignup(tripid) {
   let user = auth.currentUser.email;
   let carnumber = r_e("carnumber" + tripid).value;
   let date = Date();
+  let skis = document.querySelector('input[name="skis"]:checked').value;
+
+  console.log(skis);
 
   let signup = {
     tripid: tripid,
     user: user,
     carnumber: carnumber,
     date: date,
+    skis: skis,
+    status: "Pending",
   };
   addsignup(signup);
 
@@ -950,6 +967,9 @@ function submitTrip() {
   r_e("trip_date").value = "";
   r_e("trip_time").value = "";
   r_e("trip_description").value = "";
+  r_e("carnumber").value = "1";
+  r_e("car1driver").value = "";
+  r_e("additionalcars").innerHTML = ``;
 }
 
 // Get Upcoming Trips
@@ -1128,3 +1148,8 @@ db.collection("cars")
   .then((snapshot) => {
     console.log(snapshot.docs[1].id);
   });
+
+function closemodal(tripid) {
+  r_e("modal_" + tripid).classList.remove("is-active");
+  alert("Submitted");
+}
