@@ -839,3 +839,59 @@ r_e("addTrip_Submit").addEventListener("click", (e) => {
 
   submitTrip();
 });
+
+// Show Car Drivers on add events modal
+
+r_e("carnumber").addEventListener("input", (e) => {
+  let numberofcars = r_e("carnumber").value;
+  console.log(numberofcars);
+  if (numberofcars == 1) {
+    r_e("additionalcars").innerHTML = ``;
+  }
+  if (numberofcars == 2) {
+    r_e("additionalcars").innerHTML = `<div class="field">
+    <label class="label has-text-white">Car #2 Driver Name</label>
+    <p class="control has-icons-left">
+      <input
+        class="input"
+        type="text"
+        placeholder="John Smith"
+        id="Car1Driver"
+      />
+      <span class="icon is-small is-left">
+        <i class="fa-solid fa-user"></i>
+      </span>
+    </p>
+  </div>`;
+  }
+  if (numberofcars == 3) {
+    r_e("additionalcars").innerHTML = `<div class="field">
+    <label class="label has-text-white">Car #2 Driver Name</label>
+    <p class="control has-icons-left">
+      <input
+        class="input"
+        type="text"
+        placeholder="John Smith"
+        id="Car2Driver"
+      />
+      <span class="icon is-small is-left">
+        <i class="fa-solid fa-user"></i>
+      </span>
+    </p>
+  </div>
+  <div class="field">
+    <label class="label has-text-white">Car #3 Driver Name</label>
+    <p class="control has-icons-left">
+      <input
+        class="input"
+        type="text"
+        placeholder="John Smith"
+        id="car2Driver"
+      />
+      <span class="icon is-small is-left">
+        <i class="fa-solid fa-user"></i>
+      </span>
+    </p>
+  </div>`;
+  }
+});
