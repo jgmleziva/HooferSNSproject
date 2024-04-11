@@ -17,307 +17,315 @@
   </head>
   <body>
     <!--  Modals -->
-
-    <!-- Sign-Up Modal -->
-    <div class="modal" id="signup_modal">
-      <div class="modal-background" id="sumodalbg"></div>
-      <div
-        class="modal-content p-6 is-bordered"
-        style="
-          backdrop-filter: blur(8px);
-          border: 2px solid #31ada6;
-          border-radius: 20px;
-        "
-      >
-        <p class="subtitle has-text-weight-bold has-text-white">Sign Up</p>
-        <form action="" id="signup_form">
-          <div class="field">
-            <label class="label has-text-white">Name</label>
-            <div class="control">
-              <input
-                id="name"
-                class="input"
-                type="text"
-                placeholder="e.g. John Doe"
-              />
-            </div>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">Email</label>
-            <div class="control">
-              <input
-                id="email"
-                class="input"
-                type="email"
-                placeholder="e.g. johndoe@gmail.com"
-              />
-            </div>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">Password</label>
-            <div class="control has-icons-left">
-              <input
-                class="input"
-                type="password"
-                placeholder="Password"
-                id="password"
-              />
-              <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-              </span>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">Address</label>
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                placeholder="e.g. 123 Main St, City, Country"
-                id="address"
-              />
-            </div>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">Telephone Number</label>
-            <div class="control">
-              <input
-                class="input"
-                type="tel"
-                placeholder="e.g. +1234567890"
-                id="phone"
-              />
-            </div>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">RecHub Username</label>
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                placeholder="e.g. recHubUser123"
-                id="rechub_username"
-              />
-            </div>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">Do you own or rent skis?</label>
-            <div class="control">
-              <div class="select">
-                <select id="ski_ownership">
-                  <option value="own">Own</option>
-                  <option value="rent">Rent</option>
-                </select>
+    <div id="modals">
+      <!-- Sign-Up Modal -->
+      <div class="modal" id="signup_modal">
+        <div class="modal-background" id="sumodalbg"></div>
+        <div
+          class="modal-content p-6 is-bordered"
+          style="
+            backdrop-filter: blur(8px);
+            border: 2px solid #31ada6;
+            border-radius: 20px;
+          "
+        >
+          <p class="subtitle has-text-weight-bold has-text-white">Sign Up</p>
+          <form action="" id="signup_form">
+            <div class="field">
+              <label class="label has-text-white">Name</label>
+              <div class="control">
+                <input
+                  id="name"
+                  class="input"
+                  type="text"
+                  placeholder="e.g. John Doe"
+                />
               </div>
             </div>
-          </div>
-          <div class="pt-4">
-            <!-- Submit Button -->
-            <button class="button is-primary">Submit</button>
-            <!-- Reset Button -->
-            <button class="button is-danger ml-3">Reset</button>
-          </div>
-        </form>
-        <button
-          class="modal-close is-large"
-          id="suclose"
-          aria-label="close"
-        ></button>
-      </div>
-    </div>
-
-    <!-- Sign-In Modal -->
-    <div class="modal" id="signin_modal">
-      <div class="modal-background" id="simodalbg"></div>
-      <div
-        class="modal-content p-6 is-bordered"
-        style="
-          backdrop-filter: blur(8px);
-          border: 2px solid #31ada6;
-          border-radius: 20px;
-        "
-      >
-        <p class="subtitle has-text-weight-bold has-text-white">Sign In</p>
-        <form action="" id="signin_form">
-          <div class="field">
-            <label class="label has-text-white">Email</label>
-            <p class="control has-icons-left">
-              <input
-                id="email2"
-                class="input"
-                type="email"
-                placeholder="jdoe@wisc.edu"
-              />
-              <span class="icon is-small is-left">
-                <i class="fa-solid fa-user"></i>
-              </span>
-            </p>
-            <div class="control"></div>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">Password</label>
-            <p class="control has-icons-left">
-              <input
-                class="input"
-                type="password"
-                placeholder="Password"
-                id="password2"
-              />
-              <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-              </span>
-            </p>
-          </div>
-          <div class="pt-4">
-            <!-- Submit Button -->
-            <button class="button is-primary">Submit</button>
-            <!-- Reset Button -->
-            <button class="button is-danger ml-3">Reset</button>
-          </div>
-        </form>
-        <button
-          class="modal-close is-large"
-          id="siclose"
-          aria-label="close"
-        ></button>
-      </div>
-    </div>
-
-    <!-- Admin Add Trip Modal -->
-    <div class="modal" id="addevent_modal">
-      <div class="modal-background" id="aemodalbg"></div>
-      <div
-        class="modal-content p-6 is-bordered"
-        style="
-          backdrop-filter: blur(8px);
-          border: 2px solid #31ada6;
-          border-radius: 20px;
-        "
-      >
-        <p
-          class="subtitle has-text-weight-bold has-text-white has-text-centered"
-        >
-          Add Event
-        </p>
-        <form action="" id="addevent_form">
-          <div class="columns">
-            <div class="column">
-              <div class="field">
-                <label class="label has-text-white">Price</label>
-                <div class="control">
-                  <input
-                    id="trip_price"
-                    class="input"
-                    type="number"
-                    placeholder="$"
-                  />
+            <div class="field">
+              <label class="label has-text-white">Email</label>
+              <div class="control">
+                <input
+                  id="email"
+                  class="input"
+                  type="email"
+                  placeholder="e.g. johndoe@gmail.com"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white">Password</label>
+              <div class="control has-icons-left">
+                <input
+                  class="input"
+                  type="password"
+                  placeholder="Password"
+                  id="password"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white">Address</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="e.g. 123 Main St, City, Country"
+                  id="address"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white">Telephone Number</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="tel"
+                  placeholder="e.g. +1234567890"
+                  id="phone"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white">RecHub Username</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="e.g. recHubUser123"
+                  id="rechub_username"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white"
+                >Do you own or rent skis?</label
+              >
+              <div class="control">
+                <div class="select">
+                  <select id="ski_ownership">
+                    <option value="own">Own</option>
+                    <option value="rent">Rent</option>
+                  </select>
                 </div>
               </div>
-              <div class="field">
-                <label class="label has-text-white">Location</label>
-                <p class="control has-icons-left">
-                  <input
-                    class="input"
-                    type="text"
-                    placeholder="Mount Everest"
-                    id="trip_location"
-                  />
-                  <span class="icon is-small is-left">
-                    <i class="fa-solid fa-location-dot"></i>
-                  </span>
-                </p>
-              </div>
-              <div class="field">
-                <label class="label has-text-white">Date</label>
-                <p class="control has-icons-left">
-                  <input
-                    class="input"
-                    type="date"
-                    placeholder="Mount Everest"
-                    id="trip_date"
-                  />
-                </p>
-              </div>
-              <div class="field">
-                <label class="label has-text-white">Time</label>
-                <p class="control has-icons-left">
-                  <input
-                    class="input"
-                    type="time"
-                    placeholder="Mount Everest"
-                    id="trip_time"
-                  />
-                </p>
-              </div>
-              <div class="field">
-                <label class="label has-text-white">Trip Description</label>
-                <p class="control has-icons-left">
-                  <input
-                    class="input"
-                    type="text"
-                    placeholder="Description"
-                    id="trip_description"
-                  />
-                </p>
-              </div>
             </div>
-            <div class="column">
-              <div class="field">
-                <label class="label has-text-white"
-                  >Number of Cars
-                  <select name="car#" id="carnumber" class="ml-3 select">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                  </select>
-                </label>
+            <div class="pt-4">
+              <!-- Submit Button -->
+              <button class="button is-primary">Submit</button>
+              <!-- Reset Button -->
+              <button class="button is-danger ml-3">Reset</button>
+            </div>
+          </form>
+          <button
+            class="modal-close is-large"
+            id="suclose"
+            aria-label="close"
+          ></button>
+        </div>
+      </div>
+
+      <!-- Sign-In Modal -->
+      <div class="modal" id="signin_modal">
+        <div class="modal-background" id="simodalbg"></div>
+        <div
+          class="modal-content p-6 is-bordered"
+          style="
+            backdrop-filter: blur(8px);
+            border: 2px solid #31ada6;
+            border-radius: 20px;
+          "
+        >
+          <p class="subtitle has-text-weight-bold has-text-white">Sign In</p>
+          <form action="" id="signin_form">
+            <div class="field">
+              <label class="label has-text-white">Email</label>
+              <p class="control has-icons-left">
+                <input
+                  id="email2"
+                  class="input"
+                  type="email"
+                  placeholder="jdoe@wisc.edu"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+              </p>
+              <div class="control"></div>
+            </div>
+            <div class="field">
+              <label class="label has-text-white">Password</label>
+              <p class="control has-icons-left">
+                <input
+                  class="input"
+                  type="password"
+                  placeholder="Password"
+                  id="password2"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </p>
+            </div>
+            <div class="pt-4">
+              <!-- Submit Button -->
+              <button class="button is-primary">Submit</button>
+              <!-- Reset Button -->
+              <button class="button is-danger ml-3">Reset</button>
+            </div>
+          </form>
+          <button
+            class="modal-close is-large"
+            id="siclose"
+            aria-label="close"
+          ></button>
+        </div>
+      </div>
+
+      <!-- Admin Add Trip Modal -->
+      <div class="modal" id="addevent_modal">
+        <div class="modal-background" id="aemodalbg"></div>
+        <div
+          class="modal-content p-6 is-bordered"
+          style="
+            backdrop-filter: blur(8px);
+            border: 2px solid #31ada6;
+            border-radius: 20px;
+          "
+        >
+          <p
+            class="subtitle has-text-weight-bold has-text-white has-text-centered"
+          >
+            Add Event
+          </p>
+          <form action="" id="addevent_form">
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label class="label has-text-white">Price</label>
+                  <div class="control">
+                    <input
+                      id="trip_price"
+                      class="input"
+                      type="number"
+                      placeholder="$"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white">Location</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="Mount Everest"
+                      id="trip_location"
+                    />
+                    <span class="icon is-small is-left">
+                      <i class="fa-solid fa-location-dot"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white">Date</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="date"
+                      placeholder="Mount Everest"
+                      id="trip_date"
+                    />
+                  </p>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white">Time</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="time"
+                      placeholder="Mount Everest"
+                      id="trip_time"
+                    />
+                  </p>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white">Trip Description</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="Description"
+                      id="trip_description"
+                    />
+                  </p>
+                </div>
               </div>
-              <div class="field">
-                <label class="label has-text-white">Car #1 Driver Name</label>
-                <p class="control has-icons-left">
-                  <input
-                    class="input"
-                    type="text"
-                    placeholder="John Smith"
-                    id="car1driver"
-                  />
-                  <span class="icon is-small is-left">
-                    <i class="fa-solid fa-user"></i>
-                  </span>
-                </p>
-              </div>
-              <div class="field">
-                <label class="label has-text-white"
-                  >Car #1 Pickup Location</label
-                >
-                <p class="control has-icons-left">
-                  <select
-                    class="input"
-                    name="pickuplocation"
-                    id="car1pickuplocation"
+              <div class="column">
+                <div class="field">
+                  <label class="label has-text-white"
+                    >Number of Cars
+                    <select
+                      name="car#"
+                      id="carnumber"
+                      class="ml-3 select"
+                      oninput="console.log(r_e('carnumber').value)"
+                    >
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white">Car #1 Driver Name</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="John Smith"
+                      id="car1driver"
+                    />
+                    <span class="icon is-small is-left">
+                      <i class="fa-solid fa-user"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white"
+                    >Car #1 Pickup Location</label
                   >
-                    <option value="Memorial Union">Memorial Union</option>
-                    <option value="Memorial Union">Union South</option>
-                  </select>
-                </p>
+                  <p class="control has-icons-left">
+                    <select
+                      class="input"
+                      name="pickuplocation"
+                      id="car1pickuplocation"
+                    >
+                      <option value="Memorial Union">Memorial Union</option>
+                      <option value="Union South">Union South</option>
+                    </select>
+                  </p>
+                </div>
+                <div id="additionalcars" class="field"></div>
               </div>
-              <div id="additionalcars" class="field"></div>
             </div>
-          </div>
-          <div class="has-text-centered">
-            <!-- Submit Button -->
-            <button class="button is-primary" id="addTrip_Submit">
-              Submit
-            </button>
-            <!-- Reset Button -->
-            <button class="button is-danger ml-3">Reset</button>
-          </div>
-        </form>
-        <button
-          class="modal-close is-large"
-          id="aeclose"
-          aria-label="close"
-        ></button>
+            <div class="has-text-centered">
+              <!-- Submit Button -->
+              <button class="button is-primary" id="addTrip_Submit">
+                Submit
+              </button>
+              <!-- Reset Button -->
+              <button class="button is-danger ml-3">Reset</button>
+            </div>
+          </form>
+          <button
+            class="modal-close is-large"
+            id="aeclose"
+            aria-label="close"
+          ></button>
+        </div>
       </div>
     </div>
     <!-- End of Modals -->
@@ -449,63 +457,7 @@
                       <th class="has-text-centered">Capacity</th>
                     </tr>
                   </thead>
-                  <tbody id="upcomingtrips">
-                    <!-- Sample trip 1 -->
-                    <tr class="row-highlight">
-                      <!-- Added row-highlight class here -->
-                      <td>$100</td>
-                      <td>Mountain Resort A</td>
-                      <td>March 15, 2024</td>
-                      <td>10:00 AM</td>
-                      <td>
-                        <button
-                          style="background-color: #4f8cc2"
-                          class="button is-info"
-                          id="moredetailsbtn"
-                        >
-                          More Details
-                        </button>
-                        <button class="button accent-color">Sign Up</button>
-                      </td>
-                      <td class="capacity-box capacity-green">1/8</td>
-                    </tr>
-                    <!-- Sample trip 2 -->
-                    <tr class="row-highlight">
-                      <!-- Added row-highlight class here -->
-                      <td>$100</td>
-                      <td>Mountain Resort B</td>
-                      <td>March 20, 2024</td>
-                      <td>9:00 AM</td>
-                      <td>
-                        <button
-                          style="background-color: #4f8cc2"
-                          class="button is-info"
-                        >
-                          More Details
-                        </button>
-                        <button class="button accent-color">Sign Up</button>
-                      </td>
-                      <td class="capacity-box capacity-yellow">5/8</td>
-                    </tr>
-                    <!-- Sample trip 3 -->
-                    <tr class="row-highlight">
-                      <!-- Added row-highlight class here -->
-                      <td>$100</td>
-                      <td>Mountain Resort C</td>
-                      <td>March 25, 2024</td>
-                      <td>9:00 AM</td>
-                      <td>
-                        <button
-                          style="background-color: #4f8cc2"
-                          class="button is-info"
-                        >
-                          More Details
-                        </button>
-                        <button class="button accent-color">Sign Up</button>
-                      </td>
-                      <td class="capacity-box capacity-red">8/8</td>
-                    </tr>
-                  </tbody>
+                  <tbody id="upcomingtrips"></tbody>
                 </table>
               </div>
             </div>

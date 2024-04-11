@@ -1,9 +1,24 @@
+// Global Object
+
+var variables = {};
+
 // Initialize Page
 
 showTrips();
 
 function r_e(id) {
   return document.querySelector(`#${id}`);
+}
+
+// Show Trip Sign Up Modals
+function showmodal(tripid) {
+  r_e("modal_" + tripid).classList.add("is-active");
+  r_e("modalbg" + tripid).addEventListener("click", () => {
+    r_e("modal_" + tripid).classList.remove("is-active");
+  });
+  r_e("close" + tripid).addEventListener("click", () => {
+    r_e("modal_" + tripid).classList.remove("is-active");
+  });
 }
 
 function showmytrips(userid) {
@@ -17,7 +32,7 @@ function showmytrips(userid) {
       mytrips.forEach((trip) => {
         let location = trip.data().location;
         let date = trip.data().date;
-        let car = trip.data().car;
+        let mycar = trip.data().car;
         let price = trip.data().Price;
         let status = trip.data().Status;
         let pickuplocation = trip.data().pickuplocation;
@@ -31,7 +46,7 @@ function showmytrips(userid) {
         <!-- Added row-highlight class here -->
         <td>${date}</td>
         <td>${location}</td>
-        <td>${car}</td>
+        <td>${mycar}</td>
         <td>${pickuptime}</td>
         <td>${pickuplocation}</td>
         <td>${equipmentrentals}</td>
@@ -175,97 +190,99 @@ r_e("signoutbutton").addEventListener("click", () => {
   auth.signOut().then(() => {});
 });
 
-r_e("moredetailsbtn").addEventListener("click", () => {
-  r_e("main").innerHTML = `<section class="section">
-  <div class="container is-fluid">
-    <div class="columns">
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-3 is-underlined is-marginless">
-              Trip Location
-            </div>
+// Possible Delete?
 
-            <div class="is-size-3">Mountain Resort A</div>
-          </div>
+// r_e("moredetailsbtn").addEventListener("click", () => {
+//   r_e("main").innerHTML = `<section class="section">
+//   <div class="container is-fluid">
+//     <div class="columns">
+//       <div class="column">
+//         <div class="box">
+//           <div class="has-text-centered">
+//             <div class="title is-3 is-underlined is-marginless">
+//               Trip Location
+//             </div>
 
-          <div>
-            <div class="mt-3">
-              <span class="title is-4">Date: </span>
-              <span class="is-size-4">03/12/2024</span>
-            </div>
-            <div>
-              <span class="title is-4">Availability: </span>
-              <span class="is-size-4">13/18</span>
-            </div>
-          </div>
-          <div class="has-text-centered mt-3">
-            <div class="title is-4 is-underlined is-marginless">
-              Trip Description
-            </div>
-          </div>
+//             <div class="is-size-3">Mountain Resort A</div>
+//           </div>
 
-          <div class="is-size-6">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-            Aliquid voluptatem harum itaque adipisci suscipit quisquam ea
-            dolores temporibus incidunt consequatur, ducimus unde
-            exercitationem fuga? Tempora.
-          </div>
-          <div class="has-text-centered mt-3">
-            <span class="button is-success">Sign Up</span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-4">Car 1</div>
-          </div>
-          <div class="is-size-5">
-            <span>Driver:</span>
-            <span>Name</span>
-          </div>
-          <div class="is-size-5">
-            <span>Pickup Location:</span>
-            <span>Union South</span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-4">Car 2</div>
-          </div>
-          <div class="is-size-5">
-            <span>Driver:</span>
-            <span>Name</span>
-          </div>
-          <div class="is-size-5">
-            <span>Pickup Location:</span>
-            <span>Memorial Union</span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-4">Car 3</div>
-          </div>
-          <div class="is-size-5">
-            <span>Driver:</span>
-            <span>Name</span>
-          </div>
-          <div class="is-size-5">
-            <span>Pickup Location:</span>
-            <span>Memorial Union South</span>
-          </div>
-          <div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>`;
-});
+//           <div>
+//             <div class="mt-3">
+//               <span class="title is-4">Date: </span>
+//               <span class="is-size-4">03/12/2024</span>
+//             </div>
+//             <div>
+//               <span class="title is-4">Availability: </span>
+//               <span class="is-size-4">13/18</span>
+//             </div>
+//           </div>
+//           <div class="has-text-centered mt-3">
+//             <div class="title is-4 is-underlined is-marginless">
+//               Trip Description
+//             </div>
+//           </div>
+
+//           <div class="is-size-6">
+//             Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+//             Aliquid voluptatem harum itaque adipisci suscipit quisquam ea
+//             dolores temporibus incidunt consequatur, ducimus unde
+//             exercitationem fuga? Tempora.
+//           </div>
+//           <div class="has-text-centered mt-3">
+//             <span class="button is-success">Sign Up</span>
+//           </div>
+//         </div>
+//       </div>
+//       <div class="column">
+//         <div class="box">
+//           <div class="has-text-centered">
+//             <div class="title is-4">Car 1</div>
+//           </div>
+//           <div class="is-size-5">
+//             <span>Driver:</span>
+//             <span>Name</span>
+//           </div>
+//           <div class="is-size-5">
+//             <span>Pickup Location:</span>
+//             <span>Union South</span>
+//           </div>
+//         </div>
+//       </div>
+//       <div class="column">
+//         <div class="box">
+//           <div class="has-text-centered">
+//             <div class="title is-4">Car 2</div>
+//           </div>
+//           <div class="is-size-5">
+//             <span>Driver:</span>
+//             <span>Name</span>
+//           </div>
+//           <div class="is-size-5">
+//             <span>Pickup Location:</span>
+//             <span>Memorial Union</span>
+//           </div>
+//         </div>
+//       </div>
+//       <div class="column">
+//         <div class="box">
+//           <div class="has-text-centered">
+//             <div class="title is-4">Car 3</div>
+//           </div>
+//           <div class="is-size-5">
+//             <span>Driver:</span>
+//             <span>Name</span>
+//           </div>
+//           <div class="is-size-5">
+//             <span>Pickup Location:</span>
+//             <span>Memorial Union South</span>
+//           </div>
+//           <div></div>
+//         </div>
+//       </div>
+//     </div>
+//   </div>
+// </section>`;
+// });
 
 // Show Account Info
 r_e("accountinfo").addEventListener("click", () => {
@@ -603,6 +620,9 @@ function moreDetails(tripid) {
       let location = tripdata[0].data().location;
       let date = tripdata[0].data().date;
       let time = tripdata[0].data().time;
+      let description = tripdata[0].data().description;
+      let numberofcars = tripdata[0].data().numberofcars;
+
       r_e("main").innerHTML = `<section class="section">
   <div class="container is-fluid">
     <div class="columns">
@@ -633,13 +653,10 @@ function moreDetails(tripid) {
           </div>
 
           <div class="is-size-6">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-            Aliquid voluptatem harum itaque adipisci suscipit quisquam ea
-            dolores temporibus incidunt consequatur, ducimus unde
-            exercitationem fuga? Tempora.
+            ${description}
           </div>
           <div class="has-text-centered mt-3">
-            <span class="button is-success">Sign Up</span>
+            <span class="button is-success" id="su${tripid}" onclick = "showmodal(${tripid})">Sign Up</span>
           </div>
         </div>
       </div>
@@ -692,6 +709,51 @@ function moreDetails(tripid) {
     </div>
   </div>
 </section>`;
+
+      r_e("modals").innerHTML += `<!-- Sign-In Modal -->
+<div class="modal" id="modal_${tripid}">
+  <div class="modal-background" id="modalbg${tripid}"></div>
+  <div
+    class="modal-content p-6 is-bordered"
+    style="
+      backdrop-filter: blur(8px);
+      border: 2px solid #31ada6;
+      border-radius: 20px;
+    "
+  >
+    <p class="subtitle has-text-weight-bold has-text-white">Trip Sign Up</p>
+    <form action="" id="form${tripid}">
+      <div class="field">
+        <label class="label has-text-white">Car Number:<select oninput= "cardetails(${tripid}, parseInt(r_e('carnumber${tripid}').value) )"  name="car#" id="carnumber${tripid}" class="ml-3 select">
+        <option value="1">1</option>
+        
+      </select></label>
+        <div class="control"></div>
+      </div>
+      <div class="field">
+        <label id="driver" class="label has-text-white">Driver: </label>
+      </div>
+      <div class="field">
+        <label id="pickuplocation" class="label has-text-white">Pickup Location: </label>
+      </div>
+      <div class="field">
+        <label class="label has-text-white">Payment Link: <a href="https://venmo.com/" > <img src="venmo_icon.png"  style="height: 20px" alt=""><a/></label>
+      </div>
+      <div class="pt-4">
+        <!-- Submit Button -->
+        <button class="button is-primary">Submit</button>
+        
+      </div>
+    </form>
+    <button
+      class="modal-close is-large"
+      id="close${tripid}"
+      aria-label="close"
+    ></button>
+  </div>
+</div>`;
+      cardetails(tripid, 1);
+      addoptions(tripid, numberofcars);
     });
 }
 
@@ -778,6 +840,7 @@ function submitTrip() {
   let time = r_e("trip_time").value;
   let description = r_e("trip_description").value;
   let tripID = Date.now();
+  let numberofcars = r_e("carnumber").value;
   let pickuplocation1 = r_e("car1pickuplocation").value;
   let driver1 = r_e("car1driver").value;
   let pickuplocation2 = "";
@@ -793,6 +856,7 @@ function submitTrip() {
     time: time,
     added_by: auth.currentUser.email,
     description: description,
+    numberofcars: numberofcars,
   };
 
   addTrip(trip);
@@ -816,7 +880,7 @@ function submitTrip() {
       pickuplocation: pickuplocation2,
       driver: driver2,
     };
-
+    console.log(pickuplocation2);
     addCar(car2);
   }
 
@@ -920,7 +984,7 @@ r_e("carnumber").addEventListener("input", (e) => {
       id="car2pickuplocation"
     >
       <option value="Memorial Union">Memorial Union</option>
-      <option value="Memorial Union">Union South</option>
+      <option value="Union South">Union South</option>
     </select>
   </p>
 </div>`;
@@ -949,7 +1013,7 @@ r_e("carnumber").addEventListener("input", (e) => {
       id="car2pickuplocation"
     >
       <option value="Memorial Union">Memorial Union</option>
-      <option value="Memorial Union">Union South</option>
+      <option value="Union South">Union South</option>
     </select>
   </p>
 </div>
@@ -976,9 +1040,37 @@ r_e("carnumber").addEventListener("input", (e) => {
       id="car3pickuplocation"
     >
       <option value="Memorial Union">Memorial Union</option>
-      <option value="Memorial Union">Union South</option>
+      <option value="Union South">Union South</option>
     </select>
   </p>
 </div>`;
   }
 });
+
+function cardetails(tripid, car) {
+  db.collection("cars")
+    .where("tripID", "==", tripid)
+    .where("carnumber", "==", car)
+    .get()
+    .then((car) => {
+      let cars = car.docs;
+      variables.driver = cars[0].data().driver;
+      variables.pickuplocation = cars[0].data().pickuplocation;
+      r_e("driver").innerHTML = `Driver: ${variables.driver}`;
+      r_e(
+        "pickuplocation"
+      ).innerHTML = `Pickup Location: ${variables.pickuplocation}`;
+    });
+}
+
+function addoptions(tripid, num) {
+  if (num == 2) {
+    r_e("carnumber" + tripid).innerHTML += `<option value="2">2</option>`;
+  }
+  if (num == 3) {
+    r_e(
+      "carnumber" + tripid
+    ).innerHTML += `<option value="2">2</option> <option value="3">3</option>
+    `;
+  }
+}
