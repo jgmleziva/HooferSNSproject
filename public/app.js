@@ -373,7 +373,7 @@ r_e("accountinfo").addEventListener("click", () => {
             
             <button onclick="update_doc(this, '${
               d.id
-            }' )" class="is-pulled-right">Update</button>
+            }' )" class="is-pulled-right button is-info is-small">Update</button>
             </p>`;
         });
 
@@ -418,7 +418,7 @@ r_e("accountinfo").addEventListener("click", () => {
         
         <button onclick="update_doc(this, '${
           d.id
-        }' )" class="is-pulled-right">Update</button>
+        }' )" class="is-pulled-right button is-info is-small">Update</button>
         </p>`;
         });
 
@@ -445,7 +445,7 @@ r_e("accountinfo").addEventListener("click", () => {
         
         <button onclick="update_doc(this, '${
           d.id
-        }' )" class="is-pulled-right">Update</button>
+        }' )" class="is-pulled-right button is-info is-small">Update</button>
         </p>`;
         });
 
@@ -473,7 +473,7 @@ r_e("accountinfo").addEventListener("click", () => {
         
         <button onclick="update_doc(this, '${
           d.id
-        }' )" class="is-pulled-right">Update</button>
+        }' )" class="is-pulled-right button is-info is-small">Update</button>
         </p>`;
         });
 
