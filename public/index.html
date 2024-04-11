@@ -194,95 +194,124 @@
           border-radius: 20px;
         "
       >
-        <p class="subtitle has-text-weight-bold has-text-white">Add Event</p>
+        <p
+          class="subtitle has-text-weight-bold has-text-white has-text-centered"
+        >
+          Add Event
+        </p>
         <form action="" id="addevent_form">
-          <div class="field">
-            <label class="label has-text-white">Price</label>
-            <div class="control">
-              <input
-                id="trip_price"
-                class="input"
-                type="number"
-                placeholder="$"
-              />
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label has-text-white">Price</label>
+                <div class="control">
+                  <input
+                    id="trip_price"
+                    class="input"
+                    type="number"
+                    placeholder="$"
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label has-text-white">Location</label>
+                <p class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    placeholder="Mount Everest"
+                    id="trip_location"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-location-dot"></i>
+                  </span>
+                </p>
+              </div>
+              <div class="field">
+                <label class="label has-text-white">Date</label>
+                <p class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="date"
+                    placeholder="Mount Everest"
+                    id="trip_date"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <label class="label has-text-white">Time</label>
+                <p class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="time"
+                    placeholder="Mount Everest"
+                    id="trip_time"
+                  />
+                </p>
+              </div>
+              <div class="field">
+                <label class="label has-text-white">Trip Description</label>
+                <p class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    placeholder="Description"
+                    id="trip_description"
+                  />
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label has-text-white"
+                  >Number of Cars
+                  <select name="car#" id="carnumber" class="ml-3 select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </label>
+              </div>
+              <div class="field">
+                <label class="label has-text-white">Car #1 Driver Name</label>
+                <p class="control has-icons-left">
+                  <input
+                    class="input"
+                    type="text"
+                    placeholder="John Smith"
+                    id="car1driver"
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                </p>
+              </div>
+              <div class="field">
+                <label class="label has-text-white"
+                  >Car #1 Pickup Location</label
+                >
+                <p class="control has-icons-left">
+                  <select
+                    class="input"
+                    name="pickuplocation"
+                    id="car1pickuplocation"
+                  >
+                    <option value="Memorial Union">Memorial Union</option>
+                    <option value="Memorial Union">Union South</option>
+                  </select>
+                </p>
+              </div>
+              <div id="additionalcars" class="field"></div>
             </div>
           </div>
-          <div class="field">
-            <label class="label has-text-white">Location</label>
-            <p class="control has-icons-left">
-              <input
-                class="input"
-                type="text"
-                placeholder="Mount Everest"
-                id="trip_location"
-              />
-              <span class="icon is-small is-left">
-                <i class="fa-solid fa-location-dot"></i>
-              </span>
-            </p>
+          <div class="has-text-centered">
+            <!-- Submit Button -->
+            <button class="button is-primary" id="addTrip_Submit">
+              Submit
+            </button>
+            <!-- Reset Button -->
+            <button class="button is-danger ml-3">Reset</button>
           </div>
-          <div class="field">
-            <label class="label has-text-white">Date</label>
-            <p class="control has-icons-left">
-              <input
-                class="input"
-                type="date"
-                placeholder="Mount Everest"
-                id="trip_date"
-              />
-            </p>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">Time</label>
-            <p class="control has-icons-left">
-              <input
-                class="input"
-                type="time"
-                placeholder="Mount Everest"
-                id="trip_time"
-              />
-            </p>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">Trip Description</label>
-            <p class="control has-icons-left">
-              <input
-                class="input"
-                type="text"
-                placeholder="Description"
-                id="trip_description"
-              />
-            </p>
-          </div>
-          <div class="field">
-            <label class="label has-text-white"
-              >Number of Cars
-              <select name="car#" id="carnumber" class="ml-3">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select>
-            </label>
-          </div>
-          <div class="field">
-            <label class="label has-text-white">Car #1 Driver Name</label>
-            <p class="control has-icons-left">
-              <input
-                class="input"
-                type="text"
-                placeholder="John Smith"
-                id="Car1Driver"
-              />
-              <span class="icon is-small is-left">
-                <i class="fa-solid fa-user"></i>
-              </span>
-            </p>
-          </div>
-          <div id="additionalcars" class="field"></div>
-          <!-- Submit Button -->
-          <button class="button is-primary" id="addTrip_Submit">Submit</button>
-          <!-- Reset Button -->
-          <button class="button is-danger ml-3">Reset</button>
         </form>
         <button
           class="modal-close is-large"

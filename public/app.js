@@ -765,6 +765,10 @@ function addTrip(trip) {
   db.collection("trips").add(trip);
 }
 
+function addCar(car) {
+  db.collection("cars").add(car);
+}
+
 // Get trip information from submit button
 function submitTrip() {
   // gather trip information & call trip function
@@ -772,23 +776,69 @@ function submitTrip() {
   let location = r_e("trip_location").value;
   let date = r_e("trip_date").value;
   let time = r_e("trip_time").value;
+  let description = r_e("trip_description").value;
+  let tripID = Date.now();
+  let pickuplocation1 = r_e("car1pickuplocation").value;
+  let driver1 = r_e("car1driver").value;
+  let pickuplocation2 = "";
+  let driver2 = "";
+  let pickuplocation3 = "";
+  let driver3 = "";
 
   let trip = {
-    tripID: Date.now(),
+    tripID: tripID,
     price: price,
     location: location,
     date: date,
     time: time,
     added_by: auth.currentUser.email,
+    description: description,
   };
 
   addTrip(trip);
   showTrips();
+
+  let car1 = {
+    tripID: tripID,
+    carnumber: 1,
+    pickuplocation: pickuplocation1,
+    driver: driver1,
+  };
+
+  addCar(car1);
+
+  if (r_e("carnumber").value > 1) {
+    driver2 = r_e("car2driver").value;
+    pickuplocation2 = r_e("car2pickuplocation").value;
+    let car2 = {
+      tripID: tripID,
+      carnumber: 2,
+      pickuplocation: pickuplocation2,
+      driver: driver2,
+    };
+
+    addCar(car2);
+  }
+
+  if (r_e("carnumber").value == 3) {
+    driver3 = r_e("car3driver").value;
+    pickuplocation3 = r_e("car3pickuplocation").value;
+    let car3 = {
+      tripID: tripID,
+      carnumber: 3,
+      pickuplocation: pickuplocation3,
+      driver: driver3,
+    };
+
+    addCar(car3);
+  }
+
   // Clear form
   r_e("trip_price").value = "";
   r_e("trip_location").value = "";
   r_e("trip_date").value = "";
   r_e("trip_time").value = "";
+  r_e("trip_description").value = "";
 }
 
 // Get Upcoming Trips
@@ -806,7 +856,6 @@ function showTrips() {
         let date = trip.data().date;
         let time = trip.data().time;
         let tripID = trip.data().tripID;
-        console.log(typeof time);
         html += `<tr class="row-highlight">
       <!-- Added row-highlight class here -->
       <td>$${price}</td>
@@ -844,7 +893,6 @@ r_e("addTrip_Submit").addEventListener("click", (e) => {
 
 r_e("carnumber").addEventListener("input", (e) => {
   let numberofcars = r_e("carnumber").value;
-  console.log(numberofcars);
   if (numberofcars == 1) {
     r_e("additionalcars").innerHTML = ``;
   }
@@ -856,13 +904,26 @@ r_e("carnumber").addEventListener("input", (e) => {
         class="input"
         type="text"
         placeholder="John Smith"
-        id="Car1Driver"
+        id="car2driver"
       />
       <span class="icon is-small is-left">
         <i class="fa-solid fa-user"></i>
       </span>
     </p>
-  </div>`;
+  </div>
+  <div class="field">
+  <label class="label has-text-white">Car #2 Pickup Location</label>
+  <p class="control has-icons-left">
+    <select
+      class="input"
+      name="pickuplocation"
+      id="car2pickuplocation"
+    >
+      <option value="Memorial Union">Memorial Union</option>
+      <option value="Memorial Union">Union South</option>
+    </select>
+  </p>
+</div>`;
   }
   if (numberofcars == 3) {
     r_e("additionalcars").innerHTML = `<div class="field">
@@ -872,7 +933,7 @@ r_e("carnumber").addEventListener("input", (e) => {
         class="input"
         type="text"
         placeholder="John Smith"
-        id="Car2Driver"
+        id="car2driver"
       />
       <span class="icon is-small is-left">
         <i class="fa-solid fa-user"></i>
@@ -880,18 +941,44 @@ r_e("carnumber").addEventListener("input", (e) => {
     </p>
   </div>
   <div class="field">
+  <label class="label has-text-white">Car #2 Pickup Location</label>
+  <p class="control has-icons-left">
+    <select
+      class="input"
+      name="pickuplocation"
+      id="car2pickuplocation"
+    >
+      <option value="Memorial Union">Memorial Union</option>
+      <option value="Memorial Union">Union South</option>
+    </select>
+  </p>
+</div>
+  <div class="field">
     <label class="label has-text-white">Car #3 Driver Name</label>
     <p class="control has-icons-left">
       <input
         class="input"
         type="text"
         placeholder="John Smith"
-        id="car2Driver"
+        id="car3driver"
       />
       <span class="icon is-small is-left">
         <i class="fa-solid fa-user"></i>
       </span>
     </p>
-  </div>`;
+  </div>
+  <div class="field">
+  <label class="label has-text-white">Car #3 Pickup Location</label>
+  <p class="control has-icons-left">
+    <select
+      class="input"
+      name="pickuplocation"
+      id="car3pickuplocation"
+    >
+      <option value="Memorial Union">Memorial Union</option>
+      <option value="Memorial Union">Union South</option>
+    </select>
+  </p>
+</div>`;
   }
 });
