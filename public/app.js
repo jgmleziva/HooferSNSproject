@@ -47,6 +47,7 @@ function showmytrips(userid) {
             let cars = snapshot.docs;
             pickuplocation = cars[0].data().pickuplocation;
             driver = cars[0].data().driver;
+            pickuptime = cars[0].data().pickuptime;
           });
         db.collection("trips")
           .where("tripID", "==", tripid)
@@ -758,7 +759,10 @@ function moreDetails(tripid) {
         <label id="pickuplocation" class="label has-text-white">Pickup Location: </label>
       </div>
       <div class="field">
-        <label id="pickuplocation" class="label has-text-white">Skis? </label>
+        <label id="pickuptime" class="label has-text-white">Pickup Time: </label>
+      </div>
+      <div class="field">
+        <label id="" class="label has-text-white">Skis? </label>
         <p class="has-text-white">
         <input name="skis" type="radio" class="radio has-text-white mr-1" value="Rent">Rent
         <input name="skis" type="radio" class="radio has text-white mr-1" value="Own">Own
@@ -931,6 +935,7 @@ function submitTrip() {
     carnumber: 1,
     pickuplocation: pickuplocation1,
     driver: driver1,
+    pickuptime: time,
   };
 
   addCar(car1);
@@ -943,6 +948,7 @@ function submitTrip() {
       carnumber: 2,
       pickuplocation: pickuplocation2,
       driver: driver2,
+      pickuptime: time,
     };
     console.log(pickuplocation2);
     addCar(car2);
@@ -956,6 +962,7 @@ function submitTrip() {
       carnumber: 3,
       pickuplocation: pickuplocation3,
       driver: driver3,
+      pickuptime: time,
     };
 
     addCar(car3);
@@ -1125,10 +1132,12 @@ function cardetails(tripid, car) {
       let cars = car.docs;
       variables.driver = cars[0].data().driver;
       variables.pickuplocation = cars[0].data().pickuplocation;
+      variables.pickuptime = cars[0].data().pickuptime;
       r_e("driver").innerHTML = `Driver: ${variables.driver}`;
       r_e(
         "pickuplocation"
       ).innerHTML = `Pickup Location: ${variables.pickuplocation}`;
+      r_e("pickuptime").innerHTML = `Pickup Time: ${variables.pickuptime}`;
     });
 }
 
