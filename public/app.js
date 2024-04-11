@@ -156,7 +156,6 @@ r_e("signup_form").addEventListener("submit", (e) => {
         address: r_e("address").value,
         phone: r_e("phone").value,
         rechub_username: r_e("rechub_username").value,
-        ski_ownership: r_e("ski_ownership").value,
       });
 
       // reset the form
