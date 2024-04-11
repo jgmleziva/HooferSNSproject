@@ -316,125 +316,139 @@ r_e("accountinfo").addEventListener("click", () => {
     </div>
   </section>
 </div>`;
-    function user_full_name() {
-      db.collection("users")
-        .where("email", "==", auth.currentUser.email)
-        .get()
-        .then((res) => {
-          let data = res.docs;
-    
-          let html = ``;
-          data.forEach((d) => {
-            html += `<p id="${d.id}">${d.data().name}
+  function user_full_name() {
+    db.collection("users")
+      .where("email", "==", auth.currentUser.email)
+      .get()
+      .then((res) => {
+        let data = res.docs;
+
+        let html = ``;
+        data.forEach((d) => {
+          html += `<p id="${d.id}">${d.data().name}
             
             <input type="hidden" value = "${d.data().name}" />
     
-            <button hidden="hidden" onclick= "save_name(this, '${d.id}' )">Save</button>
+            <button hidden="hidden" onclick= "save_name(this, '${
+              d.id
+            }' )">Save</button>
             
-            <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
+            <button onclick="update_doc(this, '${
+              d.id
+            }' )" class="is-pulled-right">Update</button>
             </p>`;
-          });
-    
-          // append the html variable to the document
-          document.querySelector("#full_name").innerHTML += html;
         });
-}
 
-
-function user_email_address() {
-  db.collection("users")
-    .where("email", "==", auth.currentUser.email)
-    .get()
-    .then((res) => {
-      let data = res.docs;
-
-      let html = ``;
-      data.forEach((d) => {
-        html += `<p id="${d.id}">${d.data().email}
-        </p>`;
+        // append the html variable to the document
+        document.querySelector("#full_name").innerHTML += html;
       });
+  }
 
-      // append the html variable to the document
-      document.querySelector("#email_address").innerHTML += html;
-    });
-}
-function user_phone_number() {
-  db.collection("users")
-    .where("email", "==", auth.currentUser.email)
-    .get()
-    .then((res) => {
-      let data = res.docs;
+  function user_email_address() {
+    db.collection("users")
+      .where("email", "==", auth.currentUser.email)
+      .get()
+      .then((res) => {
+        let data = res.docs;
 
-      let html = ``;
-      data.forEach((d) => {
-        html += `<p id="${d.id}">${d.data().phone}
+        let html = ``;
+        data.forEach((d) => {
+          html += `<p id="${d.id}">${d.data().email}
+        </p>`;
+        });
+
+        // append the html variable to the document
+        document.querySelector("#email_address").innerHTML += html;
+      });
+  }
+  function user_phone_number() {
+    db.collection("users")
+      .where("email", "==", auth.currentUser.email)
+      .get()
+      .then((res) => {
+        let data = res.docs;
+
+        let html = ``;
+        data.forEach((d) => {
+          html += `<p id="${d.id}">${d.data().phone}
         
         <input type="hidden" value = "${d.data().phone}" />
 
-        <button hidden="hidden" onclick= "save_phone(this, '${d.id}' )">Save</button>
+        <button hidden="hidden" onclick= "save_phone(this, '${
+          d.id
+        }' )">Save</button>
         
-        <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
+        <button onclick="update_doc(this, '${
+          d.id
+        }' )" class="is-pulled-right">Update</button>
         </p>`;
+        });
+
+        // append the html variable to the document
+        document.querySelector("#phone_number").innerHTML += html;
       });
+  }
+  function user_rechub_username() {
+    db.collection("users")
+      .where("email", "==", auth.currentUser.email)
+      .get()
+      .then((res) => {
+        let data = res.docs;
 
-      // append the html variable to the document
-      document.querySelector("#phone_number").innerHTML += html;
-    });
-}
-function user_rechub_username() {
-  db.collection("users")
-    .where("email", "==", auth.currentUser.email)
-    .get()
-    .then((res) => {
-      let data = res.docs;
-
-      let html = ``;
-      data.forEach((d) => {
-        html += `<p id="${d.id}">${d.data().rechub_username}
+        let html = ``;
+        data.forEach((d) => {
+          html += `<p id="${d.id}">${d.data().rechub_username}
         
         <input type="hidden" value = "${d.data().rechub_username}" />
 
-        <button hidden="hidden" onclick= "save_rechub(this, '${d.id}' )">Save</button>
+        <button hidden="hidden" onclick= "save_rechub(this, '${
+          d.id
+        }' )">Save</button>
         
-        <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
+        <button onclick="update_doc(this, '${
+          d.id
+        }' )" class="is-pulled-right">Update</button>
         </p>`;
+        });
+
+        // append the html variable to the document
+        document.querySelector("#rechub").innerHTML += html;
       });
+  }
 
-      // append the html variable to the document
-      document.querySelector("#rechub").innerHTML += html;
-    });
-}
+  function user_address() {
+    db.collection("users")
+      .where("email", "==", auth.currentUser.email)
+      .get()
+      .then((res) => {
+        let data = res.docs;
 
-function user_address() {
-  db.collection("users")
-    .where("email", "==", auth.currentUser.email)
-    .get()
-    .then((res) => {
-      let data = res.docs;
-
-      let html = ``;
-      data.forEach((d) => {
-        html += `<p id="${d.id}">${d.data().address}
+        let html = ``;
+        data.forEach((d) => {
+          html += `<p id="${d.id}">${d.data().address}
         
         <input type="hidden" value = "${d.data().address}" />
 
-        <button hidden="hidden" onclick= "save_address(this, '${d.id}' )">Save</button>
+        <button hidden="hidden" onclick= "save_address(this, '${
+          d.id
+        }' )">Save</button>
         
-        <button onclick="update_doc(this, '${d.id}' )" class="is-pulled-right">Update</button>
+        <button onclick="update_doc(this, '${
+          d.id
+        }' )" class="is-pulled-right">Update</button>
         </p>`;
+        });
+
+        // append the html variable to the document
+        document.querySelector("#user_address").innerHTML += html;
       });
+  }
 
-      // append the html variable to the document
-      document.querySelector("#user_address").innerHTML += html;
-    });
-}
-
-user_full_name();
-user_email_address();
-user_phone_number();
-user_rechub_username();
-user_address();
-
+  user_full_name();
+  user_email_address();
+  user_phone_number();
+  user_rechub_username();
+  user_address();
 });
 
 // Show My Trips
@@ -529,15 +543,16 @@ function trip_color() {
 
 function capacity_color() {
   if (
-    document.getElementById("capacity_status").innerHTML > 11/12 && 
-    document.getElementById("capacity_status").innerHTML >= 7/12
+    document.getElementById("capacity_status").innerHTML > 11 / 12 &&
+    document.getElementById("capacity_status").innerHTML >= 7 / 12
   ) {
     document.getElementById("capacity_status").style.color = "Yellow";
-  } else if (document.getElementById("capacity_status").innerHTML < 6/12 &&
+  } else if (
+    document.getElementById("capacity_status").innerHTML < 6 / 12 &&
     document.getElementById("capacity_status").innerHTML > 0
   ) {
     document.getElementById("capacity_status").style.color = "Green";
-  } else if (document.getElementById("capacity_status").innerHTML == 12/12) {
+  } else if (document.getElementById("capacity_status").innerHTML == 12 / 12) {
     document.getElementById("capacity_status").style.color = "Red";
   }
 }
@@ -682,7 +697,7 @@ function moreDetails(tripid) {
 
 function save_name(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-  
+
   db.collection("users")
     .doc(id)
     .update({
@@ -692,7 +707,7 @@ function save_name(ele, id) {
 }
 function save_phone(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-  
+
   db.collection("users")
     .doc(id)
     .update({
@@ -702,7 +717,7 @@ function save_phone(ele, id) {
 }
 function save_rechub(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-  
+
   db.collection("users")
     .doc(id)
     .update({
@@ -712,7 +727,7 @@ function save_rechub(ele, id) {
 }
 function save_address(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-  
+
   db.collection("users")
     .doc(id)
     .update({
@@ -733,3 +748,94 @@ function update_doc(ele, id) {
     e.hidden = "";
   });
 }
+
+// Show Add Event Modal
+r_e("addeventbtn").addEventListener("click", () => {
+  r_e("addevent_modal").classList.add("is-active");
+  r_e("aemodalbg").addEventListener("click", () => {
+    r_e("addevent_modal").classList.remove("is-active");
+  });
+  r_e("aeclose").addEventListener("click", () => {
+    r_e("addevent_modal").classList.remove("is-active");
+  });
+});
+
+// Add trip to database
+function addTrip(trip) {
+  db.collection("trips").add(trip);
+}
+
+// Get trip information from submit button
+function submitTrip() {
+  // gather trip information & call trip function
+  let price = r_e("trip_price").value;
+  let location = r_e("trip_location").value;
+  let date = r_e("trip_date").value;
+  let time = r_e("trip_time").value;
+
+  let trip = {
+    tripID: Date.now(),
+    price: price,
+    location: location,
+    date: date,
+    time: time,
+    added_by: auth.currentUser.email,
+  };
+
+  addTrip(trip);
+  showTrips();
+  // Clear form
+  r_e("trip_price").value = "";
+  r_e("trip_location").value = "";
+  r_e("trip_date").value = "";
+  r_e("trip_time").value = "";
+}
+
+// Get Upcoming Trips
+
+function showTrips() {
+  db.collection("trips")
+    .orderBy("date")
+    .get()
+    .then((snapshot) => {
+      let trips = snapshot.docs;
+      let html = ``;
+      trips.forEach((trip) => {
+        let price = trip.data().price;
+        let location = trip.data().location;
+        let date = trip.data().date;
+        let time = trip.data().time;
+        let tripID = trip.data().tripID;
+        console.log(typeof time);
+        html += `<tr class="row-highlight">
+      <!-- Added row-highlight class here -->
+      <td>$${price}</td>
+      <td>${location}</td>
+      <td>${date}</td>
+      <td>${time}</td>
+      <td>
+        <button
+          onclick = "moreDetails(${tripID})"
+          style="background-color: #4f8cc2"
+          class="button is-info"
+          id="${tripID}" 
+        >
+          More Details
+        </button>
+      </td>
+      <td class="capacity-box capacity-green">1/8</td>
+    </tr>`;
+      });
+      r_e("upcomingtrips").innerHTML = html;
+    });
+}
+
+showTrips();
+
+// Add Reviews To Firebase
+r_e("addTrip_Submit").addEventListener("click", (e) => {
+  // prevent the page from auth refresh
+  e.preventDefault();
+
+  submitTrip();
+});
