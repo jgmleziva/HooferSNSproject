@@ -1005,6 +1005,7 @@ function showTrips() {
         </button>
       </td>
       <td class="capacity-box capacity-green">1/${capacity}</td>
+      <td><i style="cursor: pointer;" class="fa-solid fa-trash "></i></td>
     </tr>`;
       });
       r_e("upcomingtrips").innerHTML = html;
