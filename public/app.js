@@ -72,7 +72,7 @@ function showmytrips(userid) {
         
         <td class="capacity-box capacity-green">${status}</td>
       </tr>`;
-        }, 300);
+        }, 200);
       });
       setTimeout(() => {
         r_e("main").innerHTML = `<div class="p-5">
@@ -108,7 +108,7 @@ function showmytrips(userid) {
     </div>
   </section>
 </div>`;
-      }, 400);
+      }, 300);
     });
 }
 
@@ -993,7 +993,7 @@ function showTrips() {
         let date = trip.data().date;
         let time = trip.data().time;
         let tripID = trip.data().tripID;
-        let capacity = trip.data().numberofcars * 5;
+        let capacity = trip.data().numberofcars * 4;
         html += `<tr class="row-highlight">
       <!-- Added row-highlight class here -->
       <td>$${price}</td>
@@ -1011,7 +1011,7 @@ function showTrips() {
         </button>
       </td>
       <td class="capacity-box capacity-green">1/${capacity}</td>
-      <td><i style="cursor: pointer;" class="fa-solid fa-trash "></i></td>
+      <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
     </tr>`;
       });
       r_e("upcomingtrips").innerHTML = html;
@@ -1161,4 +1161,29 @@ db.collection("cars")
 function closemodal(tripid) {
   r_e("modal_" + tripid).classList.remove("is-active");
   alert("Submitted");
+}
+
+function deletetrip(tripid) {
+  db.collection("trips")
+    .where("tripID", "==", tripid)
+    .get()
+    .then((snapshot) => {
+      trip = snapshot.docs[0].id;
+      db.collection("trips")
+        .doc(trip)
+        .delete()
+        .then(() => {
+          showTrips();
+        });
+      console.log(trip);
+    });
+  db.collection("cars")
+    .where("tripID", "==", tripid)
+    .get()
+    .then((snapshot) => {
+      cars = snapshot.docs;
+      cars.forEach((car) => {
+        db.collection("cars").doc(car.id).delete();
+      });
+    });
 }
