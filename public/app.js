@@ -4,7 +4,7 @@ var variables = {};
 
 // Initialize Page
 
-showTrips();
+// showTrips();
 
 function r_e(id) {
   return document.querySelector(`#${id}`);
@@ -72,7 +72,7 @@ function showmytrips(userid) {
         
         <td class="capacity-box capacity-green">${status}</td>
       </tr>`;
-        }, 200);
+        }, 400);
       });
       setTimeout(() => {
         r_e("main").innerHTML = `<div class="p-5">
@@ -108,7 +108,7 @@ function showmytrips(userid) {
     </div>
   </section>
 </div>`;
-      }, 300);
+      }, 500);
     });
 }
 
@@ -597,41 +597,6 @@ function capacity_color() {
 
 // Get Upcoming Trips
 
-function showTrips() {
-  db.collection("trips")
-    .orderBy("date")
-    .get()
-    .then((snapshot) => {
-      let trips = snapshot.docs;
-      let html = ``;
-      trips.forEach((trip) => {
-        let price = trip.data().price;
-        let location = trip.data().location;
-        let date = trip.data().date;
-        let time = trip.data().time;
-        let tripID = trip.data().tripID;
-        html += `<tr class="row-highlight">
-      <!-- Added row-highlight class here -->
-      <td>$${price}</td>
-      <td>${location}</td>
-      <td>${date}</td>
-      <td>${time}</td>
-      <td>
-        <button
-          onclick = "moreDetails(${tripID})"
-          style="background-color: #4f8cc2"
-          class="button is-info"
-          id="${tripID}" 
-        >
-          More Details
-        </button>
-      </td>
-      <td class="capacity-box" id="capacity_status">1/12</td>
-    </tr>`;
-      });
-      r_e("upcomingtrips").innerHTML = html;
-    });
-}
 function moreDetails(tripid) {
   db.collection("trips")
     .where("tripID", "==", tripid)
@@ -676,8 +641,8 @@ function moreDetails(tripid) {
           <div class="is-size-6">
             ${description}
           </div>
-          <div class="has-text-centered mt-3">
-            <span class="button is-success" id="su${tripid}" onclick = "showmodal(${tripid})">Sign Up</span>
+          <div id="option${tripid}" class="has-text-centered mt-3">
+            <span class="button is-success" id="su${tripid}" onclick = "showmodal(${tripid});">Sign Up</span>
           </div>
         </div>
       </div>
@@ -772,7 +737,7 @@ function moreDetails(tripid) {
       </div>
       <div class="pt-4">
         <!-- Submit Button -->
-        <button class="button is-primary" id="submit${tripid}" onclick = "submittripsignup(${tripid}); closemodal(${tripid}) ">Submit</button>
+        <button class="button is-primary" id="submit${tripid}" onclick = "submittripsignup(${tripid}); closemodal(${tripid}); restrictsignup(${tripid}); ">Submit</button>
         
       </div>
     </form>
@@ -785,6 +750,7 @@ function moreDetails(tripid) {
 </div>`;
       cardetails(tripid, 1);
       addoptions(tripid, numberofcars);
+      restrictsignup(tripid);
     });
 }
 
@@ -873,9 +839,6 @@ function submittripsignup(tripid) {
   let carnumber = r_e("carnumber" + tripid).value;
   let date = Date();
   let skis = document.querySelector('input[name="skis"]:checked').value;
-
-  console.log(skis);
-
   let signup = {
     tripid: tripid,
     user: user,
@@ -988,13 +951,22 @@ function showTrips() {
       let trips = snapshot.docs;
       let html = ``;
       trips.forEach((trip) => {
+        let tripID = trip.data().tripID;
+        let users = "";
+        db.collection("tripsignups")
+          .where("tripid", "==", tripID)
+          .get()
+          .then((snapshot) => {
+            users = snapshot.docs.length;
+          });
         let price = trip.data().price;
         let location = trip.data().location;
         let date = trip.data().date;
         let time = trip.data().time;
-        let tripID = trip.data().tripID;
         let capacity = trip.data().numberofcars * 4;
-        html += `<tr class="row-highlight">
+        setTimeout(() => {
+          console.log(users);
+          html += `<tr class="row-highlight">
       <!-- Added row-highlight class here -->
       <td>$${price}</td>
       <td>${location}</td>
@@ -1010,15 +982,16 @@ function showTrips() {
           More Details
         </button>
       </td>
-      <td class="capacity-box capacity-green">1/${capacity}</td>
+      <td class="capacity-box capacity-green">${users}/${capacity}</td>
       <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
     </tr>`;
+        }, 400);
       });
-      r_e("upcomingtrips").innerHTML = html;
+      setTimeout(() => {
+        r_e("upcomingtrips").innerHTML = html;
+      }, 500);
     });
 }
-
-showTrips();
 
 // Add Reviews To Firebase
 r_e("addTrip_Submit").addEventListener("click", (e) => {
@@ -1185,5 +1158,36 @@ function deletetrip(tripid) {
       cars.forEach((car) => {
         db.collection("cars").doc(car.id).delete();
       });
+    });
+  db.collection("tripsignups")
+    .where("tripid", "==", tripid)
+    .get()
+    .then((snapshot) => {
+      signups = snapshot.docs;
+      signups.forEach((signup) => {
+        db.collection("tripsignups").doc(signup.id).delete();
+      });
+    });
+}
+
+function calculatecapacity(tripid) {
+  db.collection("tripsignups")
+    .where("tripid", "==", tripid)
+    .get()
+    .then((snapshot) => {
+      return snapshot.docs.length;
+    });
+}
+
+function restrictsignup(tripid) {
+  db.collection("tripsignups")
+    .where("tripid", "==", tripid)
+    .where("user", "==", auth.currentUser.email)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.size != 0) {
+        r_e("su" + tripid).classList.add("is-hidden");
+        r_e("option" + tripid).innerHTML = `<p> You already signed up! </p>`;
+      }
     });
 }
