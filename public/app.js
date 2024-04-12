@@ -6,6 +6,99 @@ function r_e(id) {
   return document.querySelector(`#${id}`);
 }
 
+function triproster() {
+  db.collection("tripsignups")
+    .get()
+    .then((snapshot) => {
+      let mysignups = snapshot.docs;
+      let html = ``;
+      mysignups.forEach((signup) => {
+        let mycar = signup.data().carnumber;
+        let status = signup.data().status;
+        let date = "";
+        let location = "";
+        let pickuplocation = "";
+        let price = "";
+        let name = ""; 
+        let phone = "";
+        let email = "";
+        let tripid = signup.data().tripid;
+        db.collection("cars")
+          .where("tripID", "==", tripid)
+          .where("carnumber", "==", parseInt(mycar))
+          .get()
+          .then((snapshot) => {
+            let cars = snapshot.docs;
+            pickuplocation = cars[0].data().pickuplocation;
+            driver = cars[0].data().driver;
+            pickuptime = cars[0].data().pickuptime;
+          });
+        db.collection("trips")
+          .where("tripID", "==", tripid)
+          .get()
+          .then((snapshot) => {
+            let trip = snapshot.docs;
+            date = trip[0].data().date;
+            location = trip[0].data().location;
+            price = trip[0].data().price;
+          });
+        db.collection("users")
+            .where("tripID", "==", tripid)
+            .get()
+            .then((snapshot) => {
+              let user = snapshot.docs;
+              name = user[0].data().name;
+              phone = user[0].data().phone;
+              email = user[0].data().email;
+          });
+        setTimeout(() => {
+          html += `<tr class="row-highlight">
+        <!-- Added row-highlight class here -->
+        <td>${date}</td>
+        <td>${location}</td>
+        <td>${carnumber}</td>
+        <td>${name}</td>
+        <td>${phone}</td>
+        <td>$${email}</td>
+        <td>$${price}</td>
+        
+        <td class="capacity-box capacity-green">${status}</td>
+      </tr>`;
+        }, 200);
+      });
+      setTimeout(() => {
+        r_e("main").innerHTML = `<div class="p-5">
+        <section class="section">
+          <div class="container">
+            <h1 class="title has-text-centered">Trip Roster</h1>
+      
+            <!-- Ski Trip Table -->
+            <div class="box">
+              <table class="table is-fullwidth has-text-centered">
+                <thead>
+                  <tr>
+                  <th class="has-text-centered">Trip Date</th>
+                  <th class="has-text-centered">Location</th>
+                  <th class="has-text-centered">Car #</th>
+                    <th class="has-text-centered">Name</th>
+                    <th class="has-text-centered">Phone #</th>
+                    <th class="has-text-centered">Email Address</th>
+                    <th class="has-text-centered">Price</th>
+                    <th class="has-text-centered">Payment Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                ${html}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>`;
+      }, 300);
+    });
+}
+
 function showmytrips(userid) {
   db.collection("tripsignups")
     .where("User", "==", userid)
@@ -440,58 +533,6 @@ user_address();
 // Show My Trips
 r_e("mytrips").addEventListener("click", () => {
   showmytrips(auth.currentUser.email);
-});
-
-// Show Trip Roster
-r_e("triproster").addEventListener("click", () => {
-  r_e("main").innerHTML = `<div class="p-5">
-  <section class="section">
-    <div class="container">
-      <h1 class="title has-text-centered">Trip Roster</h1>
-
-      <!-- Ski Trip Table -->
-      <div class="box">
-        <table class="table is-fullwidth has-text-centered">
-          <thead>
-            <tr>
-              <th class="has-text-centered">Name</th>
-              <th class="has-text-centered">Phone #</th>
-              <th class="has-text-centered">Email Address</th>
-              <th class="has-text-centered">Trip Date</th>
-              <th class="has-text-centered">Location</th>
-              <th class="has-text-centered">Car #</th>
-              <th class="has-text-centered">Payment Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Sample Person 1 -->
-            <tr class="row-highlight">
-              <!-- Added row-highlight class here -->
-              <td>Bob</td>
-              <td>###-###-####</td>
-              <td>email@gmail.com</td>
-              <td>March 15, 2024</td>
-              <td>Moutain Resort A</td>
-              <td>1</td>
-              <td class="capacity-box capacity-green">Paid</td>
-            </tr>
-            <!-- Sample Person 2 -->
-            <tr class="row-highlight">
-                <!-- Added row-highlight class here -->
-                <td>Sally</td>
-                <td>###-###-####</td>
-                <td>email@gmail.com</td>
-                <td>March 15, 2024</td>
-                <td>Moutain Resort A</td>
-                <td>1</td>
-                <td class="capacity-box capacity-red">Unpaid</td>
-              </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-</div>`;
 });
 
 // function that will return an element with a given ID
