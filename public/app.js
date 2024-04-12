@@ -632,6 +632,9 @@ function showTrips() {
       r_e("upcomingtrips").innerHTML = html;
     });
 }
+
+
+
 function moreDetails(tripid) {
   db.collection("trips")
     .where("tripID", "==", tripid)
@@ -643,95 +646,117 @@ function moreDetails(tripid) {
       let time = tripdata[0].data().time;
       let description = tripdata[0].data().description;
       let numberofcars = tripdata[0].data().numberofcars;
-
-      r_e("main").innerHTML = `<section class="section">
-  <div class="container is-fluid">
-    <div class="columns">
-      <div class="column">
+      let price = tripdata[0].data().price;
+      let carColumnsHTML = "";
+      db.collection("cars")
+        .where("tripID", "==", tripid)
+        .get()
+        .then((car) => {
+          let driversinfo = [];
+          let data = car.docs;
+          data.forEach((d) => {
+            driversinfo.push({
+              driver: d.data().driver,
+              pickuptime: d.data().pickuptime,
+              pickuplocation: d.data().pickuplocation,
+            });
+          });
+          for (let i = 1; i <= numberofcars; i++) {
+            let driver = driversinfo[i - 1].driver;
+            let ptime = driversinfo[i - 1].pickuptime;
+            let plocation = driversinfo[i - 1].pickuplocation;
+            if ((i - 1) % 3 === 0) {
+              carColumnsHTML += `<div class="columns is-centered">`;
+            }
+            let carHTML = `
+        <div class="column is-one-third">
         <div class="box">
           <div class="has-text-centered">
-            <div class="title is-3 is-underlined is-marginless">
-              Trip Location
-            </div>
-
-            <div class="is-size-3">${location}</div>
-          </div>
-
-          <div>
-            <div class="mt-3">
-              <span class="title is-4">Date: </span>
-              <span class="is-size-4">${date}</span>
-            </div>
-            <div>
-              <span class="title is-4">Availability: </span>
-              <span class="is-size-4">13/18</span>
-            </div>
-          </div>
-          <div class="has-text-centered mt-3">
-            <div class="title is-4 is-underlined is-marginless">
-              Trip Description
-            </div>
-          </div>
-
-          <div class="is-size-6">
-            ${description}
-          </div>
-          <div class="has-text-centered mt-3">
-            <span class="button is-success" id="su${tripid}" onclick = "showmodal(${tripid})">Sign Up</span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-4">Car 1</div>
+            <div class="title is-4">Car ${i}</div>
           </div>
           <div class="is-size-5">
             <span>Driver:</span>
-            <span>Name</span>
+            <span>${driver}</span>
           </div>
           <div class="is-size-5">
             <span>Pickup Location:</span>
-            <span>Union South</span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-4">Car 2</div>
-          </div>
-          <div class="is-size-5">
-            <span>Driver:</span>
-            <span>Name</span>
-          </div>
-          <div class="is-size-5">
-            <span>Pickup Location:</span>
-            <span>Memorial Union</span>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-4">Car 3</div>
-          </div>
-          <div class="is-size-5">
-            <span>Driver:</span>
-            <span>Name</span>
-          </div>
-          <div class="is-size-5">
-            <span>Pickup Location:</span>
-            <span>Memorial Union South</span>
+            <span>${plocation}</span>
           </div>
           <div></div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>`;
+      </div>`;
 
-      r_e("modals").innerHTML += `<!-- Sign-In Modal -->
+            carColumnsHTML += carHTML;
+            if (i % 3 === 0 || i === numberofcars) {
+              carColumnsHTML += `</div>`;
+            }
+          }
+
+          r_e("main").innerHTML = `    <section class="section">
+      <div class="container is-fluid">
+        <div class="box">
+          <div class="columns">
+            <div
+              class="column has-text-centered is-flex is-flex-direction-column"
+            >
+              <div class="has-text-left mx-auto">
+                <div class="title is-3 is-underlined is-marginless">
+                  Trip Details
+                </div>
+                <div>
+                  <div class="mt-3 has-text-left">
+                    <span class="title is-4">Price: </span>
+                    <span class="is-size-4">$${price}</span>
+                  </div>
+
+                  <div class="has-text-left">
+                    <span class="title is-4">Date: </span>
+                    <span class="is-size-4">${date}</span>
+                  </div>
+
+                  <div class="has-text-left">
+                    <span class="title is-4">Time: </span>
+                    <span class="is-size-4">${time}</span>
+                  </div>
+
+                  <div class="has-text-left">
+                    <span class="title is-4">Availability: </span>
+                    <span class="is-size-4">${numberofcars * 4}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-auto">
+                <button
+                  class="button is-success mt-2"
+                  id="su${tripid}"
+                  onclick="showmodal(${tripid})"
+                >
+                  Sign Up
+                </button>
+              </div>
+            </div>
+            <div
+              class="column has-text-centered is-flex is-flex-direction-column is-two-thirds"
+            >
+              <div class="has-text-centered">
+                <div class="title is-3 is-underlined is-marginless">
+                  Trip Location: ${location}
+                </div>
+              </div>
+
+              <div class="is-size-6 has-text-centered mt-2">
+                <div class="px-6 mb-2 is-size-4">
+                  <p class="is-size-5">${description}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        ${carColumnsHTML}
+       
+    </section>`;
+
+          r_e("modals").innerHTML += `<!-- Sign-In Modal -->
 <div class="modal" id="modal_${tripid}">
   <div class="modal-background" id="modalbg${tripid}"></div>
   <div
@@ -783,8 +808,9 @@ function moreDetails(tripid) {
     ></button>
   </div>
 </div>`;
-      cardetails(tripid, 1);
-      addoptions(tripid, numberofcars);
+          cardetails(tripid, 1);
+          addoptions(tripid, numberofcars);
+        });
     });
 }
 
