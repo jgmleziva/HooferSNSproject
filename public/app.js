@@ -630,6 +630,9 @@ function moreDetails(tripid) {
               pickuplocation: d.data().pickuplocation,
             });
           });
+
+          // have to add function to create object of arrays, car: array of names
+          
           for (let i = 1; i <= numberofcars; i++) {
             let driver = driversinfo[i - 1].driver;
             let ptime = driversinfo[i - 1].pickuptime;
@@ -651,7 +654,11 @@ function moreDetails(tripid) {
             <span>Pickup Location:</span>
             <span>${plocation}</span>
           </div>
-          <div></div>
+          <div class="px-6">
+          <figure class="image px-6 pt-3">
+            <img src="0.png" alt="" />
+          </figure>
+        </div>
         </div>
       </div>`;
 
