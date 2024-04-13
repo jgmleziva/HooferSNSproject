@@ -21,100 +21,6 @@ function showmodal(tripid) {
   });
 }
 
-function triproster() {
-  db.collection("tripsignups")
-    .get()
-    .then((snapshot) => {
-      let mysignups = snapshot.docs;
-      let html = ``;
-      mysignups.forEach((signup) => {
-        let mycar = signup.data().carnumber;
-        let status = signup.data().status;
-        let date = "";
-        let location = "";
-        let pickuplocation = "";
-        let price = "";
-        let name = ""; 
-        let phone = "";
-        let email = "";
-        let tripid = signup.data().tripid;
-        db.collection("cars")
-          .where("tripID", "==", tripid)
-          .where("carnumber", "==", parseInt(mycar))
-          .get()
-          .then((snapshot) => {
-            let cars = snapshot.docs;
-            pickuplocation = cars[0].data().pickuplocation;
-            driver = cars[0].data().driver;
-            pickuptime = cars[0].data().pickuptime;
-          });
-        db.collection("trips")
-          .where("tripID", "==", tripid)
-          .get()
-          .then((snapshot) => {
-            let trip = snapshot.docs;
-            date = trip[0].data().date;
-            location = trip[0].data().location;
-            price = trip[0].data().price;
-          });
-        db.collection("users")
-            .get()
-            .then((snapshot) => {
-              let user = snapshot.docs;
-              name = user[0].data().name;
-              phone = user[0].data().phone;
-              email = user[0].data().email;
-          });
-        setTimeout(() => {
-          html += `<tr class="row-highlight">
-        <!-- Added row-highlight class here -->
-        <td>${date}</td>
-        <td>${location}</td>
-        <td>${carnumber}</td>
-        <td>${name}</td>
-        <td>${phone}</td>
-        <td>$${email}</td>
-        <td>$${price}</td>
-        
-        <td class="capacity-box capacity-green">${status}</td>
-      </tr>`;
-        }, 200);
-      });
-      setTimeout(() => {
-        r_e("main").innerHTML = `<div class="p-5">
-        <section class="section">
-          <div class="container">
-            <h1 class="title has-text-centered">Trip Roster</h1>
-      
-            <!-- Ski Trip Table -->
-            <div class="box">
-              <table class="table is-fullwidth has-text-centered">
-                <thead>
-                  <tr>
-                  <th class="has-text-centered">Trip Date</th>
-                  <th class="has-text-centered">Location</th>
-                  <th class="has-text-centered">Car #</th>
-                    <th class="has-text-centered">Name</th>
-                    <th class="has-text-centered">Phone #</th>
-                    <th class="has-text-centered">Email Address</th>
-                    <th class="has-text-centered">Price</th>
-                    <th class="has-text-centered">Payment Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                ${html}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-      </div>`;
-      }, 300);
-    });
-}
-
-
-
 function showmytrips(userid) {
   db.collection("tripsignups")
     .where("user", "==", userid)
@@ -590,54 +496,60 @@ r_e("mytrips").addEventListener("click", () => {
 
 // Show Trip Roster
 r_e("triproster").addEventListener("click", () => {
-  r_e("main").innerHTML = `<div class="p-5">
-  <section class="section">
-    <div class="container">
-      <h1 class="title has-text-centered">Trip Roster</h1>
+  db.collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get()
+    .then((snapshot) => {
+      triproster(snapshot.docs[0].data().name);
+    });
+  //   r_e("main").innerHTML = `<div class="p-5">
+  //   <section class="section">
+  //     <div class="container">
+  //       <h1 class="title has-text-centered">Trip Roster</h1>
 
-      <!-- Ski Trip Table -->
-      <div class="box">
-        <table class="table is-fullwidth has-text-centered">
-          <thead>
-            <tr>
-              <th class="has-text-centered">Name</th>
-              <th class="has-text-centered">Phone #</th>
-              <th class="has-text-centered">Email Address</th>
-              <th class="has-text-centered">Trip Date</th>
-              <th class="has-text-centered">Location</th>
-              <th class="has-text-centered">Car #</th>
-              <th class="has-text-centered">Payment Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Sample Person 1 -->
-            <tr class="row-highlight">
-              <!-- Added row-highlight class here -->
-              <td>Bob</td>
-              <td>###-###-####</td>
-              <td>email@gmail.com</td>
-              <td>March 15, 2024</td>
-              <td>Moutain Resort A</td>
-              <td>1</td>
-              <td class="capacity-box capacity-green">Paid</td>
-            </tr>
-            <!-- Sample Person 2 -->
-            <tr class="row-highlight">
-                <!-- Added row-highlight class here -->
-                <td>Sally</td>
-                <td>###-###-####</td>
-                <td>email@gmail.com</td>
-                <td>March 15, 2024</td>
-                <td>Moutain Resort A</td>
-                <td>1</td>
-                <td class="capacity-box capacity-red">Unpaid</td>
-              </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-</div>`;
+  //       <!-- Ski Trip Table -->
+  //       <div class="box">
+  //         <table class="table is-fullwidth has-text-centered">
+  //           <thead>
+  //             <tr>
+  //               <th class="has-text-centered">Name</th>
+  //               <th class="has-text-centered">Phone #</th>
+  //               <th class="has-text-centered">Email Address</th>
+  //               <th class="has-text-centered">Trip Date</th>
+  //               <th class="has-text-centered">Location</th>
+  //               <th class="has-text-centered">Car #</th>
+  //               <th class="has-text-centered">Payment Status</th>
+  //             </tr>
+  //           </thead>
+  //           <tbody>
+  //             <!-- Sample Person 1 -->
+  //             <tr class="row-highlight">
+  //               <!-- Added row-highlight class here -->
+  //               <td>Bob</td>
+  //               <td>###-###-####</td>
+  //               <td>email@gmail.com</td>
+  //               <td>March 15, 2024</td>
+  //               <td>Moutain Resort A</td>
+  //               <td>1</td>
+  //               <td class="capacity-box capacity-green">Paid</td>
+  //             </tr>
+  //             <!-- Sample Person 2 -->
+  //             <tr class="row-highlight">
+  //                 <!-- Added row-highlight class here -->
+  //                 <td>Sally</td>
+  //                 <td>###-###-####</td>
+  //                 <td>email@gmail.com</td>
+  //                 <td>March 15, 2024</td>
+  //                 <td>Moutain Resort A</td>
+  //                 <td>1</td>
+  //                 <td class="capacity-box capacity-red">Unpaid</td>
+  //               </tr>
+  //           </tbody>
+  //         </table>
+  //       </div>
+  //     </div>
+  //   </section>
+  // </div>`;
 });
 
 // function that will return an element with a given ID
@@ -853,7 +765,7 @@ function moreDetails(tripid) {
       </div>
       <div class="pt-4">
         <!-- Submit Button -->
-        <button class="button is-primary" id="submit${tripid}" onclick = "submittripsignup(${tripid}); closemodal(${tripid}); restrictsignup(${tripid}); ">Submit</button>
+        <button class="button is-primary" id="submit${tripid}" onclick = "submittripsignup(${tripid}); closemodal('modal_${tripid}'); restrictsignup(${tripid}); ">Submit</button>
         
       </div>
     </form>
@@ -1248,8 +1160,8 @@ db.collection("cars")
     console.log(snapshot.docs[1].id);
   });
 
-function closemodal(tripid) {
-  r_e("modal_" + tripid).classList.remove("is-active");
+function closemodal(id) {
+  r_e(id).classList.remove("is-active");
   alert("Submitted");
 }
 
@@ -1306,5 +1218,136 @@ function restrictsignup(tripid) {
         r_e("su" + tripid).classList.add("is-hidden");
         r_e("option" + tripid).innerHTML = `<p> You already signed up! </p>`;
       }
+    });
+}
+
+function triproster(user) {
+  db.collection("cars")
+    .where("driver", "==", user)
+    .get()
+    .then((snapshot) => {
+      let cars = snapshot.docs;
+      let html = ``;
+      if (snapshot.size == 0) {
+        html = `<p class="column is-full  is-size-4 has-text-centered"> You are not a driver of any trips.</p>`;
+      }
+      cars.forEach((car) => {
+        let carnumber = car.data().carnumber;
+        let pickuplocation = car.data().pickuplocation;
+        let pickuptime = car.data().pickuptime;
+        let tripID = car.data().tripID;
+        db.collection("trips")
+          .where("tripID", "==", tripID)
+          .get()
+          .then((snapshot) => {
+            let trip = snapshot.docs[0];
+            let location = trip.data().location;
+            let date = trip.data().date;
+            html += `<div class="column is-one-third">
+            <div class="card" onclick="getusers(${tripID},(${carnumber}).toString())">
+              <div class="card-content">
+                <p class="has-text-centered is-size-5">${location}</p>
+                <p>Date: ${date}</p>
+                <p>Car #: ${carnumber}</p>
+                <p>Pickup Location: ${pickuplocation}</p>
+                <p>Picup Time: ${pickuptime}</p>
+                <p>Capacity: ${date}</p>
+              </div>
+            </div>
+          </div>`;
+          });
+      });
+      setTimeout(() => {
+        r_e("main").innerHTML = `<div class="p-5">
+      <div class="p-5">
+        <h1 class="title has-text-centered">Trip Roster</h1>
+
+        <!-- Ski Trip Table -->
+        <div class="container is-fluid">
+          <div class="columns is-multiline">
+            ${html}
+          </div>
+        </div>
+      </div>
+    </div>`;
+      }, 300);
+    });
+}
+
+function getusers(tripid, carnumber) {
+  db.collection("tripsignups")
+    .where("tripid", "==", tripid)
+    .where("carnumber", "==", carnumber)
+    .get()
+    .then((snapshot) => {
+      let users = snapshot.docs;
+      let html = ``;
+      users.forEach((user) => {
+        let email = user.data().user;
+        let status = user.data().status;
+        db.collection("users")
+          .where("email", "==", email)
+          .get()
+          .then((snapshot) => {
+            let userdata = snapshot.docs[0].data();
+            let name = userdata.name;
+            let phone = userdata.phone;
+            let address = userdata.address;
+            let skis = userdata.ski_ownership;
+            html += `<tr class="row-highlight">
+                        <td>${name}</td>
+                        <td>${email}</td>
+                        <td>${phone}</td>
+                        <td>${address}</td>
+                        <td>${skis}</td>
+                        <td>${status}</td>
+                     </tr>`;
+            console.log(html);
+          });
+      });
+      setTimeout(() => {
+        r_e(
+          "modals"
+        ).innerHTML += `<div class="modal" id="modal_${tripid}${carnumber}">
+        <div class="modal-background" id="modalbg${tripid}${carnumber}"></div>
+        <div
+          class="modal-content p-6 is-bordered"
+          style="
+            backdrop-filter: blur(8px);
+            border: 2px solid #31ada6;
+            border-radius: 20px;
+            width: 80%;
+          "
+        >
+          <p
+            class="subtitle has-text-weight-bold has-text-white has-text-centered"
+          >
+            Users
+          </p>
+          <div class="box">
+            <table class="table is-fullwidth has-text-centered">
+              <thead>
+                <tr>
+                  <th class="has-text-centered">Name</th>
+                  <th class="has-text-centered">Email</th>
+                  <th class="has-text-centered">Phone #</th>
+                  <th class="has-text-centered">Address</th>
+                  <th class="has-text-centered">Skis</th>
+                  <th class="has-text-centered">Status</th>
+                </tr>
+              </thead>
+              <tbody> ${html}</tbody>
+            </table>
+          </div>
+  
+          <button
+            class="modal-close is-large"
+            id="close${tripid}${carnumber}"
+            aria-label="close"
+          ></button>
+        </div>
+      </div>`;
+        showmodal(tripid + carnumber);
+      }, 300);
     });
 }
