@@ -71,6 +71,7 @@ function showmytrips(userid) {
         <td>$${price}</td>
         
         <td class="capacity-box capacity-green">${status}</td>
+        <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trashsignup${tripid}" onclick="deletesignup(${tripid}, '${userid}')"></i></td>
       </tr>`;
         }, 400);
       });
@@ -895,8 +896,13 @@ function submitTrip() {
   // gather trip information & call trip function
   let price = r_e("trip_price").value;
   let location = r_e("trip_location").value;
-  let date = r_e("trip_date").value;
-  let time = r_e("trip_time").value;
+  let date = new Date(r_e("trip_date").value);
+  date = date.toLocaleDateString("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+  });
+  let time = convertTo12Hour(r_e("trip_time").value);
   let description = r_e("trip_description").value;
   let tripID = Date.now();
   let numberofcars = r_e("carnumber").value;
@@ -994,7 +1000,6 @@ function showTrips() {
         let time = trip.data().time;
         let capacity = trip.data().numberofcars * 4;
         setTimeout(() => {
-          console.log(users);
           html += `<tr class="row-highlight">
       <!-- Added row-highlight class here -->
       <td>$${price}</td>
@@ -1156,9 +1161,7 @@ function addoptions(tripid, num) {
 
 db.collection("cars")
   .get()
-  .then((snapshot) => {
-    console.log(snapshot.docs[1].id);
-  });
+  .then((snapshot) => {});
 
 function closemodal(id) {
   r_e(id).classList.remove("is-active");
@@ -1244,7 +1247,7 @@ function triproster(user) {
             let location = trip.data().location;
             let date = trip.data().date;
             html += `<div class="column is-one-third">
-            <div class="card" onclick="getusers(${tripID},(${carnumber}).toString())">
+            <div class="card" onclick="getusers(${tripID},(${carnumber}).toString())" style="cursor: pointer;" >
               <div class="card-content">
                 <p class="has-text-centered is-size-5">${location}</p>
                 <p>Date: ${date}</p>
@@ -1282,9 +1285,13 @@ function getusers(tripid, carnumber) {
     .then((snapshot) => {
       let users = snapshot.docs;
       let html = ``;
+      if (snapshot.size == 0) {
+        html = `<p class="column is-full  is-size-4 has-text-centered"> There are no users signed up.</p>`;
+      }
       users.forEach((user) => {
         let email = user.data().user;
         let status = user.data().status;
+        let skis = user.data().skis;
         db.collection("users")
           .where("email", "==", email)
           .get()
@@ -1293,16 +1300,14 @@ function getusers(tripid, carnumber) {
             let name = userdata.name;
             let phone = userdata.phone;
             let address = userdata.address;
-            let skis = userdata.ski_ownership;
             html += `<tr class="row-highlight">
                         <td>${name}</td>
                         <td>${email}</td>
                         <td>${phone}</td>
                         <td>${address}</td>
                         <td>${skis}</td>
-                        <td>${status}</td>
+                        <td class="capacity-box capacity-yellow">${status}</td>
                      </tr>`;
-            console.log(html);
           });
       });
       setTimeout(() => {
@@ -1349,5 +1354,45 @@ function getusers(tripid, carnumber) {
       </div>`;
         showmodal(tripid + carnumber);
       }, 300);
+    });
+}
+
+function convertTo12Hour(time24) {
+  // Split the time into hours and minutes
+  var timeParts = time24.split(":");
+  var hours = parseInt(timeParts[0]);
+  var minutes = parseInt(timeParts[1]);
+
+  // Determine AM or PM
+  var period = hours >= 12 ? "PM" : "AM";
+
+  // Convert hours to 12-hour format
+  hours = hours % 12;
+  hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+  // Add leading zero to minutes if needed
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+
+  // Construct the 12-hour time string
+  var time12 = hours + ":" + minutes + " " + period;
+
+  return time12;
+}
+
+convertTo12Hour("08:32");
+
+function deletesignup(tripid, user) {
+  db.collection("tripsignups")
+    .where("tripid", "==", tripid)
+    .where("user", "==", user)
+    .get()
+    .then((snapshot) => {
+      signup = snapshot.docs[0].id;
+      db.collection("tripsignups")
+        .doc(signup)
+        .delete()
+        .then(() => {
+          showmytrips(user);
+        });
     });
 }

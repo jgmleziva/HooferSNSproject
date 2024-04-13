@@ -1244,7 +1244,7 @@ function triproster(user) {
             let location = trip.data().location;
             let date = trip.data().date;
             html += `<div class="column is-one-third">
-            <div class="card" onclick="getusers(${tripID},(${carnumber}).toString())">
+            <div class="card" onclick="getusers(${tripID},(${carnumber}).toString())" style="cursor: pointer;">
               <div class="card-content">
                 <p class="has-text-centered is-size-5">${location}</p>
                 <p>Date: ${date}</p>
