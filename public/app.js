@@ -623,52 +623,72 @@ function moreDetails(tripid) {
         .then((car) => {
           let driversinfo = [];
           let data = car.docs;
+          let carinfo = [];
           data.forEach((d) => {
             driversinfo.push({
               driver: d.data().driver,
               pickuptime: d.data().pickuptime,
               pickuplocation: d.data().pickuplocation,
             });
+            carinfo.push({ carnum: d.data().carnumber, passengers: [] });
           });
 
-          // have to add function to create object of arrays, car: array of names
-          
-          for (let i = 1; i <= numberofcars; i++) {
-            let driver = driversinfo[i - 1].driver;
-            let ptime = driversinfo[i - 1].pickuptime;
-            let plocation = driversinfo[i - 1].pickuplocation;
-            if ((i - 1) % 3 === 0) {
-              carColumnsHTML += `<div class="columns is-centered">`;
-            }
-            let carHTML = `
+          db.collection("tripsignups")
+            .where("tripid", "==", tripid)
+            .get()
+            .then((info) => {
+              let data2 = info.docs;
+              data2.forEach((t) => {
+                const index = carinfo.findIndex(
+                  (item) => item.carnum == t.data().carnumber
+                );
+                carinfo[index].passengers.push(t.data().user);
+              });
+              for (let i = 1; i <= numberofcars; i++) {
+                let driver = driversinfo[i - 1].driver;
+                let ptime = driversinfo[i - 1].pickuptime;
+                let plocation = driversinfo[i - 1].pickuplocation;
+
+                const index = carinfo.findIndex((item) => item.carnum == i);
+
+                let passengernum = carinfo[index].passengers.length;
+
+                if ((i - 1) % 3 === 0) {
+                  carColumnsHTML += `<div class="columns is-centered">`;
+                }
+                let carHTML = `
         <div class="column is-one-third">
         <div class="box">
           <div class="has-text-centered">
-            <div class="title is-4">Car ${i}</div>
+            <div class="title is-3">Car ${i}</div>
           </div>
           <div class="is-size-5">
-            <span>Driver:</span>
+            <span class="has-text-weight-bold	">Driver:</span>
             <span>${driver}</span>
           </div>
           <div class="is-size-5">
-            <span>Pickup Location:</span>
+            <span class="has-text-weight-bold	">Pickup Location:</span>
             <span>${plocation}</span>
           </div>
-          <div class="px-6">
+          <div class="is-size-5">
+            <span class="has-text-weight-bold	">Seats Available:</span>
+            <span>${4 - passengernum}/4</span>
+          </div>
+          <div class="">
           <figure class="image px-6 pt-3">
-            <img src="0.png" alt="" />
+            <img src="${passengernum}.png" alt="" />
           </figure>
         </div>
         </div>
       </div>`;
 
-            carColumnsHTML += carHTML;
-            if (i % 3 === 0 || i === numberofcars) {
-              carColumnsHTML += `</div>`;
-            }
-          }
+                carColumnsHTML += carHTML;
+                if (i % 3 === 0 || i === numberofcars) {
+                  carColumnsHTML += `</div>`;
+                }
+              }
 
-          r_e("main").innerHTML = `    <section class="section">
+              r_e("main").innerHTML = `    <section class="section">
       <div class="container is-fluid">
         <div class="box">
           <div class="columns">
@@ -732,7 +752,7 @@ function moreDetails(tripid) {
        
     </section>`;
 
-          r_e("modals").innerHTML += `<!-- Sign-In Modal -->
+              r_e("modals").innerHTML += `<!-- Sign-In Modal -->
 <div class="modal" id="modal_${tripid}">
   <div class="modal-background" id="modalbg${tripid}"></div>
   <div
@@ -784,9 +804,10 @@ function moreDetails(tripid) {
     ></button>
   </div>
 </div>`;
-          cardetails(tripid, 1);
-          addoptions(tripid, numberofcars);
-          restrictsignup(tripid);
+              cardetails(tripid, 1);
+              addoptions(tripid, numberofcars);
+              restrictsignup(tripid);
+            });
         });
     });
 }
