@@ -101,6 +101,36 @@
               </div>
             </div>
 
+            <!-- Trip Leader Checkbox -->
+            <div class="field">
+              <label class="checkbox has-text-white">
+                <input type="checkbox" id="trip_leader_checkbox" />
+                Are you a trip leader?
+              </label>
+            </div>
+
+            <!-- Password Field for Trip Leader -->
+            <div
+              class="field"
+              id="trip_leader_password_field"
+              style="display: none"
+            >
+              <label class="label has-text-white"
+                >Password for Trip Leader</label
+              >
+              <div class="control has-icons-left">
+                <input
+                  class="input"
+                  type="password"
+                  placeholder="Password"
+                  id="trip_leader_password"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+            </div>
+
             <div class="pt-4">
               <!-- Submit Button -->
               <button class="button is-primary">Submit</button>
@@ -115,6 +145,25 @@
           ></button>
         </div>
       </div>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const tripLeaderCheckbox = document.getElementById(
+            "trip_leader_checkbox"
+          );
+          const tripLeaderPasswordField = document.getElementById(
+            "trip_leader_password_field"
+          );
+
+          tripLeaderCheckbox.addEventListener("change", function () {
+            if (tripLeaderCheckbox.checked) {
+              tripLeaderPasswordField.style.display = "block";
+            } else {
+              tripLeaderPasswordField.style.display = "none";
+            }
+          });
+        });
+      </script>
 
       <!-- Sign-In Modal -->
       <div class="modal" id="signin_modal">

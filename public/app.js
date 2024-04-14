@@ -150,6 +150,13 @@ r_e("signup_form").addEventListener("submit", (e) => {
   auth
     .createUserWithEmailAndPassword(email, password)
     .then((user) => {
+      let leaderpassword = r_e("trip_leader_password").value;
+      alert(leaderpassword);
+      let accesslevel = 0;
+      if (leaderpassword == "password") {
+        accesslevel = 1;
+      }
+
       // add the user to the user database
       db.collection("users").add({
         name: r_e("name").value,
@@ -157,6 +164,7 @@ r_e("signup_form").addEventListener("submit", (e) => {
         address: r_e("address").value,
         phone: r_e("phone").value,
         rechub_username: r_e("rechub_username").value,
+        access_level: accesslevel,
       });
 
       // reset the form
