@@ -151,7 +151,6 @@ r_e("signup_form").addEventListener("submit", (e) => {
     .createUserWithEmailAndPassword(email, password)
     .then((user) => {
       let leaderpassword = r_e("trip_leader_password").value;
-      alert(leaderpassword);
       let accesslevel = 0;
       if (leaderpassword == "password") {
         accesslevel = 1;
