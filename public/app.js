@@ -1026,7 +1026,6 @@ function calculateColor(users, capacity) {
 }
 */
 
-
 // Get Upcoming Trips
 
 function showTrips() {
@@ -1043,7 +1042,7 @@ function showTrips() {
           .where("tripid", "==", tripID)
           .get()
           .then((snapshot) => {
-            users = snapshot.docs.length;
+            users = parseInt(snapshot.docs.length);
           });
         let price = trip.data().price;
         let location = trip.data().location;
@@ -1051,15 +1050,16 @@ function showTrips() {
         let time = trip.data().time;
         let capacity = trip.data().numberofcars * 4;
         //setting color depending on capacity
-        let color = "capacity-box capacity-green"
-        if (Number(users) == Number(capacity)) {
-          color= "capacity-box capacity-red"
-        }
-        else if (Number(users) >= 2) {
-          color = "capacity-box capacity-yellow"
-        }
+        let color = "";
 
         setTimeout(() => {
+          if (users == capacity) {
+            color = "capacity-red";
+          } else if (users >= capacity / 2) {
+            color = "capacity-yellow";
+          } else {
+            color = "capacity-green";
+          }
           html += `<tr class="row-highlight">
       <!-- Added row-highlight class here -->
       <td>$${price}</td>
@@ -1076,7 +1076,7 @@ function showTrips() {
           More Details
         </button>
       </td>
-      <td class="${color}">${users}/${capacity}</td>
+      <td class="${color} capacity-box ">${users}/${capacity}</td>
       <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
     </tr>`;
         }, 400);
