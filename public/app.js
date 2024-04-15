@@ -1012,6 +1012,22 @@ function submitTrip() {
   r_e("additionalcars").innerHTML = ``;
 }
 
+//Calculate Capacity Color
+/*
+function calculateColor(users, capacity) {
+    if (Number(users) == Number(capacity)) {
+      return "capacity-box capacity-red"
+    }
+    else if (Number(users) >= Number(capacity)/2) {
+      return "capacity-box capacity-yellow"
+    }
+    else  {
+      return "capacity-box capacity-green"
+    }
+}
+*/
+
+
 // Get Upcoming Trips
 
 function showTrips() {
@@ -1035,6 +1051,15 @@ function showTrips() {
         let date = trip.data().date;
         let time = trip.data().time;
         let capacity = trip.data().numberofcars * 4;
+        //setting color depending on capacity
+        let color = "capacity-box capacity-green"
+        if (Number(users) == Number(capacity)) {
+          color= "capacity-box capacity-red"
+        }
+        else if (Number(users) >= 2) {
+          color = "capacity-box capacity-yellow"
+        }
+
         setTimeout(() => {
           html += `<tr class="row-highlight">
       <!-- Added row-highlight class here -->
@@ -1052,7 +1077,7 @@ function showTrips() {
           More Details
         </button>
       </td>
-      <td class="capacity-box capacity-green">${users}/${capacity}</td>
+      <td class="${color}">${users}/${capacity}</td>
       <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
     </tr>`;
         }, 400);
