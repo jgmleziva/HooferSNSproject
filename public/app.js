@@ -321,12 +321,6 @@ r_e("accountinfo").addEventListener("click", () => {
       <h1 class="title has-text-centered">Account Information</h1>
       <form>
         <div class= "field"> 
-          <label class="label"for="myfile">Profile Picture:</label>
-          <div class = "control">
-              <input type="file" id="myfile" name="myfile">
-          </div>
-        </div>
-        <div class= "field"> 
           <label class = "label"> First Name: </label>
         <div
         id="full_name"
@@ -575,38 +569,6 @@ function appendContent(html) {
 
 function removeContent() {
   r_e(`#${id}`).innerHTML = "";
-}
-
-function payment_color() {
-  if (document.getElementById("payment_status").innerHTML == "Paid") {
-    document.getElementById("payment_status").style.color = "Green";
-  } else if (document.getElementById("payment_status").innerHTML == "Unpaid") {
-    document.getElementById("payment_status").style.color = "Red";
-  }
-}
-
-function trip_color() {
-  if (document.getElementById("trip_status").innerHTML == "Pending") {
-    document.getElementById("trip_status").style.color = "Yellow";
-  } else if (document.getElementById("trip_status").innerHTML == "Accepted") {
-    document.getElementById("trip_status").style.color = "Green";
-  }
-}
-
-function capacity_color() {
-  if (
-    document.getElementById("capacity_status").innerHTML > 11 / 12 &&
-    document.getElementById("capacity_status").innerHTML >= 7 / 12
-  ) {
-    document.getElementById("capacity_status").style.color = "Yellow";
-  } else if (
-    document.getElementById("capacity_status").innerHTML < 6 / 12 &&
-    document.getElementById("capacity_status").innerHTML > 0
-  ) {
-    document.getElementById("capacity_status").style.color = "Green";
-  } else if (document.getElementById("capacity_status").innerHTML == 12 / 12) {
-    document.getElementById("capacity_status").style.color = "Red";
-  }
 }
 
 // Get Upcoming Trips
