@@ -321,12 +321,6 @@ r_e("accountinfo").addEventListener("click", () => {
       <h1 class="title has-text-centered">Account Information</h1>
       <form>
         <div class= "field"> 
-          <label class="label"for="myfile">Profile Picture:</label>
-          <div class = "control">
-              <input type="file" id="myfile" name="myfile">
-          </div>
-        </div>
-        <div class= "field"> 
           <label class = "label"> First Name: </label>
         <div
         id="full_name"
