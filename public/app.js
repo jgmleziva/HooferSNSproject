@@ -759,7 +759,7 @@ function moreDetails(tripid) {
        
     </section>`;
 
-              r_e("modals").innerHTML += `<!-- Sign-In Modal -->
+              r_e("modals").innerHTML += `<!-- Add Sign Up Modal -->
 <div class="modal" id="modal_${tripid}">
   <div class="modal-background" id="modalbg${tripid}"></div>
   <div
@@ -1346,7 +1346,7 @@ function getusers(tripid, carnumber) {
       let users = snapshot.docs;
       let html = ``;
       if (snapshot.size == 0) {
-        html = `<p class="column is-full  is-size-4 has-text-centered"> There are no users signed up.</p>`;
+        html = `<tr class="row-highlight is-size-4 has-text-centered"> <td colspan= "6">There are no users signed up.</td></tr>`;
       }
       users.forEach((user) => {
         let email = user.data().user;
