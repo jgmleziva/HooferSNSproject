@@ -598,6 +598,7 @@ function moreDetails(tripid) {
               driver: d.data().driver,
               pickuptime: d.data().pickuptime,
               pickuplocation: d.data().pickuplocation,
+              carnumber: d.data().carnumber,
             });
             carinfo.push({ carnum: d.data().carnumber, passengers: [] });
           });
@@ -606,6 +607,7 @@ function moreDetails(tripid) {
             .where("tripid", "==", tripid)
             .get()
             .then((info) => {
+              let carHTML = [];
               let data2 = info.docs;
               data2.forEach((t) => {
                 const index = carinfo.findIndex(
@@ -614,22 +616,23 @@ function moreDetails(tripid) {
                 carinfo[index].passengers.push(t.data().user);
               });
               for (let i = 1; i <= numberofcars; i++) {
-                let driver = driversinfo[i - 1].driver;
-                let ptime = driversinfo[i - 1].pickuptime;
-                let plocation = driversinfo[i - 1].pickuplocation;
-
                 const index = carinfo.findIndex((item) => item.carnum == i);
 
                 let passengernum = carinfo[index].passengers.length;
-
+                console.log("carinfo:", carinfo[index]);
                 if ((i - 1) % 3 === 0) {
                   carColumnsHTML += `<div class="columns is-centered">`;
                 }
+                let driver = driversinfo[index].driver;
+                let ptime = driversinfo[index].pickuptime;
+                let plocation = driversinfo[index].pickuplocation;
+                // console.log("driverinfo:", driversinfo);
+                // console.log(carinfo[index].carnum);
                 let carHTML = `
         <div class="column is-one-third">
         <div class="box">
           <div class="has-text-centered">
-            <div class="title is-3">Car ${i}</div>
+            <div class="title is-3">Car ${carinfo[index].carnum}</div>
           </div>
           <div class="is-size-5">
             <span class="has-text-weight-bold	">Driver:</span>
