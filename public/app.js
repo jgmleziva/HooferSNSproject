@@ -171,6 +171,7 @@ r_e("signup_form").addEventListener("submit", (e) => {
 
       // hide the modal
       r_e("signup_modal").classList.remove("is-active");
+      
     })
     .catch((error) => {
       alert(error.message);
@@ -184,7 +185,7 @@ function configure_message_bar(message) {
 
   r_e("message_bar").classList.remove("is-hidden");
 
-  r_e("message_bar").innerHTML = `${message}!`;
+  r_e("message_bar").innerHTML = `${message}`;
 
   // hide the message bar after 2 seconds
 
@@ -226,9 +227,9 @@ r_e("signin_form").addEventListener("submit", (e) => {
   
     // Check if the username is in the list of admin users.
     if (adminUsers.includes(email)) {
-        alert("You are signed in as an admin.");
+      configure_message_bar("You are signed in as an admin!");
     } else {
-        alert("You are signed in as a regular user.");
+      configure_message_bar("You are signed in as a user!");
     }
   }
   
@@ -242,6 +243,8 @@ firebase.auth().onAuthStateChanged(function (user) {
 
     r_e("signedout").classList.add("is-hidden");
     document.getElementById("html").style.overflow = "";
+    
+    checkUserRole();
 
     showTrips();
   } else {
