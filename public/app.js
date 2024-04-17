@@ -177,6 +177,25 @@ r_e("signup_form").addEventListener("submit", (e) => {
     });
 });
 
+function configure_message_bar(message) {
+  // show a confirmation message for the user
+
+  // show the message bar for only 2 seconds and then hide it back
+
+  r_e("message_bar").classList.remove("is-hidden");
+
+  r_e("message_bar").innerHTML = `${message}!`;
+
+  // hide the message bar after 2 seconds
+
+  setTimeout(() => {
+    r_e("message_bar").classList.add("is-hidden");
+
+    // clear the message bar
+    r_e("message_bar").innerHTML = "";
+  }, 2000);
+}
+
 // sign in users
 r_e("signin_form").addEventListener("submit", (e) => {
   // prevent the page from auth refresh
@@ -196,6 +215,7 @@ r_e("signin_form").addEventListener("submit", (e) => {
     // hide the modal
     r_e("signin_modal").classList.remove("is-active");
   });
+  
 
   function checkUserRole(email) {
     // Assume you have a way to retrieve the user role based on the username.
