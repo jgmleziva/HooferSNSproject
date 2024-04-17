@@ -196,6 +196,24 @@ r_e("signin_form").addEventListener("submit", (e) => {
     // hide the modal
     r_e("signin_modal").classList.remove("is-active");
   });
+
+  function checkUserRole(email) {
+    // Assume you have a way to retrieve the user role based on the username.
+    // This could be from a database, a server-side API call, or any other method.
+    
+    // For demonstration purposes, let's assume there's a hardcoded list of admin users.
+    const adminUsers = "admin@hoofersns.org"
+  
+    // Check if the username is in the list of admin users.
+    if (adminUsers.includes(email)) {
+        alert("You are signed in as an admin.");
+    } else {
+        alert("You are signed in as a regular user.");
+    }
+  }
+  
+  const loggedInUser = email
+  const userRoleMessage = checkUserRole(loggedInUser);
 });
 
 firebase.auth().onAuthStateChanged(function (user) {
