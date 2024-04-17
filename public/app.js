@@ -155,7 +155,6 @@ r_e("signup_form").addEventListener("submit", (e) => {
       if (leaderpassword == "password") {
         accesslevel = 1;
       }
-
       // add the user to the user database
       db.collection("users").add({
         name: r_e("name").value,
@@ -197,6 +196,7 @@ function configure_message_bar(message) {
   }, 2000);
 }
 
+
 // sign in users
 r_e("signin_form").addEventListener("submit", (e) => {
   // prevent the page from auth refresh
@@ -216,7 +216,7 @@ r_e("signin_form").addEventListener("submit", (e) => {
     // hide the modal
     r_e("signin_modal").classList.remove("is-active");
   });
-  
+    
 
   function checkUserRole(email) {
     // Assume you have a way to retrieve the user role based on the username.
@@ -228,8 +228,12 @@ r_e("signin_form").addEventListener("submit", (e) => {
     // Check if the username is in the list of admin users.
     if (adminUsers.includes(email)) {
       configure_message_bar("You are signed in as an admin!");
-    } else {
+    } 
+    else if (access_level = 0){
       configure_message_bar("You are signed in as a user!");
+  }
+    else {
+      configure_message_bar("You are signed in as a trip leader!"); 
     }
   }
   
@@ -237,15 +241,15 @@ r_e("signin_form").addEventListener("submit", (e) => {
   const userRoleMessage = checkUserRole(loggedInUser);
 });
 
+
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     r_e("signedin").classList.remove("is-hidden");
 
     r_e("signedout").classList.add("is-hidden");
     document.getElementById("html").style.overflow = "";
-    
-    checkUserRole();
 
+    console.log(user.access_level);
     showTrips();
   } else {
     r_e("signedin").classList.add("is-hidden");
