@@ -242,8 +242,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 
     r_e("signedout").classList.add("is-hidden");
     document.getElementById("html").style.overflow = "";
-
-    console.log(user.access_level);
     showTrips();
   } else {
     r_e("signedin").classList.add("is-hidden");
@@ -617,8 +615,16 @@ function moreDetails(tripid) {
     .where("tripID", "==", tripid)
     .get()
     .then((trip) => {
+      let signupoption = `<button
+      class="button is-success mt-2"
+      id="su${tripid}"
+      onclick="showmodal(${tripid})"
+    >
+      Sign Up
+    </button>`;
       let optionshtml = ``;
       let tripdata = trip.docs;
+      let capacity = tripdata[0].data().numberofcars * 4;
       let location = tripdata[0].data().location;
       let date = tripdata[0].data().date;
       let time = tripdata[0].data().time;
@@ -649,6 +655,8 @@ function moreDetails(tripid) {
             .then((info) => {
               let carHTML = [];
               let data2 = info.docs;
+              let occupied = info.docs.length;
+
               data2.forEach((t) => {
                 const index = carinfo.findIndex(
                   (item) => item.carnum == t.data().carnumber
@@ -659,13 +667,23 @@ function moreDetails(tripid) {
                 const index = carinfo.findIndex((item) => item.carnum == i);
 
                 let passengernum = carinfo[index].passengers.length;
-                console.log("carinfo:", carinfo[index]);
                 if ((i - 1) % 3 === 0) {
                   carColumnsHTML += `<div class="columns is-centered">`;
                 }
                 if (passengernum < 4) {
                   optionshtml += `<option value="${carinfo[index].carnum}">${carinfo[index].carnum}</option>`;
-                  console.log(optionshtml);
+                }
+                console.log(occupied);
+                console.log(capacity);
+                if (occupied == capacity) {
+                  signupoption = `<button
+                  class="button is-success mt-2"
+                  id="su${tripid}"
+                  )"
+                >
+                  The trip is full!
+                </button>`;
+                  console.log(signupoption);
                 }
                 let driver = driversinfo[index].driver;
                 let ptime = driversinfo[index].pickuptime;
@@ -738,13 +756,7 @@ function moreDetails(tripid) {
                 </div>
               </div>
               <div id="option${tripid}" class="mt-auto">
-                <button
-                  class="button is-success mt-2"
-                  id="su${tripid}"
-                  onclick="showmodal(${tripid})"
-                >
-                  Sign Up
-                </button>
+                ${signupoption}
               </div>
             </div>
             <div
@@ -1200,34 +1212,36 @@ r_e("carnumber").addEventListener("input", (e) => {
 });
 
 function cardetails(tripid, car) {
-  db.collection("cars")
-    .where("tripID", "==", tripid)
-    .where("carnumber", "==", car)
-    .get()
-    .then((car) => {
-      let cars = car.docs;
-      variables.driver = cars[0].data().driver;
-      variables.pickuplocation = cars[0].data().pickuplocation;
-      variables.pickuptime = cars[0].data().pickuptime;
-      r_e("driver").innerHTML = `Driver: ${variables.driver}`;
-      r_e(
-        "pickuplocation"
-      ).innerHTML = `Pickup Location: ${variables.pickuplocation}`;
-      r_e("pickuptime").innerHTML = `Pickup Time: ${variables.pickuptime}`;
-    });
+  if (isNaN(car) != true) {
+    db.collection("cars")
+      .where("tripID", "==", tripid)
+      .where("carnumber", "==", car)
+      .get()
+      .then((car) => {
+        let cars = car.docs;
+        variables.driver = cars[0].data().driver;
+        variables.pickuplocation = cars[0].data().pickuplocation;
+        variables.pickuptime = cars[0].data().pickuptime;
+        r_e("driver").innerHTML = `Driver: ${variables.driver}`;
+        r_e(
+          "pickuplocation"
+        ).innerHTML = `Pickup Location: ${variables.pickuplocation}`;
+        r_e("pickuptime").innerHTML = `Pickup Time: ${variables.pickuptime}`;
+      });
+  }
 }
 
-function addoptions(tripid, num) {
-  if (num == 2) {
-    r_e("carnumber" + tripid).innerHTML += `<option value="2">2</option>`;
-  }
-  if (num == 3) {
-    r_e(
-      "carnumber" + tripid
-    ).innerHTML += `<option value="2">2</option> <option value="3">3</option>
-    `;
-  }
-}
+// function addoptions(tripid, num) {
+//   if (num == 2) {
+//     r_e("carnumber" + tripid).innerHTML += `<option value="2">2</option>`;
+//   }
+//   if (num == 3) {
+//     r_e(
+//       "carnumber" + tripid
+//     ).innerHTML += `<option value="2">2</option> <option value="3">3</option>
+//     `;
+//   }
+// }
 
 db.collection("cars")
   .get()
@@ -1289,7 +1303,9 @@ function restrictsignup(tripid) {
     .then((snapshot) => {
       if (snapshot.size != 0) {
         r_e("su" + tripid).classList.add("is-hidden");
-        r_e("option" + tripid).innerHTML = `<p> You already signed up! </p>`;
+        r_e(
+          "option" + tripid
+        ).innerHTML = `<button class="button is-success mt-2"> You already signed up! </button>`;
       }
     });
 }
