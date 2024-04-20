@@ -170,7 +170,6 @@ r_e("signup_form").addEventListener("submit", (e) => {
 
       // hide the modal
       r_e("signup_modal").classList.remove("is-active");
-      
     })
     .catch((error) => {
       alert(error.message);
@@ -196,7 +195,6 @@ function configure_message_bar(message) {
   }, 2000);
 }
 
-
 // sign in users
 r_e("signin_form").addEventListener("submit", (e) => {
   // prevent the page from auth refresh
@@ -216,31 +214,27 @@ r_e("signin_form").addEventListener("submit", (e) => {
     // hide the modal
     r_e("signin_modal").classList.remove("is-active");
   });
-    
 
   function checkUserRole(email) {
     // Assume you have a way to retrieve the user role based on the username.
     // This could be from a database, a server-side API call, or any other method.
-    
+
     // For demonstration purposes, let's assume there's a hardcoded list of admin users.
-    const adminUsers = "admin@hoofersns.org"
-  
+    const adminUsers = "admin@hoofersns.org";
+
     // Check if the username is in the list of admin users.
     if (adminUsers.includes(email)) {
       configure_message_bar("You are signed in as an admin!");
-    } 
-    else if (access_level = 0){
+    } else if ((access_level = 0)) {
       configure_message_bar("You are signed in as a user!");
-  }
-    else {
-      configure_message_bar("You are signed in as a trip leader!"); 
+    } else {
+      configure_message_bar("You are signed in as a trip leader!");
     }
   }
-  
-  const loggedInUser = email
+
+  const loggedInUser = email;
   const userRoleMessage = checkUserRole(loggedInUser);
 });
-
 
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
@@ -623,6 +617,7 @@ function moreDetails(tripid) {
     .where("tripID", "==", tripid)
     .get()
     .then((trip) => {
+      let optionshtml = ``;
       let tripdata = trip.docs;
       let location = tripdata[0].data().location;
       let date = tripdata[0].data().date;
@@ -667,6 +662,10 @@ function moreDetails(tripid) {
                 console.log("carinfo:", carinfo[index]);
                 if ((i - 1) % 3 === 0) {
                   carColumnsHTML += `<div class="columns is-centered">`;
+                }
+                if (passengernum < 4) {
+                  optionshtml += `<option value="${carinfo[index].carnum}">${carinfo[index].carnum}</option>`;
+                  console.log(optionshtml);
                 }
                 let driver = driversinfo[index].driver;
                 let ptime = driversinfo[index].pickuptime;
@@ -784,7 +783,7 @@ function moreDetails(tripid) {
     <form action="" id="form${tripid}" onsubmit="return false">
       <div class="field">
         <label class="label has-text-white">Car Number:<select oninput= "cardetails(${tripid}, parseInt(r_e('carnumber${tripid}').value) )"  name="car#" id="carnumber${tripid}" class="ml-3 select">
-        <option value="1">1</option>
+        ${optionshtml}
         
       </select></label>
         <div class="control"></div>
@@ -821,8 +820,9 @@ function moreDetails(tripid) {
     ></button>
   </div>
 </div>`;
-              cardetails(tripid, 1);
-              addoptions(tripid, numberofcars);
+              setTimeout(() => {
+                cardetails(tripid, parseInt(r_e("carnumber" + tripid).value));
+              }, 100);
               restrictsignup(tripid);
             });
         });
