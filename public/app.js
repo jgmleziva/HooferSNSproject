@@ -75,7 +75,7 @@ function showmytrips(userid) {
         <td>${skis}</td>
         <td>$${price}</td>
         
-        <td class="capacity-box capacity-green">${status}</td>
+        <td class="capacity-box capacity-yellow">${status}</td>
         <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trashsignup${tripid}" onclick="deletesignup(${tripid}, '${userid}')"></i></td>
       </tr>`;
         }, 400);
@@ -763,7 +763,7 @@ function moreDetails(tripid) {
 
                   <div class="has-text-left">
                     <span class="title is-4">Availability: </span>
-                    <span class="is-size-4">${numberofcars * 4}</span>
+                    <span class="is-size-4">${occupied}/${capacity}</span>
                   </div>
                 </div>
               </div>
