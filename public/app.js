@@ -39,6 +39,7 @@ function showmytrips(userid) {
         let price = "";
         let driver = "";
         let tripid = signup.data().tripid;
+        let eventName = "";
         db.collection("cars")
           .where("tripID", "==", tripid)
           .where("carnumber", "==", parseInt(mycar))
@@ -55,15 +56,19 @@ function showmytrips(userid) {
           .then((snapshot) => {
             let trip = snapshot.docs;
             date = trip[0].data().date;
+            eventName = trip[0].data().eventName;
             location = trip[0].data().location;
             price = trip[0].data().price;
+            startTime = trip[0].data().starttime;
+            endTime = trip[0].data().endtime;
           });
         setTimeout(() => {
           html += `<tr class="row-highlight">
         <!-- Added row-highlight class here -->
         <td>${date}</td>
+        <td>${eventName}</td>
         <td>${location}</td>
-        <td>${mycar}</td>
+        <td>${startTime} - ${endTime}</td>
         <td>${driver}</td>
         <td>${pickuplocation}</td>
         <td>${pickuptime}</td>
@@ -91,8 +96,9 @@ function showmytrips(userid) {
           <thead>
             <tr>
               <th class="has-text-centered">Trip Date</th>
+              <th class="has-text-centered">Event Name</th>
               <th class="has-text-centered">Location</th>
-              <th class="has-text-centered">Car #</th>
+              <th class="has-text-centered">Event Time</th>
               <th class="has-text-centered">Driver</th>
               <th class="has-text-centered">Pickup Location</th>
               <th class="has-text-centered">Pickup Time</th>
@@ -624,10 +630,12 @@ function moreDetails(tripid) {
     </button>`;
       let optionshtml = ``;
       let tripdata = trip.docs;
+      let eventName = tripdata[0].data().eventName;
       let capacity = tripdata[0].data().numberofcars * 4;
       let location = tripdata[0].data().location;
       let date = tripdata[0].data().date;
-      let time = tripdata[0].data().time;
+      let starttime = tripdata[0].data().starttime;
+      let endtime = tripdata[0].data().endtime;
       let description = tripdata[0].data().description;
       let numberofcars = tripdata[0].data().numberofcars;
       let price = tripdata[0].data().price;
@@ -686,8 +694,8 @@ function moreDetails(tripid) {
                   console.log(signupoption);
                 }
                 let driver = driversinfo[index].driver;
-                let ptime = driversinfo[index].pickuptime;
                 let plocation = driversinfo[index].pickuplocation;
+                let ptime = driversinfo[index].pickuptime;
                 // console.log("driverinfo:", driversinfo);
                 // console.log(carinfo[index].carnum);
                 let carHTML = `
@@ -703,6 +711,10 @@ function moreDetails(tripid) {
           <div class="is-size-5">
             <span class="has-text-weight-bold	">Pickup Location:</span>
             <span>${plocation}</span>
+          </div>
+          <div class="is-size-5">
+            <span class="has-text-weight-bold	">Pickup Time:</span>
+            <span>${ptime}</span>
           </div>
           <div class="is-size-5">
             <span class="has-text-weight-bold	">Seats Available:</span>
@@ -731,7 +743,7 @@ function moreDetails(tripid) {
             >
               <div class="has-text-left mx-auto">
                 <div class="title is-3 is-underlined is-marginless">
-                  Trip Details
+                  ${eventName}
                 </div>
                 <div>
                   <div class="mt-3 has-text-left">
@@ -746,7 +758,7 @@ function moreDetails(tripid) {
 
                   <div class="has-text-left">
                     <span class="title is-4">Time: </span>
-                    <span class="is-size-4">${time}</span>
+                    <span class="is-size-4">${starttime} - ${endtime}</span>
                   </div>
 
                   <div class="has-text-left">
@@ -764,7 +776,7 @@ function moreDetails(tripid) {
             >
               <div class="has-text-centered">
                 <div class="title is-3 is-underlined is-marginless">
-                  Trip Location: ${location}
+                  Location: ${location}
                 </div>
               </div>
 
@@ -951,31 +963,38 @@ function submittripsignup(tripid) {
 // Get trip information from submit button
 function submitTrip() {
   // gather trip information & call trip function
+  let eventName = r_e("eventName").value;
   let price = r_e("trip_price").value;
   let location = r_e("trip_location").value;
-  let date = new Date(r_e("trip_date").value);
-  date = date.toLocaleDateString("en-US", {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
-  });
-  let time = convertTo12Hour(r_e("trip_time").value);
+  let date = r_e("trip_date").value;
+  console.log(date);
+  var parts = date.split("-");
+  var year = parts[0];
+  var month = parts[1];
+  var day = parts[2];
+
+  // Rearrange the components into the desired format
+  date = month + "/" + day + "/" + year;
+  let starttime = convertTo12Hour(r_e("trip_starttime").value);
+  let endtime = convertTo12Hour(r_e("trip_endtime").value);
   let description = r_e("trip_description").value;
   let tripID = Date.now();
   let numberofcars = r_e("carnumber").value;
   let pickuplocation1 = r_e("car1pickuplocation").value;
   let driver1 = r_e("car1driver").value;
+  let pickuptime1 = convertTo12Hour(r_e("car1pickuptime").value);
   let pickuplocation2 = "";
   let driver2 = "";
   let pickuplocation3 = "";
   let driver3 = "";
-
   let trip = {
+    eventName: eventName,
     tripID: tripID,
     price: price,
     location: location,
     date: date,
-    time: time,
+    starttime: starttime,
+    endtime: endtime,
     added_by: auth.currentUser.email,
     description: description,
     numberofcars: numberofcars,
@@ -989,36 +1008,36 @@ function submitTrip() {
     carnumber: 1,
     pickuplocation: pickuplocation1,
     driver: driver1,
-    pickuptime: time,
+    pickuptime: pickuptime1,
   };
 
   addCar(car1);
 
   if (r_e("carnumber").value > 1) {
     driver2 = r_e("car2driver").value;
+    pickuptime2 = convertTo12Hour(r_e("car2pickuptime").value);
     pickuplocation2 = r_e("car2pickuplocation").value;
     let car2 = {
       tripID: tripID,
       carnumber: 2,
       pickuplocation: pickuplocation2,
       driver: driver2,
-      pickuptime: time,
+      pickuptime: pickuptime2,
     };
-    console.log(pickuplocation2);
     addCar(car2);
   }
 
   if (r_e("carnumber").value == 3) {
     driver3 = r_e("car3driver").value;
+    pickuptime3 = convertTo12Hour(r_e("car3pickuptime").value);
     pickuplocation3 = r_e("car3pickuplocation").value;
     let car3 = {
       tripID: tripID,
       carnumber: 3,
       pickuplocation: pickuplocation3,
       driver: driver3,
-      pickuptime: time,
+      pickuptime: pickuptime3,
     };
-
     addCar(car3);
   }
 
@@ -1026,10 +1045,12 @@ function submitTrip() {
   r_e("trip_price").value = "";
   r_e("trip_location").value = "";
   r_e("trip_date").value = "";
-  r_e("trip_time").value = "";
+  r_e("trip_starttime").value = "";
+  r_e("trip_endtime").value = "";
   r_e("trip_description").value = "";
   r_e("carnumber").value = "1";
   r_e("car1driver").value = "";
+  r_e("car1pickuptime").value = "";
   r_e("additionalcars").innerHTML = ``;
 }
 
@@ -1066,10 +1087,12 @@ function showTrips() {
           .then((snapshot) => {
             users = parseInt(snapshot.docs.length);
           });
+        let eventName = trip.data().eventName;
         let price = trip.data().price;
         let location = trip.data().location;
         let date = trip.data().date;
-        let time = trip.data().time;
+        let starttime = trip.data().starttime;
+        let endtime = trip.data().endtime;
         let capacity = trip.data().numberofcars * 4;
         //setting color depending on capacity
         let color = "";
@@ -1084,10 +1107,11 @@ function showTrips() {
           }
           html += `<tr class="row-highlight">
       <!-- Added row-highlight class here -->
+      <td>${eventName}</td>
       <td>$${price}</td>
       <td>${location}</td>
       <td>${date}</td>
-      <td>${time}</td>
+      <td>${starttime} - ${endtime}</td>
       <td>
         <button
           onclick = "moreDetails(${tripID})"
@@ -1151,7 +1175,18 @@ r_e("carnumber").addEventListener("input", (e) => {
       <option value="Union South">Union South</option>
     </select>
   </p>
-</div>`;
+</div>
+<div class="field">
+                  <label class="label has-text-white">Car #2 Pickup Time</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="time"
+                      placeholder=""
+                      id="car2pickuptime"
+                    />
+                  </p>
+                </div>`;
   }
   if (numberofcars == 3) {
     r_e("additionalcars").innerHTML = `<div class="field">
@@ -1181,6 +1216,17 @@ r_e("carnumber").addEventListener("input", (e) => {
     </select>
   </p>
 </div>
+<div class="field">
+                  <label class="label has-text-white">Car #2 Pickup Time</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="time"
+                      placeholder=""
+                      id="car2pickuptime"
+                    />
+                  </p>
+                </div>
   <div class="field">
     <label class="label has-text-white">Car #3 Driver Name</label>
     <p class="control has-icons-left">
@@ -1207,7 +1253,18 @@ r_e("carnumber").addEventListener("input", (e) => {
       <option value="Union South">Union South</option>
     </select>
   </p>
-</div>`;
+</div>
+<div class="field">
+                  <label class="label has-text-white">Car #3 Pickup Time</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="time"
+                      placeholder=""
+                      id="car3pickuptime"
+                    />
+                  </p>
+                </div>`;
   }
 });
 
@@ -1330,20 +1387,33 @@ function triproster(user) {
           .get()
           .then((snapshot) => {
             let trip = snapshot.docs[0];
+            let eventName = trip.data().eventName;
             let location = trip.data().location;
             let date = trip.data().date;
-            html += `<div class="column is-one-third">
+            let capacity = trip.data().numberofcars * 4;
+            let users = "";
+            db.collection("tripsignups")
+              .where("tripid", "==", tripID)
+              .where("carnumber", "==", carnumber.toString())
+              .get()
+              .then((snapshot) => {
+                users = snapshot.docs.length;
+              });
+            setTimeout(() => {
+              html += `<div class="column is-one-third">
             <div class="card" onclick="getusers(${tripID},(${carnumber}).toString())" style="cursor: pointer;" >
               <div class="card-content">
-                <p class="has-text-centered is-size-5">${location}</p>
+                <p class="has-text-centered is-size-5">${eventName}</p>
+                <p>Trip Location: ${location}</p>
                 <p>Date: ${date}</p>
                 <p>Car #: ${carnumber}</p>
                 <p>Pickup Location: ${pickuplocation}</p>
-                <p>Picup Time: ${pickuptime}</p>
-                <p>Capacity: ${date}</p>
+                <p>Pickup Time: ${pickuptime}</p>
+                <p>Capacity: ${users}/${capacity}</p>
               </div>
             </div>
           </div>`;
+            }, 400);
           });
       });
       setTimeout(() => {
@@ -1359,7 +1429,7 @@ function triproster(user) {
         </div>
       </div>
     </div>`;
-      }, 300);
+      }, 700);
     });
 }
 
