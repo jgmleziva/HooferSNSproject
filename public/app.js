@@ -855,7 +855,7 @@ function moreDetails(tripid) {
 
 function save_name(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-
+  event.preventDefault()
   db.collection("users")
     .doc(id)
     .update({
@@ -865,7 +865,7 @@ function save_name(ele, id) {
 }
 function save_phone(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-
+  event.preventDefault()
   db.collection("users")
     .doc(id)
     .update({
@@ -875,7 +875,7 @@ function save_phone(ele, id) {
 }
 function save_rechub(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-
+  event.preventDefault()
   db.collection("users")
     .doc(id)
     .update({
@@ -885,7 +885,7 @@ function save_rechub(ele, id) {
 }
 function save_address(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-
+  event.preventDefault()
   db.collection("users")
     .doc(id)
     .update({
@@ -899,8 +899,8 @@ function save_address(ele, id) {
 function update_doc(ele, id) {
   ele.parentNode.querySelectorAll("input").forEach((e) => {
     e.type = "text";
+    event.preventDefault()
   });
-
   // show the save button
   ele.parentNode.querySelectorAll("button").forEach((e) => {
     e.hidden = "";
