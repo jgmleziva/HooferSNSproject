@@ -149,13 +149,16 @@ function showalltrips() {
 
           data2.forEach((t) => {
             const index = carinfo.findIndex(
-              (item) => item.carnum == t.data().carnumber
+              (item) =>
+                item.carnum == t.data().carnumber &&
+                item.tripID == t.data().tripid
             );
             carinfo[index].passengers.push({
               name: t.data().user,
               status: t.data().status,
             });
           });
+          console.log(carinfo);
           db.collection("trips")
             .get()
             .then((tripinf) => {
@@ -186,8 +189,9 @@ function showalltrips() {
                   });
                 }
               });
-              console.log(combinedInfo);
+
               let html = ``;
+              let index = 0;
               combinedInfo.forEach((info) => {
                 let driver = info.driver;
                 let carNumber = info.carNumber;
@@ -195,9 +199,6 @@ function showalltrips() {
                 let date = info.date;
                 let pickuplocation = info.pickuplocation;
                 let pickuptime = info.pickuptime;
-                let index = 0;
-
-                console.log(info);
                 html += `<tr class="row-highlight has-text-centered">
         <!-- Added row-highlight class here -->
         <td class="is-vcentered">${date}</td>
@@ -250,8 +251,10 @@ function showalltrips() {
               document
                 .querySelectorAll(".view-btn")
                 .forEach((button, index) => {
+                  console.log(index);
                   button.addEventListener("click", () => {
                     const passengers = combinedInfo[index].passengers;
+                    console.log(passengers, combinedInfo[index], index);
 
                     const passengerList =
                       document.getElementById("passengerList");
