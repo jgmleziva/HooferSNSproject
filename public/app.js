@@ -371,7 +371,7 @@ function configure_message_bar(message) {
 
     // clear the message bar
     r_e("message_bar").innerHTML = "";
-  }, 2000);
+  }, infinite);
 }
 
 // sign in users
@@ -403,11 +403,7 @@ r_e("signin_form").addEventListener("submit", (e) => {
 
     // Check if the username is in the list of admin users.
     if (adminUsers.includes(email)) {
-      configure_message_bar("You are signed in as an admin!");
-    } else if ((access_level = 0)) {
-      configure_message_bar("You are signed in as a user!");
-    } else {
-      configure_message_bar("You are signed in as a trip leader!");
+      configure_message_bar("You are signed in as an admin.");
     }
   }
 
