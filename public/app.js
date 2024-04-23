@@ -119,6 +119,176 @@ function showmytrips(userid) {
     });
 }
 
+function showalltrips() {
+  db.collection("cars")
+    .get()
+    .then((car) => {
+      let driversinfo = [];
+      let data = car.docs;
+      let carinfo = [];
+      data.forEach((d) => {
+        driversinfo.push({
+          driver: d.data().driver,
+          pickuptime: d.data().pickuptime,
+          pickuplocation: d.data().pickuplocation,
+          carnumber: d.data().carnumber,
+        });
+        carinfo.push({
+          tripID: d.data().tripID,
+          carnum: d.data().carnumber,
+          driver: d.data().driver,
+          pickuplocation: d.data().pickuplocation,
+          pickuptime: d.data().pickuptime,
+          passengers: [],
+        });
+      });
+      db.collection("tripsignups")
+        .get()
+        .then((info) => {
+          let data2 = info.docs;
+
+          data2.forEach((t) => {
+            const index = carinfo.findIndex(
+              (item) => item.carnum == t.data().carnumber
+            );
+            carinfo[index].passengers.push({
+              name: t.data().user,
+              status: t.data().status,
+            });
+          });
+          db.collection("trips")
+            .get()
+            .then((tripinf) => {
+              let tripdata = tripinf.docs;
+              let tripinfo = [];
+              tripdata.forEach((d) => {
+                tripinfo.push({
+                  tripID: d.data().tripID,
+                  date: d.data().date,
+                  eventName: d.data().eventName,
+                });
+              });
+              let combinedInfo = [];
+              carinfo.forEach((car) => {
+                const trip = tripinfo.find(
+                  (trip) => trip.tripID === car.tripID
+                );
+                if (trip) {
+                  combinedInfo.push({
+                    driver: car.driver,
+                    carNumber: car.carnum,
+                    passengers: car.passengers,
+                    tripID: car.tripID,
+                    tripName: trip.eventName,
+                    date: trip.date,
+                    pickuplocation: car.pickuplocation,
+                    pickuptime: car.pickuptime,
+                  });
+                }
+              });
+              console.log(combinedInfo);
+              let html = ``;
+              combinedInfo.forEach((info) => {
+                let driver = info.driver;
+                let carNumber = info.carNumber;
+                let eventName = info.tripName;
+                let date = info.date;
+                let pickuplocation = info.pickuplocation;
+                let pickuptime = info.pickuptime;
+                let index = 0;
+
+                console.log(info);
+                html += `<tr class="row-highlight has-text-centered">
+        <!-- Added row-highlight class here -->
+        <td class="is-vcentered">${date}</td>
+        <td class="is-vcentered">${eventName}</td>
+        <td class="is-vcentered">${driver}</td>
+        <td class="is-vcentered">${pickuplocation}</td>
+        <td class="is-vcentered">${pickuptime}</td>
+        <td class="is-vcentered">${carNumber}</td>
+        <td class="is-vcentered"><button
+        id="info${index}"
+        class="button view-btn"
+      >
+        View
+      </button></td>
+
+        
+
+       
+      </tr>`;
+                index++;
+              });
+              r_e("main").innerHTML = `<div class="p-5">
+          <section class="section">
+            <div class="container">
+              <h1 class="title has-text-centered">All Trips</h1>
+        
+        
+              <!-- Ski Trip Table -->
+              <div class="box">
+                <table class="table is-fullwidth has-text-centered">
+                  <thead>
+                    <tr>
+                      <th class="has-text-centered">Trip Date</th>
+                      <th class="has-text-centered">Event Name</th>
+                      <th class="has-text-centered">Driver</th>
+                      <th class="has-text-centered">Pickup Location</th>
+                      <th class="has-text-centered">Pickup Time</th>
+                      <th class="has-text-centered">Car #</th>
+                      <th class="has-text-centered">View Passengers</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  ${html}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>`;
+              document
+                .querySelectorAll(".view-btn")
+                .forEach((button, index) => {
+                  button.addEventListener("click", () => {
+                    const passengers = combinedInfo[index].passengers;
+
+                    const passengerList =
+                      document.getElementById("passengerList");
+                    passengerList.innerHTML = "";
+                    passengers.forEach((passenger) => {
+                      const listItem = document.createElement("li");
+                      listItem.textContent = `Name: ${passenger.name}, Status: ${passenger.status}`;
+                      passengerList.appendChild(listItem);
+                    });
+
+                    const modal = document.getElementById("passengerModal");
+                    modal.classList.add("is-active");
+                  });
+                });
+              document
+                .getElementById("closeModal")
+                .addEventListener("click", () => {
+                  const modal = document.getElementById("passengerModal");
+                  modal.classList.remove("is-active");
+                });
+              document
+                .getElementById("passmodal-bg")
+                .addEventListener("click", () => {
+                  const modal = document.getElementById("passengerModal");
+                  modal.classList.remove("is-active");
+                });
+              document
+                .getElementById("xcloseModal")
+                .addEventListener("click", () => {
+                  const modal = document.getElementById("passengerModal");
+                  modal.classList.remove("is-active");
+                });
+            });
+        });
+    });
+}
+
 // Show Sign up Modal
 r_e("signupbutton").addEventListener("click", () => {
   r_e("signup_modal").classList.add("is-active");
@@ -539,6 +709,11 @@ r_e("mytrips").addEventListener("click", () => {
   showmytrips(auth.currentUser.email);
 });
 
+// Show All Trips
+r_e("alltrips").addEventListener("click", () => {
+  showalltrips(auth.currentUser.email);
+});
+
 // Show Trip Roster
 r_e("triproster").addEventListener("click", () => {
   db.collection("users")
@@ -661,7 +836,6 @@ function moreDetails(tripid) {
             .where("tripid", "==", tripid)
             .get()
             .then((info) => {
-              let carHTML = [];
               let data2 = info.docs;
               let occupied = info.docs.length;
 
@@ -855,7 +1029,7 @@ function moreDetails(tripid) {
 
 function save_name(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-  event.preventDefault()
+  event.preventDefault();
   db.collection("users")
     .doc(id)
     .update({
@@ -865,7 +1039,7 @@ function save_name(ele, id) {
 }
 function save_phone(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-  event.preventDefault()
+  event.preventDefault();
   db.collection("users")
     .doc(id)
     .update({
@@ -875,7 +1049,7 @@ function save_phone(ele, id) {
 }
 function save_rechub(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-  event.preventDefault()
+  event.preventDefault();
   db.collection("users")
     .doc(id)
     .update({
@@ -885,7 +1059,7 @@ function save_rechub(ele, id) {
 }
 function save_address(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
-  event.preventDefault()
+  event.preventDefault();
   db.collection("users")
     .doc(id)
     .update({
@@ -899,7 +1073,7 @@ function save_address(ele, id) {
 function update_doc(ele, id) {
   ele.parentNode.querySelectorAll("input").forEach((e) => {
     e.type = "text";
-    event.preventDefault()
+    event.preventDefault();
   });
   // show the save button
   ele.parentNode.querySelectorAll("button").forEach((e) => {
