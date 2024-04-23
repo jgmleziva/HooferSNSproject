@@ -216,9 +216,26 @@
           </form>
           <button
             class="modal-close is-large"
-            id="siclose"
+            id="close"
             aria-label="close"
           ></button>
+        </div>
+      </div>
+
+      <!-- Show Passengers Modal -->
+      <div id="passengerModal" class="modal">
+        <div id="passmodal-bg" class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Passenger Information</p>
+            <button id="xcloseModal" class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <ul id="passengerList"></ul>
+          </section>
+          <footer class="modal-card-foot">
+            <button id="closeModal" class="button is-danger">Close</button>
+          </footer>
         </div>
       </div>
 
@@ -482,6 +499,7 @@
                   </a>
                   <div class="dropdown-content">
                     <a href="#" id="accountinfo">Account Info</a>
+                    <a href="#" id="alltrips">Trip Approvals</a>
                     <a href="#" id="mytrips">My Trips</a>
                     <a href="#" id="triproster">Trip Roster</a>
                     <a href="#" id="signoutbutton">Sign Out</a>
