@@ -371,7 +371,7 @@ function configure_message_bar(message) {
 
     // clear the message bar
     r_e("message_bar").innerHTML = "";
-  }, infinite);
+  }, 2000);
 }
 
 // sign in users
@@ -403,7 +403,11 @@ r_e("signin_form").addEventListener("submit", (e) => {
 
     // Check if the username is in the list of admin users.
     if (adminUsers.includes(email)) {
-      configure_message_bar("You are signed in as an admin.");
+      configure_message_bar("You are signed in as an admin!");
+    } else if ((access_level = 0)) {
+      configure_message_bar("You are signed in as a user!");
+    } else {
+      configure_message_bar("You are signed in as a trip leader!");
     }
   }
 
@@ -425,6 +429,16 @@ firebase.auth().onAuthStateChanged(function (user) {
     document.getElementById("html").style.overflow = "hidden";
   }
 });
+
+// Hide admin functionality
+// Trash - id = trash (list of nums), fa-solid fa-trash
+// Add event - id = addeventbtn
+if(r_e("email2").value != "admin@hoofersns.org") {
+  //configure_message_bar("You are signed in as a trip leader!");
+  document.getElementById("addeventbtn").classList.add("is-hidden");
+  //document.getElementsByClassName("fa-trash").classList.add("is-hidden");
+}
+
 
 // Sign out Users
 r_e("signoutbutton").addEventListener("click", () => {
