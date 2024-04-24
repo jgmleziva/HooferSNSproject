@@ -1735,15 +1735,13 @@ function deletesignup(tripid, user) {
 if(r_e("email2").value != "admin@hoofersns.org") {
   setTimeout (() => {
   document.getElementById("addeventbtn").classList.add("is-hidden");
-  var trashArray = document.getElementsByClassName("fa-solid fa-trash");
-  console.log(trashArray.length);
-  setTimeout (() => { 
-    for(var i = 0; i < trashArray.length; i++) {
-      console.log(trashArray[i]);
-      trashArray[i].classList.add("is-hidden");
+  const trashArray = document.getElementsByClassName("fa-solid fa-trash");
+  console.log(trashArray);
+  for(var i = 0; i < trashArray.length; i++) {
+    console.log(trashArray[i]);
+    trashArray[i].classList.add("is-hidden");
       }
-    },100);
-    console.log(trashArray.length);
+    console.log(trashArray);
     }, 300);
   }
   /*
