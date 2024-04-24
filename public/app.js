@@ -1737,6 +1737,7 @@ if(r_e("email2").value != "admin@hoofersns.org") {
   document.getElementById("addeventbtn").classList.add("is-hidden");
   const trashArray = document.getElementsByClassName("fa-solid fa-trash");
   console.log(trashArray);
+  document.getElementById("alltrips").classList.add("is-hidden");
   for(var i = 0; i < trashArray.length; i++) {
     console.log(trashArray[i]);
     trashArray[i].classList.add("is-hidden");
