@@ -430,15 +430,6 @@ firebase.auth().onAuthStateChanged(function (user) {
   }
 });
 
-// Hide admin functionality
-// Trash - id = trash (list of nums), fa-solid fa-trash
-// Add event - id = addeventbtn
-if(r_e("email2").value != "admin@hoofersns.org") {
-  //configure_message_bar("You are signed in as a trip leader!");
-  document.getElementById("addeventbtn").classList.add("is-hidden");
-  //document.getElementsByClassName("fa-trash").classList.add("is-hidden");
-}
-
 
 // Sign out Users
 r_e("signoutbutton").addEventListener("click", () => {
@@ -1739,3 +1730,31 @@ function deletesignup(tripid, user) {
         });
     });
 }
+
+// Hide admin functionality
+if(r_e("email2").value != "admin@hoofersns.org") {
+  setTimeout (() => {
+  document.getElementById("addeventbtn").classList.add("is-hidden");
+  var trashArray = document.getElementsByClassName("fa-solid fa-trash");
+  console.log(trashArray.length);
+  setTimeout (() => { 
+    for(var i = 0; i < trashArray.length; i++) {
+      console.log(trashArray[i]);
+      trashArray[i].classList.add("is-hidden");
+      }
+    },100);
+    console.log(trashArray.length);
+    }, 300);
+  }
+  /*
+  var trashArray = document.getElementsByClassName("fa-solid fa-trash");
+  for(var i = 0; i < trashArray.length; i++) {
+    trashArray[i].classList.add("is-hidden");
+  }
+  */
+  /*
+  trashArray = document.querySelectorAll('[id*="trash"]');
+  for(var i = 0; i < trashArray.length; i++) {
+    trashArray[i].classList.add("is-hidden");
+  }
+  */
