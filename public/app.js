@@ -119,6 +119,14 @@ function showmytrips(userid) {
     });
 }
 
+function updateModal(tripid, user) {
+  db.collection("tripsignups")
+    .where("tripid", "==", tripid)
+    .where("user", "==", user)
+    .get()
+    .then((snapshot) => {});
+}
+
 function showalltrips() {
   db.collection("cars")
     .get()
@@ -148,6 +156,12 @@ function showalltrips() {
           let data2 = info.docs;
 
           data2.forEach((t) => {
+            let notstatus = "";
+            if (t.data().status == "Pending") {
+              notstatus = "Approved";
+            } else {
+              notstatus = "Pending";
+            }
             const index = carinfo.findIndex(
               (item) =>
                 item.carnum == t.data().carnumber &&
@@ -156,6 +170,7 @@ function showalltrips() {
             carinfo[index].passengers.push({
               name: t.data().user,
               status: t.data().status,
+              notstatus: notstatus,
             });
           });
           console.log(carinfo);
@@ -254,14 +269,20 @@ function showalltrips() {
                   console.log(index);
                   button.addEventListener("click", () => {
                     const passengers = combinedInfo[index].passengers;
-                    console.log(passengers, combinedInfo[index], index);
+                    console.log(
+                      passengers,
+                      "hi",
+                      combinedInfo[index].tripID,
+                      "hi",
+                      index
+                    );
 
                     const passengerList =
                       document.getElementById("passengerList");
                     passengerList.innerHTML = "";
                     passengers.forEach((passenger) => {
                       const listItem = document.createElement("li");
-                      listItem.textContent = `Name: ${passenger.name}, Status: ${passenger.status}`;
+                      listItem.innerHTML = `<p> Name: ${passenger.name}, Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${combinedInfo[index].tripID}).where('user', '==', '${passenger.name}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${combinedInfo[index].tripID},'${passenger.name}')"> <option id='status1' value='${passenger.status}'>${passenger.status}</option><option id='status2' value='${passenger.notstatus}'>${passenger.notstatus}</option></select> </p>`;
                       passengerList.appendChild(listItem);
                     });
 
@@ -1733,11 +1754,14 @@ function deletesignup(tripid, user) {
 // Add event - id = addeventbtn
 
 function hideadminfunction() {
+  let adminfunctionality = document.querySelectorAll(".admin");
   if (auth.currentUser.email != "admin@hoofersns.org") {
-    let adminfunctionality = document.querySelectorAll(".admin");
-    console.log(adminfunctionality);
     adminfunctionality.forEach((functionality) => {
       functionality.classList.add("is-hidden");
+    });
+  } else {
+    adminfunctionality.forEach((functionality) => {
+      functionality.classList.remove("is-hidden");
     });
   }
 }
