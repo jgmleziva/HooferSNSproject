@@ -418,6 +418,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     r_e("signedout").classList.add("is-hidden");
     document.getElementById("html").style.overflow = "";
     showTrips();
+    hideadminfunction();
   } else {
     r_e("signedin").classList.add("is-hidden");
 
@@ -1296,12 +1297,13 @@ function showTrips() {
         </button>
       </td>
       <td class="${color} capacity-box ">${users}/${capacity}</td>
-      <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
+      <td><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
     </tr>`;
         }, 400);
       });
       setTimeout(() => {
         r_e("upcomingtrips").innerHTML = html;
+        hideadminfunction();
       }, 500);
     });
 }
@@ -1724,4 +1726,18 @@ function deletesignup(tripid, user) {
           showmytrips(user);
         });
     });
+}
+
+// Hide admin functionality
+// Trash - id = trash (list of nums), fa-solid fa-trash
+// Add event - id = addeventbtn
+
+function hideadminfunction() {
+  if (auth.currentUser.email != "admin@hoofersns.org") {
+    let adminfunctionality = document.querySelectorAll(".admin");
+    console.log(adminfunctionality);
+    adminfunctionality.forEach((functionality) => {
+      functionality.classList.add("is-hidden");
+    });
+  }
 }
