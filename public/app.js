@@ -85,9 +85,9 @@ function showmytrips(userid) {
   <section class="section">
     <div class="container">
       <h1 class="title has-text-centered">My Trips</h1>
-      <p>
-      **Please make sure to pay the full trip amount within 48 hours after signing up and before trip date or your reservation will be removed.
-      Venmo Link**
+      <p style= "text-align: center; color: red; ">
+      **Please make sure to pay the full trip amount within 48 hours after signing up and before the trip date, or your reservation will be removed.
+      <br>Click the Venmo icon at the bottom of the page to make your payment.**
       </p>
 
       <!-- Ski Trip Table -->
@@ -395,6 +395,27 @@ function configure_message_bar(message) {
   }, infinite);
 }
 
+auth.onAuthStateChanged((user) => {
+
+  // check if a user exists
+  if (user) {
+
+    configure_message_bar("Signed in as: " + user.email);
+
+    // add user's email address to the nav bar
+  
+    r_e("currentuser").innerHTML = auth.currentUser.email;
+
+    // configure nav bar
+
+    // show all recipes
+
+  //   show_recipes(auth.currentUser.email);
+  } else {
+
+  }
+});
+
 // sign in users
 r_e("signin_form").addEventListener("submit", (e) => {
   // prevent the page from auth refresh
@@ -413,23 +434,8 @@ r_e("signin_form").addEventListener("submit", (e) => {
 
     // hide the modal
     r_e("signin_modal").classList.remove("is-active");
+
   });
-
-  function checkUserRole(email) {
-    // Assume you have a way to retrieve the user role based on the username.
-    // This could be from a database, a server-side API call, or any other method.
-
-    // For demonstration purposes, let's assume there's a hardcoded list of admin users.
-    const adminUsers = "admin@hoofersns.org";
-
-    // Check if the username is in the list of admin users.
-    if (adminUsers.includes(email)) {
-      configure_message_bar("You are signed in as an admin.");
-    }
-  }
-
-  const loggedInUser = email;
-  const userRoleMessage = checkUserRole(loggedInUser);
 });
 
 firebase.auth().onAuthStateChanged(function (user) {
@@ -555,7 +561,7 @@ r_e("accountinfo").addEventListener("click", () => {
       <h1 class="title has-text-centered">Account Information</h1>
       <form>
         <div class= "field"> 
-          <label class = "label"> First Name: </label>
+          <label class = "label"> Name: </label>
         <div
         id="full_name"
         class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
