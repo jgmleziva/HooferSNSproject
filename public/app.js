@@ -559,7 +559,7 @@ r_e("accountinfo").addEventListener("click", () => {
   r_e("main").innerHTML = `<div class="p-5">
   <section class="section">
     <div class="container">
-      <h1 class="title has-text-centered">Account Information</h1>
+    <p class="title pl-6 has-text-centered">Account Information</p>
       <form>
         <div class= "field"> 
           <label class = "label"> Name: </label>
