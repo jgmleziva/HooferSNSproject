@@ -392,7 +392,7 @@ function configure_message_bar(message) {
 
     // clear the message bar
     r_e("message_bar").innerHTML = "";
-  }, infinite);
+  });
 }
 
 auth.onAuthStateChanged((user) => {
