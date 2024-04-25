@@ -87,7 +87,7 @@ function showmytrips(userid) {
       <h1 class="title has-text-centered">My Trips</h1>
       <p style= "text-align: center; color: red; ">
       **Please make sure to pay the full trip amount within 48 hours after signing up and before the trip date, or your reservation will be removed.
-      <br>Click the Venmo icon at the bottom of the page to make your payment if you haven't already paid.**
+      <br>Click the Venmo icon at the bottom of the page to make your payment.**
       </p>
 
       <!-- Ski Trip Table -->
