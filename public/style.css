@@ -24,6 +24,10 @@
   border-radius: 60px;
 }
 
+#Content {
+  position: relative;
+  min-height: 100vh;
+}
 .mycontent {
   width: 100%;
   position: absolute;
@@ -103,7 +107,7 @@
 }
 
 .footer {
-  background-color: green;
+  background-color: rgb(92, 0, 128);
   padding: 1rem;
 }
 .nav {

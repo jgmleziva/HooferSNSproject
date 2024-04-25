@@ -453,113 +453,123 @@
       </div>
 
       <!-- Signed In Content -->
+
       <div id="signedin">
-        <!-- Navbar -->
-        <div id="navbar">
-          <nav>
-            <ul class="nav">
-              <div
-                class="navbar-brand"
-                style="
-                  float: inline-start;
-                  padding-left: 20px;
-                  padding-bottom: 20px;
-                  padding-top: 20px;
-                "
-              >
-                <a href="index.html">
-                  <figure class="image is-96x96">
-                    <img
-                      src="logo.jpg"
-                      class="is-rounded"
-                      width="100px"
-                      alt=""
-                    />
-                  </figure>
-                </a>
-              </div>
-              <div
-                style="
-                  float: right;
-                  padding-right: 20px;
-                  padding-bottom: 20px;
-                  padding-top: 20px;
-                "
-              >
-                <div class="dropdown">
-                  <a href="#">
+        <div id="content-wrap" style="padding-bottom: 4rem">
+          <!-- Navbar -->
+          <div id="navbar">
+            <nav>
+              <ul class="nav">
+                <div
+                  class="navbar-brand"
+                  style="
+                    float: inline-start;
+                    padding-left: 20px;
+                    padding-bottom: 20px;
+                    padding-top: 20px;
+                  "
+                >
+                  <a href="index.html">
                     <figure class="image is-96x96">
                       <img
-                        src="profile.png"
+                        src="logo.jpg"
                         class="is-rounded"
                         width="100px"
                         alt=""
                       />
                     </figure>
                   </a>
-                  <div class="dropdown-content">
-                    <a href="#" id="accountinfo">Account Info</a>
-                    <a href="#" id="alltrips" class="admin">Trip Approvals</a>
-                    <a href="#" id="mytrips">My Trips</a>
-                    <a href="#" id="triproster" class="admin">Trip Roster</a>
-                    <a href="#" id="signoutbutton">Sign Out</a>
+                </div>
+                <div
+                  style="
+                    float: right;
+                    padding-right: 20px;
+                    padding-bottom: 20px;
+                    padding-top: 20px;
+                  "
+                >
+                  <div class="dropdown">
+                    <a href="#">
+                      <figure class="image is-96x96">
+                        <img
+                          src="profile.png"
+                          class="is-rounded"
+                          width="100px"
+                          alt=""
+                        />
+                      </figure>
+                    </a>
+                    <div class="dropdown-content">
+                      <a href="#" id="accountinfo">Account Info</a>
+                      <a href="#" id="alltrips" class="admin">Trip Approvals</a>
+                      <a href="#" id="mytrips">My Trips</a>
+                      <a href="#" id="triproster" class="admin">Trip Roster</a>
+                      <a href="#" id="signoutbutton">Sign Out</a>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <h1
-                style="text-align: center; float: center"
-                class="has-text-weight-bold"
-              >
-                Ski and Snowboard Local Trips
-              </h1>
-            </ul>
-          </nav>
-        </div>
-        <div
-          id="message_bar"
-          class="is-hidden has-text-centered has-background-info-light"
-        ></div>
+                <h1
+                  style="text-align: center; float: center"
+                  class="has-text-weight-bold"
+                >
+                  Ski and Snowboard Local Trips
+                </h1>
+              </ul>
+            </nav>
+          </div>
+          <div
+            id="message_bar"
+            class="is-hidden has-text-centered has-background-info-light"
+          ></div>
 
-        <!-- Main -->
-        <div id="main" class="p-5">
-          <section class="section">
-            <div class="container">
-              <div id="tabletitle" class="columns m-0">
-                <div class="column">
-                  <p class="title pl-6">Upcoming Trips</p>
+          <!-- Main -->
+          <div
+            id="main"
+            class="p-5"
+            style="padding-bottom: 4rem; margin-bottom: 2rem"
+          >
+            <section class="section">
+              <div class="container">
+                <div id="tabletitle" class="columns m-0">
+                  <div class="column">
+                    <p class="title pl-6">Upcoming Trips</p>
+                  </div>
+                  <div class="column has-text-right pr-5">
+                    <button
+                      id="addeventbtn"
+                      class="button is-small px-6 py-3 is-success is-rounded admin"
+                    >
+                      Add Event
+                    </button>
+                  </div>
                 </div>
-                <div class="column has-text-right pr-5">
-                  <button
-                    id="addeventbtn"
-                    class="button is-small px-6 py-3 is-success is-rounded admin"
-                  >
-                    Add Event
-                  </button>
+                <!-- Ski Trip Table -->
+                <div class="box">
+                  <table class="table is-fullwidth has-text-centered">
+                    <thead>
+                      <tr>
+                        <th class="has-text-centered">Event Name</th>
+                        <th class="has-text-centered">Price</th>
+                        <th class="has-text-centered">Location</th>
+                        <th class="has-text-centered">Date</th>
+                        <th class="has-text-centered">Time</th>
+                        <th class="has-text-centered">Action</th>
+                        <th class="has-text-centered">Capacity</th>
+                      </tr>
+                    </thead>
+                    <tbody id="upcomingtrips"></tbody>
+                  </table>
                 </div>
               </div>
-              <!-- Ski Trip Table -->
-              <div class="box">
-                <table class="table is-fullwidth has-text-centered">
-                  <thead>
-                    <tr>
-                      <th class="has-text-centered">Event Name</th>
-                      <th class="has-text-centered">Price</th>
-                      <th class="has-text-centered">Location</th>
-                      <th class="has-text-centered">Date</th>
-                      <th class="has-text-centered">Time</th>
-                      <th class="has-text-centered">Action</th>
-                      <th class="has-text-centered">Capacity</th>
-                    </tr>
-                  </thead>
-                  <tbody id="upcomingtrips"></tbody>
-                </table>
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
-
         <!-- Footer -->
-        <div id="footer" class="navbar has-background-grey p-5">
+        <div
+          id="footer"
+          class="navbar has-background-grey p-5"
+          style="position: absolute; bottom: 0; width: 100%; margin-top: 1rem"
+        >
           <div class="navbar-start">
             <p class="has-text-black m-auto is-vcentered">
               Copyright &copy; 2024
