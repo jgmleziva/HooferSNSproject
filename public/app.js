@@ -1315,7 +1315,7 @@ function showTrips() {
 r_e("addTrip_Submit").addEventListener("click", (e) => {
   // prevent the page from auth refresh
   e.preventDefault();
-
+  addTripAlert();
   submitTrip();
 });
 
@@ -1731,10 +1731,17 @@ function deletesignup(tripid, user) {
     });
 }
 
+
+// Function to add an alert for a trip
+function addTripAlert() {
+    alert("Trip Added!");
+}
+
+
 // Hide admin functionality
 if(r_e("email2").value != "admin@hoofersns.org") {
   setTimeout (() => {
-  document.getElementById("addeventbtn").classList.add("is-hidden");
+  document.getElementById("addeventbtn").classList.remove("is-hidden");
   const trashArray = document.getElementsByClassName("fa-solid fa-trash");
   console.log(trashArray);
   document.getElementById("alltrips").classList.add("is-hidden");
