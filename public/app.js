@@ -21,49 +21,44 @@ function showmodal(tripid) {
   });
 }
 
-function showmytrips(userid) {
-  db.collection("tripsignups")
-    .where("user", "==", userid)
-    .get()
-    .then((snapshot) => {
-      let mysignups = snapshot.docs;
-      let html = ``;
-      mysignups.forEach((signup) => {
-        let mycar = signup.data().carnumber;
-        let status = signup.data().status;
-        let pickuptime = signup.data().pickuptime;
-        let skis = signup.data().skis;
-        let date = "";
-        let location = "";
-        let pickuplocation = "";
-        let price = "";
-        let driver = "";
-        let tripid = signup.data().tripid;
-        let eventName = "";
-        db.collection("cars")
-          .where("tripID", "==", tripid)
-          .where("carnumber", "==", parseInt(mycar))
-          .get()
-          .then((snapshot) => {
-            let cars = snapshot.docs;
-            pickuplocation = cars[0].data().pickuplocation;
-            driver = cars[0].data().driver;
-            pickuptime = cars[0].data().pickuptime;
-          });
-        db.collection("trips")
-          .where("tripID", "==", tripid)
-          .get()
-          .then((snapshot) => {
-            let trip = snapshot.docs;
-            date = trip[0].data().date;
-            eventName = trip[0].data().eventName;
-            location = trip[0].data().location;
-            price = trip[0].data().price;
-            startTime = trip[0].data().starttime;
-            endTime = trip[0].data().endtime;
-          });
-        setTimeout(() => {
-          html += `<tr class="row-highlight">
+async function showmytrips(userid) {
+  try {
+    const snapshot = await db
+      .collection("tripsignups")
+      .where("user", "==", userid)
+      .get();
+    const mysignups = snapshot.docs;
+    let html = ``;
+
+    for (const signup of mysignups) {
+      const mycar = signup.data().carnumber;
+      const status = signup.data().status;
+      const skis = signup.data().skis;
+      const tripid = signup.data().tripid;
+
+      const carsSnapshot = await db
+        .collection("cars")
+        .where("tripID", "==", tripid)
+        .where("carnumber", "==", parseInt(mycar))
+        .get();
+      const cars = carsSnapshot.docs;
+      const pickuplocation = cars[0].data().pickuplocation;
+      const driver = cars[0].data().driver;
+      const pickuptime = cars[0].data().pickuptime;
+
+      const tripSnapshot = await db
+        .collection("trips")
+        .where("tripID", "==", tripid)
+        .get();
+      const trip = tripSnapshot.docs;
+      const date = trip[0].data().date;
+      const eventName = trip[0].data().eventName;
+      const location = trip[0].data().location;
+      const price = trip[0].data().price;
+      const startTime = trip[0].data().starttime;
+      const endTime = trip[0].data().endtime;
+
+      html += `<tr class="row-highlight">
         <!-- Added row-highlight class here -->
         <td>${date}</td>
         <td>${eventName}</td>
@@ -74,49 +69,47 @@ function showmytrips(userid) {
         <td>${pickuptime}</td>
         <td>${skis}</td>
         <td>$${price}</td>
-        
         <td class="capacity-box capacity-yellow">${status}</td>
         <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trashsignup${tripid}" onclick="deletesignup(${tripid}, '${userid}')"></i></td>
       </tr>`;
-        }, 400);
-      });
-      setTimeout(() => {
-        r_e("main").innerHTML = `<div class="p-5">
-  <section class="section">
-    <div class="container">
-      <p class="title pl-6 has-text-centered">My Trips</p>
-      <p style= "text-align: center; color: red; ">
-      **Please make sure to pay the full trip amount within 48 hours after signing up and before the trip date, or your reservation will be removed.
-      <br>Click the Venmo icon at the bottom of the page to make your payment.**
-      </p>
+    }
 
-      <!-- Ski Trip Table -->
-      <div class="box">
-        <table class="table is-fullwidth has-text-centered">
-          <thead>
-            <tr>
-              <th class="has-text-centered">Trip Date</th>
-              <th class="has-text-centered">Event Name</th>
-              <th class="has-text-centered">Location</th>
-              <th class="has-text-centered">Event Time</th>
-              <th class="has-text-centered">Driver</th>
-              <th class="has-text-centered">Pickup Location</th>
-              <th class="has-text-centered">Pickup Time</th>
-              <th class="has-text-centered">Skis</th>
-              <th class="has-text-centered">Price</th>
-              <th class="has-text-centered">Payment Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${html}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-</div>`;
-      }, 500);
-    });
+    document.getElementById("main").innerHTML = `<div class="p-5">
+      <section class="section">
+        <div class="container">
+          <p class="title pl-6 has-text-centered">My Trips</p>
+          <p style= "text-align: center; color: red; ">
+          **Please make sure to pay the full trip amount within 48 hours after signing up and before the trip date, or your reservation will be removed.
+          <br>Click the Venmo icon at the bottom of the page to make your payment.**
+          </p>
+          <!-- Ski Trip Table -->
+          <div class="box">
+            <table class="table is-fullwidth has-text-centered">
+              <thead>
+                <tr>
+                  <th class="has-text-centered">Trip Date</th>
+                  <th class="has-text-centered">Event Name</th>
+                  <th class="has-text-centered">Location</th>
+                  <th class="has-text-centered">Event Time</th>
+                  <th class="has-text-centered">Driver</th>
+                  <th class="has-text-centered">Pickup Location</th>
+                  <th class="has-text-centered">Pickup Time</th>
+                  <th class="has-text-centered">Skis</th>
+                  <th class="has-text-centered">Price</th>
+                  <th class="has-text-centered">Payment Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${html}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>`;
+  } catch (error) {
+    console.error("Error fetching trips:", error);
+  }
 }
 
 function updateModal(tripid, user) {
@@ -126,95 +119,91 @@ function updateModal(tripid, user) {
     .get()
     .then((snapshot) => {});
 }
+async function showalltrips() {
+  try {
+    const carSnapshot = await db.collection("cars").get();
+    const driversinfo = [];
+    const data = carSnapshot.docs;
+    const carinfo = [];
 
-function showalltrips() {
-  db.collection("cars")
-    .get()
-    .then((car) => {
-      let driversinfo = [];
-      let data = car.docs;
-      let carinfo = [];
-      data.forEach((d) => {
-        driversinfo.push({
-          driver: d.data().driver,
-          pickuptime: d.data().pickuptime,
-          pickuplocation: d.data().pickuplocation,
-          carnumber: d.data().carnumber,
-        });
-        carinfo.push({
-          tripID: d.data().tripID,
-          carnum: d.data().carnumber,
-          driver: d.data().driver,
-          pickuplocation: d.data().pickuplocation,
-          pickuptime: d.data().pickuptime,
-          passengers: [],
-        });
+    data.forEach((d) => {
+      driversinfo.push({
+        driver: d.data().driver,
+        pickuptime: d.data().pickuptime,
+        pickuplocation: d.data().pickuplocation,
+        carnumber: d.data().carnumber,
       });
-      db.collection("tripsignups")
-        .get()
-        .then((info) => {
-          let data2 = info.docs;
+      carinfo.push({
+        tripID: d.data().tripID,
+        carnum: d.data().carnumber,
+        driver: d.data().driver,
+        pickuplocation: d.data().pickuplocation,
+        pickuptime: d.data().pickuptime,
+        passengers: [],
+      });
+    });
 
-          data2.forEach((t) => {
-            let notstatus = "";
-            if (t.data().status == "Pending") {
-              notstatus = "Approved";
-            } else {
-              notstatus = "Pending";
-            }
-            const index = carinfo.findIndex(
-              (item) =>
-                item.carnum == t.data().carnumber &&
-                item.tripID == t.data().tripid
-            );
-            carinfo[index].passengers.push({
-              name: t.data().user,
-              status: t.data().status,
-              notstatus: notstatus,
-            });
-          });
-          console.log(carinfo);
-          db.collection("trips")
-            .get()
-            .then((tripinf) => {
-              let tripdata = tripinf.docs;
-              let tripinfo = [];
-              tripdata.forEach((d) => {
-                tripinfo.push({
-                  tripID: d.data().tripID,
-                  date: d.data().date,
-                  eventName: d.data().eventName,
-                });
-              });
-              let combinedInfo = [];
-              carinfo.forEach((car) => {
-                const trip = tripinfo.find(
-                  (trip) => trip.tripID === car.tripID
-                );
-                if (trip) {
-                  combinedInfo.push({
-                    driver: car.driver,
-                    carNumber: car.carnum,
-                    passengers: car.passengers,
-                    tripID: car.tripID,
-                    tripName: trip.eventName,
-                    date: trip.date,
-                    pickuplocation: car.pickuplocation,
-                    pickuptime: car.pickuptime,
-                  });
-                }
-              });
+    const infoSnapshot = await db.collection("tripsignups").get();
+    const data2 = infoSnapshot.docs;
 
-              let html = ``;
-              let index = 0;
-              combinedInfo.forEach((info) => {
-                let driver = info.driver;
-                let carNumber = info.carNumber;
-                let eventName = info.tripName;
-                let date = info.date;
-                let pickuplocation = info.pickuplocation;
-                let pickuptime = info.pickuptime;
-                html += `<tr class="row-highlight has-text-centered">
+    data2.forEach((t) => {
+      let notstatus = "";
+      if (t.data().status == "Pending") {
+        notstatus = "Approved";
+      } else {
+        notstatus = "Pending";
+      }
+      const index = carinfo.findIndex(
+        (item) =>
+          item.carnum == t.data().carnumber && item.tripID == t.data().tripid
+      );
+      carinfo[index].passengers.push({
+        name: t.data().user,
+        status: t.data().status,
+        notstatus: notstatus,
+      });
+    });
+
+    console.log(carinfo);
+    const tripinf = await db.collection("trips").get();
+    const tripdata = tripinf.docs;
+    const tripinfo = [];
+
+    tripdata.forEach((d) => {
+      tripinfo.push({
+        tripID: d.data().tripID,
+        date: d.data().date,
+        eventName: d.data().eventName,
+      });
+    });
+
+    const combinedInfo = [];
+    carinfo.forEach((car) => {
+      const trip = tripinfo.find((trip) => trip.tripID === car.tripID);
+      if (trip) {
+        combinedInfo.push({
+          driver: car.driver,
+          carNumber: car.carnum,
+          passengers: car.passengers,
+          tripID: car.tripID,
+          tripName: trip.eventName,
+          date: trip.date,
+          pickuplocation: car.pickuplocation,
+          pickuptime: car.pickuptime,
+        });
+      }
+    });
+
+    let html = ``;
+    let index = 0;
+    combinedInfo.forEach((info) => {
+      let driver = info.driver;
+      let carNumber = info.carNumber;
+      let eventName = info.tripName;
+      let date = info.date;
+      let pickuplocation = info.pickuplocation;
+      let pickuptime = info.pickuptime;
+      html += `<tr class="row-highlight has-text-centered">
         <!-- Added row-highlight class here -->
         <td class="is-vcentered">${date}</td>
         <td class="is-vcentered">${eventName}</td>
@@ -228,89 +217,71 @@ function showalltrips() {
       >
         View
       </button></td>
-
-        
-
-       
       </tr>`;
-                index++;
-              });
-              r_e("main").innerHTML = `<div class="p-5">
-          <section class="section">
-            <div class="container">
-            <p class="title pl-6 has-text-centered">All Trips</p>
-        
-        
-              <!-- Ski Trip Table -->
-              <div class="box">
-                <table class="table is-fullwidth has-text-centered">
-                  <thead>
-                    <tr>
-                      <th class="has-text-centered">Trip Date</th>
-                      <th class="has-text-centered">Event Name</th>
-                      <th class="has-text-centered">Driver</th>
-                      <th class="has-text-centered">Pickup Location</th>
-                      <th class="has-text-centered">Pickup Time</th>
-                      <th class="has-text-centered">Car #</th>
-                      <th class="has-text-centered">View Passengers</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  ${html}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-        </div>`;
-              document
-                .querySelectorAll(".view-btn")
-                .forEach((button, index) => {
-                  console.log(index);
-                  button.addEventListener("click", () => {
-                    const passengers = combinedInfo[index].passengers;
-                    console.log(
-                      passengers,
-                      "hi",
-                      combinedInfo[index].tripID,
-                      "hi",
-                      index
-                    );
-
-                    const passengerList =
-                      document.getElementById("passengerList");
-                    passengerList.innerHTML = "";
-                    passengers.forEach((passenger) => {
-                      const listItem = document.createElement("li");
-                      listItem.innerHTML = `<p> Name: ${passenger.name}, Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${combinedInfo[index].tripID}).where('user', '==', '${passenger.name}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${combinedInfo[index].tripID},'${passenger.name}')"> <option id='status1' value='${passenger.status}'>${passenger.status}</option><option id='status2' value='${passenger.notstatus}'>${passenger.notstatus}</option></select> </p>`;
-                      passengerList.appendChild(listItem);
-                    });
-
-                    const modal = document.getElementById("passengerModal");
-                    modal.classList.add("is-active");
-                  });
-                });
-              document
-                .getElementById("closeModal")
-                .addEventListener("click", () => {
-                  const modal = document.getElementById("passengerModal");
-                  modal.classList.remove("is-active");
-                });
-              document
-                .getElementById("passmodal-bg")
-                .addEventListener("click", () => {
-                  const modal = document.getElementById("passengerModal");
-                  modal.classList.remove("is-active");
-                });
-              document
-                .getElementById("xcloseModal")
-                .addEventListener("click", () => {
-                  const modal = document.getElementById("passengerModal");
-                  modal.classList.remove("is-active");
-                });
-            });
-        });
+      index++;
     });
+
+    document.getElementById("main").innerHTML = `<div class="p-5">
+      <section class="section">
+        <div class="container">
+        <p class="title pl-6 has-text-centered">All Trips</p>
+          <!-- Ski Trip Table -->
+          <div class="box">
+            <table class="table is-fullwidth has-text-centered">
+              <thead>
+                <tr>
+                  <th class="has-text-centered">Trip Date</th>
+                  <th class="has-text-centered">Event Name</th>
+                  <th class="has-text-centered">Driver</th>
+                  <th class="has-text-centered">Pickup Location</th>
+                  <th class="has-text-centered">Pickup Time</th>
+                  <th class="has-text-centered">Car #</th>
+                  <th class="has-text-centered">View Passengers</th>
+                </tr>
+              </thead>
+              <tbody>
+              ${html}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>`;
+
+    document.querySelectorAll(".view-btn").forEach((button, index) => {
+      button.addEventListener("click", () => {
+        const passengers = combinedInfo[index].passengers;
+
+        const passengerList = document.getElementById("passengerList");
+        passengerList.innerHTML = "";
+        passengers.forEach((passenger) => {
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `<p> Name: ${passenger.name}, Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${combinedInfo[index].tripID}).where('user', '==', '${passenger.name}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${combinedInfo[index].tripID},'${passenger.name}')"> <option id='status1' value='${passenger.status}'>${passenger.status}</option><option id='status2' value='${passenger.notstatus}'>${passenger.notstatus}</option></select> </p>`;
+          passengerList.appendChild(listItem);
+        });
+
+        const modal = document.getElementById("passengerModal");
+        modal.classList.add("is-active");
+      });
+    });
+
+    document.getElementById("closeModal").addEventListener("click", () => {
+      const modal = document.getElementById("passengerModal");
+      modal.classList.remove("is-active");
+    });
+
+    document.getElementById("passmodal-bg").addEventListener("click", () => {
+      const modal = document.getElementById("passengerModal");
+      modal.classList.remove("is-active");
+    });
+
+    document.getElementById("xcloseModal").addEventListener("click", () => {
+      const modal = document.getElementById("passengerModal");
+      modal.classList.remove("is-active");
+    });
+  } catch (error) {
+    console.error("Error fetching trips:", error);
+  }
 }
 
 // Show Sign up Modal
@@ -555,181 +526,155 @@ r_e("signoutbutton").addEventListener("click", () => {
 // });
 
 // Show Account Info
-r_e("accountinfo").addEventListener("click", () => {
+// Define async functions to fetch user information
+async function fetchUserFullName() {
+  const res = await db
+    .collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get();
+  const data = res.docs;
+
+  let html = ``;
+  data.forEach((d) => {
+    html += `<p id="${d.id}">${d.data().name}
+          <input type="hidden" value="${d.data().name}" />
+          <button hidden="hidden" onclick="save_name(this, '${
+            d.id
+          }')">Save</button>
+          <button onclick="update_doc(this, '${
+            d.id
+          }')" class="is-pulled-right button is-info is-small">Update</button>
+      </p>`;
+  });
+
+  document.querySelector("#full_name").innerHTML += html;
+}
+
+async function fetchUserEmailAddress() {
+  const res = await db
+    .collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get();
+  const data = res.docs;
+
+  let html = ``;
+  data.forEach((d) => {
+    html += `<p id="${d.id}">${d.data().email}</p>`;
+  });
+
+  document.querySelector("#email_address").innerHTML += html;
+}
+
+async function fetchUserPhoneNumber() {
+  const res = await db
+    .collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get();
+  const data = res.docs;
+
+  let html = ``;
+  data.forEach((d) => {
+    html += `<p id="${d.id}">${d.data().phone}
+          <input type="hidden" value="${d.data().phone}" />
+          <button hidden="hidden" onclick="save_phone(this, '${
+            d.id
+          }')">Save</button>
+          <button onclick="update_doc(this, '${
+            d.id
+          }')" class="is-pulled-right button is-info is-small">Update</button>
+      </p>`;
+  });
+
+  document.querySelector("#phone_number").innerHTML += html;
+}
+
+async function fetchUserRecHubUsername() {
+  const res = await db
+    .collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get();
+  const data = res.docs;
+
+  let html = ``;
+  data.forEach((d) => {
+    html += `<p id="${d.id}">${d.data().rechub_username}
+          <input type="hidden" value="${d.data().rechub_username}" />
+          <button hidden="hidden" onclick="save_rechub(this, '${
+            d.id
+          }')">Save</button>
+          <button onclick="update_doc(this, '${
+            d.id
+          }')" class="is-pulled-right button is-info is-small">Update</button>
+      </p>`;
+  });
+
+  document.querySelector("#rechub").innerHTML += html;
+}
+
+async function fetchUserAddress() {
+  const res = await db
+    .collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get();
+  const data = res.docs;
+
+  let html = ``;
+  data.forEach((d) => {
+    html += `<p id="${d.id}">${d.data().address}
+          <input type="hidden" value="${d.data().address}" />
+          <button hidden="hidden" onclick="save_address(this, '${
+            d.id
+          }')">Save</button>
+          <button onclick="update_doc(this, '${
+            d.id
+          }')" class="is-pulled-right button is-info is-small">Update</button>
+      </p>`;
+  });
+
+  document.querySelector("#user_address").innerHTML += html;
+}
+
+async function getallinfo() {
+  fetchUserFullName();
+  fetchUserEmailAddress();
+  fetchUserPhoneNumber();
+  fetchUserRecHubUsername();
+  fetchUserAddress();
+}
+// Event listener
+r_e("accountinfo").addEventListener("click", async () => {
   r_e("main").innerHTML = `<div class="p-5">
-  <section class="section">
-    <div class="container">
-    <p class="title pl-6 has-text-centered">Account Information</p>
-      <form>
-        <div class= "field"> 
-          <label class = "label"> Name: </label>
-        <div
-        id="full_name"
-        class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
-        </div>
-        <div class= "field"> 
-          <label class = "label"> Email Address: </label>
-            <div id="email_address"
-              class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
-            </div>
-          </div>    
-                <div class= "field"> 
-                    <label class = "label"> Phone # </label>
-                    <div id="phone_number"
-                    class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
+      <section class="section">
+          <div class="container">
+              <p class="title pl-6 has-text-centered">Account Information</p>
+              <form>
+                  <div class="field"> 
+                      <label class="label"> Name: </label>
+                      <div id="full_name" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
                   </div>
-                    </div>  
-                        <div class= "field"> 
-                            <label class = "label"> RecHub Username: </label>
-                            <div id="rechub"
-                            class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
-                          </div>
-                            </div>     
-            <div class= "field"> 
-                <label class = "label"> Address: </label>
-                <div id="user_address"
-                class="has-background-lightgray p-4 m-3 has-background-grey-lighter">
-              </div>
-                </div>
-        </form>
-    </div>
-    </div>
-    </div>
-  </section>
-</div>`;
-  function user_full_name() {
-    db.collection("users")
-      .where("email", "==", auth.currentUser.email)
-      .get()
-      .then((res) => {
-        let data = res.docs;
+                  <div class="field"> 
+                      <label class="label"> Email Address: </label>
+                      <div id="email_address" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
+                  </div>
+                  <div class="field"> 
+                      <label class="label"> Phone # </label>
+                      <div id="phone_number" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
+                  </div>
+                  <div class="field"> 
+                      <label class="label"> RecHub Username: </label>
+                      <div id="rechub" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
+                  </div>
+                  <div class="field"> 
+                      <label class="label"> Address: </label>
+                      <div id="user_address" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
+                  </div>
+              </form>
+          </div>
+      </section>
+  </div>`;
 
-        let html = ``;
-        data.forEach((d) => {
-          html += `<p id="${d.id}">${d.data().name}
-            
-            <input type="hidden" value = "${d.data().name}" />
-    
-            <button hidden="hidden" onclick= "save_name(this, '${
-              d.id
-            }' )">Save</button>
-            
-            <button onclick="update_doc(this, '${
-              d.id
-            }' )" class="is-pulled-right button is-info is-small">Update</button>
-            </p>`;
-        });
-
-        // append the html variable to the document
-        document.querySelector("#full_name").innerHTML += html;
-      });
-  }
-
-  function user_email_address() {
-    db.collection("users")
-      .where("email", "==", auth.currentUser.email)
-      .get()
-      .then((res) => {
-        let data = res.docs;
-
-        let html = ``;
-        data.forEach((d) => {
-          html += `<p id="${d.id}">${d.data().email}
-        </p>`;
-        });
-
-        // append the html variable to the document
-        document.querySelector("#email_address").innerHTML += html;
-      });
-  }
-  function user_phone_number() {
-    db.collection("users")
-      .where("email", "==", auth.currentUser.email)
-      .get()
-      .then((res) => {
-        let data = res.docs;
-
-        let html = ``;
-        data.forEach((d) => {
-          html += `<p id="${d.id}">${d.data().phone}
-        
-        <input type="hidden" value = "${d.data().phone}" />
-
-        <button hidden="hidden" onclick= "save_phone(this, '${
-          d.id
-        }' )">Save</button>
-        
-        <button onclick="update_doc(this, '${
-          d.id
-        }' )" class="is-pulled-right button is-info is-small">Update</button>
-        </p>`;
-        });
-
-        // append the html variable to the document
-        document.querySelector("#phone_number").innerHTML += html;
-      });
-  }
-  function user_rechub_username() {
-    db.collection("users")
-      .where("email", "==", auth.currentUser.email)
-      .get()
-      .then((res) => {
-        let data = res.docs;
-
-        let html = ``;
-        data.forEach((d) => {
-          html += `<p id="${d.id}">${d.data().rechub_username}
-        
-        <input type="hidden" value = "${d.data().rechub_username}" />
-
-        <button hidden="hidden" onclick= "save_rechub(this, '${
-          d.id
-        }' )">Save</button>
-        
-        <button onclick="update_doc(this, '${
-          d.id
-        }' )" class="is-pulled-right button is-info is-small">Update</button>
-        </p>`;
-        });
-
-        // append the html variable to the document
-        document.querySelector("#rechub").innerHTML += html;
-      });
-  }
-
-  function user_address() {
-    db.collection("users")
-      .where("email", "==", auth.currentUser.email)
-      .get()
-      .then((res) => {
-        let data = res.docs;
-
-        let html = ``;
-        data.forEach((d) => {
-          html += `<p id="${d.id}">${d.data().address}
-        
-        <input type="hidden" value = "${d.data().address}" />
-
-        <button hidden="hidden" onclick= "save_address(this, '${
-          d.id
-        }' )">Save</button>
-        
-        <button onclick="update_doc(this, '${
-          d.id
-        }' )" class="is-pulled-right button is-info is-small">Update</button>
-        </p>`;
-        });
-
-        // append the html variable to the document
-        document.querySelector("#user_address").innerHTML += html;
-      });
-  }
-
-  user_full_name();
-  user_email_address();
-  user_phone_number();
-  user_rechub_username();
-  user_address();
+  // Call the async functions to fetch user information
+  await getallinfo();
 });
 
 // Show My Trips
@@ -819,169 +764,160 @@ function removeContent() {
 
 // Get Upcoming Trips
 
-function moreDetails(tripid) {
-  db.collection("trips")
-    .where("tripID", "==", tripid)
-    .get()
-    .then((trip) => {
-      let signupoption = `<button
+async function moreDetails(tripid) {
+  try {
+    const tripSnapshot = await db
+      .collection("trips")
+      .where("tripID", "==", tripid)
+      .get();
+    const tripdata = tripSnapshot.docs;
+
+    let signupoption = `<button
       class="button is-success mt-2"
       id="su${tripid}"
       onclick="showmodal(${tripid})"
     >
       Sign Up
     </button>`;
-      let optionshtml = ``;
-      let tripdata = trip.docs;
-      let eventName = tripdata[0].data().eventName;
-      let capacity = tripdata[0].data().numberofcars * 4;
-      let location = tripdata[0].data().location;
-      let date = tripdata[0].data().date;
-      let starttime = tripdata[0].data().starttime;
-      let endtime = tripdata[0].data().endtime;
-      let description = tripdata[0].data().description;
-      let numberofcars = tripdata[0].data().numberofcars;
-      let price = tripdata[0].data().price;
-      let carColumnsHTML = "";
-      db.collection("cars")
-        .where("tripID", "==", tripid)
-        .get()
-        .then((car) => {
-          let driversinfo = [];
-          let data = car.docs;
-          let carinfo = [];
-          data.forEach((d) => {
-            driversinfo.push({
-              driver: d.data().driver,
-              pickuptime: d.data().pickuptime,
-              pickuplocation: d.data().pickuplocation,
-              carnumber: d.data().carnumber,
-            });
-            carinfo.push({ carnum: d.data().carnumber, passengers: [] });
-          });
+    let optionshtml = ``;
 
-          db.collection("tripsignups")
-            .where("tripid", "==", tripid)
-            .get()
-            .then((info) => {
-              let data2 = info.docs;
-              let occupied = info.docs.length;
+    const eventName = tripdata[0].data().eventName;
+    const capacity = tripdata[0].data().numberofcars * 4;
+    const location = tripdata[0].data().location;
+    const date = tripdata[0].data().date;
+    const starttime = tripdata[0].data().starttime;
+    const endtime = tripdata[0].data().endtime;
+    const description = tripdata[0].data().description;
+    const numberofcars = tripdata[0].data().numberofcars;
+    const price = tripdata[0].data().price;
+    let carColumnsHTML = "";
 
-              data2.forEach((t) => {
-                const index = carinfo.findIndex(
-                  (item) => item.carnum == t.data().carnumber
-                );
-                carinfo[index].passengers.push(t.data().user);
-              });
-              for (let i = 1; i <= numberofcars; i++) {
-                const index = carinfo.findIndex((item) => item.carnum == i);
+    const carSnapshot = await db
+      .collection("cars")
+      .where("tripID", "==", tripid)
+      .get();
+    const driversinfo = [];
+    const data = carSnapshot.docs;
+    const carinfo = [];
 
-                let passengernum = carinfo[index].passengers.length;
-                if ((i - 1) % 3 === 0) {
-                  carColumnsHTML += `<div class="columns is-centered">`;
-                }
-                if (passengernum < 4) {
-                  optionshtml += `<option value="${carinfo[index].carnum}">${carinfo[index].carnum}</option>`;
-                }
-                console.log(occupied);
-                console.log(capacity);
-                if (occupied == capacity) {
-                  signupoption = `<button
-                  class="button is-success mt-2"
-                  id="su${tripid}"
-                  )"
-                >
-                  The trip is full!
-                </button>`;
-                  console.log(signupoption);
-                }
-                let driver = driversinfo[index].driver;
-                let plocation = driversinfo[index].pickuplocation;
-                let ptime = driversinfo[index].pickuptime;
-                // console.log("driverinfo:", driversinfo);
-                // console.log(carinfo[index].carnum);
-                let carHTML = `
+    data.forEach((d) => {
+      driversinfo.push({
+        driver: d.data().driver,
+        pickuptime: d.data().pickuptime,
+        pickuplocation: d.data().pickuplocation,
+        carnumber: d.data().carnumber,
+      });
+      carinfo.push({ carnum: d.data().carnumber, passengers: [] });
+    });
+
+    const infoSnapshot = await db
+      .collection("tripsignups")
+      .where("tripid", "==", tripid)
+      .get();
+    const data2 = infoSnapshot.docs;
+    const occupied = data2.length;
+
+    data2.forEach((t) => {
+      const index = carinfo.findIndex(
+        (item) => item.carnum == t.data().carnumber
+      );
+      carinfo[index].passengers.push(t.data().user);
+    });
+
+    for (let i = 1; i <= numberofcars; i++) {
+      const index = carinfo.findIndex((item) => item.carnum == i);
+      const passengernum = carinfo[index].passengers.length;
+
+      if ((i - 1) % 3 === 0) {
+        carColumnsHTML += `<div class="columns is-centered">`;
+      }
+
+      if (passengernum < 4) {
+        optionshtml += `<option value="${carinfo[index].carnum}">${carinfo[index].carnum}</option>`;
+      }
+
+      if (occupied == capacity) {
+        signupoption = `<button
+          class="button is-success mt-2"
+          id="su${tripid}"
+          )"
+        >
+          The trip is full!
+        </button>`;
+      }
+
+      const driver = driversinfo[index].driver;
+      const plocation = driversinfo[index].pickuplocation;
+      const ptime = driversinfo[index].pickuptime;
+
+      let carHTML = `
         <div class="column is-one-third">
-        <div class="box">
-          <div class="has-text-centered">
-            <div class="title is-3">Car ${carinfo[index].carnum}</div>
+          <div class="box">
+            <div class="has-text-centered">
+              <div class="title is-3">Car ${carinfo[index].carnum}</div>
+            </div>
+            <div class="is-size-5">
+              <span class="has-text-weight-bold">Driver:</span>
+              <span>${driver}</span>
+            </div>
+            <div class="is-size-5">
+              <span class="has-text-weight-bold">Pickup Location:</span>
+              <span>${plocation}</span>
+            </div>
+            <div class="is-size-5">
+              <span class="has-text-weight-bold">Pickup Time:</span>
+              <span>${ptime}</span>
+            </div>
+            <div class="is-size-5">
+              <span class="has-text-weight-bold">Seats Available:</span>
+              <span>${4 - passengernum}/4</span>
+            </div>
+            <div>
+              <figure class="image px-6 pt-3">
+                <img src="${passengernum}.png" alt="" />
+              </figure>
+            </div>
           </div>
-          <div class="is-size-5">
-            <span class="has-text-weight-bold	">Driver:</span>
-            <span>${driver}</span>
-          </div>
-          <div class="is-size-5">
-            <span class="has-text-weight-bold	">Pickup Location:</span>
-            <span>${plocation}</span>
-          </div>
-          <div class="is-size-5">
-            <span class="has-text-weight-bold	">Pickup Time:</span>
-            <span>${ptime}</span>
-          </div>
-          <div class="is-size-5">
-            <span class="has-text-weight-bold	">Seats Available:</span>
-            <span>${4 - passengernum}/4</span>
-          </div>
-          <div class="">
-          <figure class="image px-6 pt-3">
-            <img src="${passengernum}.png" alt="" />
-          </figure>
-        </div>
-        </div>
-      </div>`;
+        </div>`;
 
-                carColumnsHTML += carHTML;
-                if (i % 3 === 0 || i === numberofcars) {
-                  carColumnsHTML += `</div>`;
-                }
-              }
+      carColumnsHTML += carHTML;
+      if (i % 3 === 0 || i === numberofcars) {
+        carColumnsHTML += `</div>`;
+      }
+    }
 
-              r_e("main").innerHTML = `    <section class="section">
+    document.getElementById("main").innerHTML = `<section class="section">
       <div class="container is-fluid">
         <div class="box">
           <div class="columns">
-            <div
-              class="column has-text-centered is-flex is-flex-direction-column"
-            >
+            <div class="column has-text-centered is-flex is-flex-direction-column">
               <div class="has-text-left mx-auto">
-                <div class="title is-3 is-underlined is-marginless">
-                  ${eventName}
-                </div>
+                <div class="title is-3 is-underlined is-marginless">${eventName}</div>
                 <div>
                   <div class="mt-3 has-text-left">
                     <span class="title is-4">Price: </span>
                     <span class="is-size-4">$${price}</span>
                   </div>
-
                   <div class="has-text-left">
                     <span class="title is-4">Date: </span>
                     <span class="is-size-4">${date}</span>
                   </div>
-
                   <div class="has-text-left">
                     <span class="title is-4">Time: </span>
                     <span class="is-size-4">${starttime} - ${endtime}</span>
                   </div>
-
                   <div class="has-text-left">
                     <span class="title is-4">Availability: </span>
                     <span class="is-size-4">${occupied}/${capacity}</span>
                   </div>
                 </div>
               </div>
-              <div id="option${tripid}" class="mt-auto">
-                ${signupoption}
-              </div>
+              <div id="option${tripid}" class="mt-auto">${signupoption}</div>
             </div>
-            <div
-              class="column has-text-centered is-flex is-flex-direction-column is-two-thirds"
-            >
+            <div class="column has-text-centered is-flex is-flex-direction-column is-two-thirds">
               <div class="has-text-centered">
-                <div class="title is-3 is-underlined is-marginless">
-                  Location: ${location}
-                </div>
+                <div class="title is-3 is-underlined is-marginless">Location: ${location}</div>
               </div>
-
               <div class="is-size-6 has-text-centered mt-2">
                 <div class="px-6 mb-2 is-size-4">
                   <p class="is-size-5">${description}</p>
@@ -991,68 +927,55 @@ function moreDetails(tripid) {
           </div>
         </div>
         ${carColumnsHTML}
-       
+      </div>
     </section>`;
 
-              r_e("modals").innerHTML += `<!-- Add Sign Up Modal -->
-<div class="modal" id="modal_${tripid}">
-  <div class="modal-background" id="modalbg${tripid}"></div>
-  <div
-    class="modal-content p-6 is-bordered"
-    style="
-      backdrop-filter: blur(8px);
-      border: 2px solid #31ada6;
-      border-radius: 20px;
-    "
-  >
-    <p class="subtitle has-text-weight-bold has-text-white">Trip Sign Up</p>
-    <form action="" id="form${tripid}" onsubmit="return false">
-      <div class="field">
-        <label class="label has-text-white">Car Number:<select oninput= "cardetails(${tripid}, parseInt(r_e('carnumber${tripid}').value) )"  name="car#" id="carnumber${tripid}" class="ml-3 select">
-        ${optionshtml}
-        
-      </select></label>
-        <div class="control"></div>
+    document.getElementById("modals").innerHTML += `<!-- Add Sign Up Modal -->
+    <div class="modal" id="modal_${tripid}">
+      <div class="modal-background" id="modalbg${tripid}"></div>
+      <div class="modal-content p-6 is-bordered" style="backdrop-filter: blur(8px); border: 2px solid #31ada6; border-radius: 20px;">
+        <p class="subtitle has-text-weight-bold has-text-white">Trip Sign Up</p>
+        <form action="" id="form${tripid}" onsubmit="return false">
+          <div class="field">
+            <label class="label has-text-white">Car Number:
+              <select oninput="cardetails(${tripid}, parseInt(r_e('carnumber${tripid}').value))" name="car#" id="carnumber${tripid}" class="ml-3 select">
+                ${optionshtml}
+              </select>
+            </label>
+            <div class="control"></div>
+          </div>
+          <div class="field">
+            <label id="driver" class="label has-text-white">Driver: </label>
+          </div>
+          <div class="field">
+            <label id="pickuplocation" class="label has-text-white">Pickup Location: </label>
+          </div>
+          <div class="field">
+            <label id="pickuptime" class="label has-text-white">Pickup Time: </label>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Skis? </label>
+            <p class="has-text-white">
+              <input name="skis" type="radio" class="radio has-text-white mr-1" value="Rent">Rent
+              <input name="skis" type="radio" class="radio has text-white mr-1" value="Own">Own
+            </p>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Payment Link: <a href="https://venmo.com/" > <img src="venmo_icon.png"  style="height: 20px" alt=""><a/></label>
+          </div>
+          <div class="pt-4">
+            <button class="button is-primary" id="submit${tripid}" onclick="submittripsignup(${tripid}); closemodal('modal_${tripid}'); restrictsignup(${tripid});">Submit</button>
+          </div>
+        </form>
+        <button class="modal-close is-large" id="close${tripid}" aria-label="close"></button>
       </div>
-      <div class="field">
-        <label id="driver" class="label has-text-white">Driver: </label>
-      </div>
-      <div class="field">
-        <label id="pickuplocation" class="label has-text-white">Pickup Location: </label>
-      </div>
-      <div class="field">
-        <label id="pickuptime" class="label has-text-white">Pickup Time: </label>
-      </div>
-      <div class="field">
-        <label id="" class="label has-text-white">Skis? </label>
-        <p class="has-text-white">
-        <input name="skis" type="radio" class="radio has-text-white mr-1" value="Rent">Rent
-        <input name="skis" type="radio" class="radio has text-white mr-1" value="Own">Own
-        </p>
-      </div>
-      <div class="field">
-        <label class="label has-text-white">Payment Link: <a href="https://venmo.com/" > <img src="venmo_icon.png"  style="height: 20px" alt=""><a/></label>
-      </div>
-      <div class="pt-4">
-        <!-- Submit Button -->
-        <button class="button is-primary" id="submit${tripid}" onclick = "submittripsignup(${tripid}); closemodal('modal_${tripid}'); restrictsignup(${tripid}); ">Submit</button>
-        
-      </div>
-    </form>
-    <button
-      class="modal-close is-large"
-      id="close${tripid}"
-      aria-label="close"
-    ></button>
-  </div>
-</div>`;
-              setTimeout(() => {
-                cardetails(tripid, parseInt(r_e("carnumber" + tripid).value));
-              }, 100);
-              restrictsignup(tripid);
-            });
-        });
-    });
+    </div>`;
+
+    await cardetails(tripid, parseInt(r_e("carnumber" + tripid).value));
+    restrictsignup(tripid);
+  } catch (error) {
+    console.error("Error fetching trip details:", error);
+  }
 }
 
 function save_name(ele, id) {
@@ -1169,7 +1092,6 @@ function submitTrip() {
   let price = r_e("trip_price").value;
   let location = r_e("trip_location").value;
   let date = r_e("trip_date").value;
-  console.log(date);
   var parts = date.split("-");
   var year = parts[0];
   var month = parts[1];
@@ -1273,67 +1195,67 @@ function calculateColor(users, capacity) {
 
 // Get Upcoming Trips
 
-function showTrips() {
-  db.collection("trips")
-    .orderBy("date")
-    .get()
-    .then((snapshot) => {
-      let trips = snapshot.docs;
-      let html = ``;
-      trips.forEach((trip) => {
-        let tripID = trip.data().tripID;
-        let users = "";
-        db.collection("tripsignups")
-          .where("tripid", "==", tripID)
-          .get()
-          .then((snapshot) => {
-            users = parseInt(snapshot.docs.length);
-          });
-        let eventName = trip.data().eventName;
-        let price = trip.data().price;
-        let location = trip.data().location;
-        let date = trip.data().date;
-        let starttime = trip.data().starttime;
-        let endtime = trip.data().endtime;
-        let capacity = trip.data().numberofcars * 4;
-        //setting color depending on capacity
-        let color = "";
+async function showTrips() {
+  try {
+    const snapshot = await db.collection("trips").orderBy("date").get();
+    const trips = snapshot.docs;
+    let html = ``;
 
-        setTimeout(() => {
-          if (users == capacity) {
-            color = "capacity-red";
-          } else if (users >= capacity / 2) {
-            color = "capacity-yellow";
-          } else {
-            color = "capacity-green";
-          }
-          html += `<tr class="row-highlight">
-      <!-- Added row-highlight class here -->
-      <td>${eventName}</td>
-      <td>$${price}</td>
-      <td>${location}</td>
-      <td>${date}</td>
-      <td>${starttime} - ${endtime}</td>
-      <td>
-        <button
-          onclick = "moreDetails(${tripID})"
-          style="background-color: #4f8cc2"
-          class="button is-info"
-          id="${tripID}" 
-        >
-          More Details
-        </button>
-      </td>
-      <td class="${color} capacity-box ">${users}/${capacity}</td>
-      <td><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
-    </tr>`;
-        }, 400);
-      });
-      setTimeout(() => {
-        r_e("upcomingtrips").innerHTML = html;
-        hideadminfunction();
-      }, 500);
-    });
+    for (const trip of trips) {
+      const tripID = trip.data().tripID;
+      let users = "";
+
+      const usersSnapshot = await db
+        .collection("tripsignups")
+        .where("tripid", "==", tripID)
+        .get();
+      users = parseInt(usersSnapshot.docs.length);
+
+      const eventName = trip.data().eventName;
+      const price = trip.data().price;
+      const location = trip.data().location;
+      const date = trip.data().date;
+      const starttime = trip.data().starttime;
+      const endtime = trip.data().endtime;
+      const capacity = trip.data().numberofcars * 4;
+
+      let color = "";
+
+      if (users == capacity) {
+        color = "capacity-red";
+      } else if (users >= capacity / 2) {
+        color = "capacity-yellow";
+      } else {
+        color = "capacity-green";
+      }
+
+      html += `<tr class="row-highlight">
+        <!-- Added row-highlight class here -->
+        <td>${eventName}</td>
+        <td>$${price}</td>
+        <td>${location}</td>
+        <td>${date}</td>
+        <td>${starttime} - ${endtime}</td>
+        <td>
+          <button
+            onclick = "moreDetails(${tripID})"
+            style="background-color: #4f8cc2"
+            class="button is-info"
+            id="${tripID}" 
+          >
+            More Details
+          </button>
+        </td>
+        <td class="${color} capacity-box ">${users}/${capacity}</td>
+        <td><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
+      </tr>`;
+    }
+
+    document.getElementById("upcomingtrips").innerHTML = html;
+    hideadminfunction();
+  } catch (error) {
+    console.error("Error fetching trips:", error);
+  }
 }
 
 // Add Reviews To Firebase
@@ -1471,7 +1393,7 @@ r_e("carnumber").addEventListener("input", (e) => {
   }
 });
 
-function cardetails(tripid, car) {
+async function cardetails(tripid, car) {
   if (isNaN(car) != true) {
     db.collection("cars")
       .where("tripID", "==", tripid)
@@ -1512,115 +1434,122 @@ function closemodal(id) {
   alert("Submitted");
 }
 
-function deletetrip(tripid) {
-  db.collection("trips")
-    .where("tripID", "==", tripid)
-    .get()
-    .then((snapshot) => {
-      trip = snapshot.docs[0].id;
-      db.collection("trips")
-        .doc(trip)
-        .delete()
-        .then(() => {
-          showTrips();
-        });
-      console.log(trip);
+async function deletetrip(tripid) {
+  try {
+    const tripSnapshot = await db
+      .collection("trips")
+      .where("tripID", "==", tripid)
+      .get();
+    const tripDocId = tripSnapshot.docs[0].id;
+    await db.collection("trips").doc(tripDocId).delete();
+
+    const carsSnapshot = await db
+      .collection("cars")
+      .where("tripID", "==", tripid)
+      .get();
+    carsSnapshot.docs.forEach(async (car) => {
+      await db.collection("cars").doc(car.id).delete();
     });
-  db.collection("cars")
-    .where("tripID", "==", tripid)
-    .get()
-    .then((snapshot) => {
-      cars = snapshot.docs;
-      cars.forEach((car) => {
-        db.collection("cars").doc(car.id).delete();
-      });
+
+    const signupsSnapshot = await db
+      .collection("tripsignups")
+      .where("tripid", "==", tripid)
+      .get();
+    signupsSnapshot.docs.forEach(async (signup) => {
+      await db.collection("tripsignups").doc(signup.id).delete();
     });
-  db.collection("tripsignups")
-    .where("tripid", "==", tripid)
-    .get()
-    .then((snapshot) => {
-      signups = snapshot.docs;
-      signups.forEach((signup) => {
-        db.collection("tripsignups").doc(signup.id).delete();
-      });
-    });
+
+    showTrips();
+  } catch (error) {
+    console.error("Error deleting trip:", error);
+  }
 }
 
-function calculatecapacity(tripid) {
-  db.collection("tripsignups")
-    .where("tripid", "==", tripid)
-    .get()
-    .then((snapshot) => {
-      return snapshot.docs.length;
-    });
+async function calculatecapacity(tripid) {
+  try {
+    const snapshot = await db
+      .collection("tripsignups")
+      .where("tripid", "==", tripid)
+      .get();
+    return snapshot.docs.length;
+  } catch (error) {
+    console.error("Error calculating capacity:", error);
+    return 0;
+  }
 }
 
-function restrictsignup(tripid) {
-  db.collection("tripsignups")
-    .where("tripid", "==", tripid)
-    .where("user", "==", auth.currentUser.email)
-    .get()
-    .then((snapshot) => {
-      if (snapshot.size != 0) {
-        r_e("su" + tripid).classList.add("is-hidden");
-        r_e(
-          "option" + tripid
-        ).innerHTML = `<button class="button is-success mt-2"> You already signed up! </button>`;
-      }
-    });
+async function restrictsignup(tripid) {
+  try {
+    const snapshot = await db
+      .collection("tripsignups")
+      .where("tripid", "==", tripid)
+      .where("user", "==", auth.currentUser.email)
+      .get();
+    if (snapshot.size != 0) {
+      r_e("su" + tripid).classList.add("is-hidden");
+      r_e(
+        "option" + tripid
+      ).innerHTML = `<button class="button is-success mt-2"> You already signed up! </button>`;
+    }
+  } catch (error) {
+    console.error("Error restricting signup:", error);
+  }
 }
 
-function triproster(user) {
-  db.collection("cars")
-    .where("driver", "==", user)
-    .get()
-    .then((snapshot) => {
-      let cars = snapshot.docs;
-      let html = ``;
-      if (snapshot.size == 0) {
-        html = `<p class="column is-full  is-size-4 has-text-centered"> You are not a driver of any trips.</p>`;
-      }
-      cars.forEach((car) => {
-        let carnumber = car.data().carnumber;
-        let pickuplocation = car.data().pickuplocation;
-        let pickuptime = car.data().pickuptime;
-        let tripID = car.data().tripID;
-        db.collection("trips")
-          .where("tripID", "==", tripID)
-          .get()
-          .then((snapshot) => {
-            let trip = snapshot.docs[0];
-            let eventName = trip.data().eventName;
-            let location = trip.data().location;
-            let date = trip.data().date;
-            let capacity = trip.data().numberofcars * 4;
-            let users = "";
-            db.collection("tripsignups")
-              .where("tripid", "==", tripID)
-              .where("carnumber", "==", carnumber.toString())
-              .get()
-              .then((snapshot) => {
-                users = snapshot.docs.length;
-              });
-            setTimeout(() => {
-              html += `<div class="column is-one-third">
-            <div class="card" onclick="getusers(${tripID},(${carnumber}).toString())" style="cursor: pointer;" >
-              <div class="card-content">
-                <p class="has-text-centered is-size-5">${eventName}</p>
-                <p>Trip Location: ${location}</p>
-                <p>Date: ${date}</p>
-                <p>Car #: ${carnumber}</p>
-                <p>Pickup Location: ${pickuplocation}</p>
-                <p>Pickup Time: ${pickuptime}</p>
-                <p>Capacity: ${users}/${capacity}</p>
-              </div>
-            </div>
-          </div>`;
-            }, 400);
-          });
-      });
-      setTimeout(() => {
-        r_e("main").innerHTML = `<div class="p-5">
+async function triproster(user) {
+  try {
+    const snapshot = await db
+      .collection("cars")
+      .where("driver", "==", user)
+      .get();
+
+    let html = ``;
+    if (snapshot.size === 0) {
+      html = `<p class="column is-full is-size-4 has-text-centered"> You are not a driver of any trips.</p>`;
+    }
+
+    const cars = snapshot.docs;
+    for (const car of cars) {
+      const carnumber = car.data().carnumber;
+      const pickuplocation = car.data().pickuplocation;
+      const pickuptime = car.data().pickuptime;
+      const tripID = car.data().tripID;
+
+      const tripSnapshot = await db
+        .collection("trips")
+        .where("tripID", "==", tripID)
+        .get();
+
+      const trip = tripSnapshot.docs[0];
+      const eventName = trip.data().eventName;
+      const location = trip.data().location;
+      const date = trip.data().date;
+      const capacity = trip.data().numberofcars * 4;
+
+      const userSnapshot = await db
+        .collection("tripsignups")
+        .where("tripid", "==", tripID)
+        .where("carnumber", "==", carnumber.toString())
+        .get();
+
+      const users = userSnapshot.docs.length;
+
+      html += `<div class="column is-one-third">
+        <div class="card" onclick="getusers(${tripID},(${carnumber}).toString())" style="cursor: pointer;" >
+          <div class="card-content">
+            <p class="has-text-centered is-size-5">${eventName}</p>
+            <p>Trip Location: ${location}</p>
+            <p>Date: ${date}</p>
+            <p>Car #: ${carnumber}</p>
+            <p>Pickup Location: ${pickuplocation}</p>
+            <p>Pickup Time: ${pickuptime}</p>
+            <p>Capacity: ${users}/${capacity}</p>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    r_e("main").innerHTML = `<div class="p-5">
       <div class="p-5">
       <p class="title pl-6 has-text-centered">Trip Roster</p>
 
@@ -1632,88 +1561,94 @@ function triproster(user) {
         </div>
       </div>
     </div>`;
-      }, 700);
-    });
+  } catch (error) {
+    console.error("Error fetching trip roster:", error);
+  }
 }
 
-function getusers(tripid, carnumber) {
-  db.collection("tripsignups")
-    .where("tripid", "==", tripid)
-    .where("carnumber", "==", carnumber)
-    .get()
-    .then((snapshot) => {
-      let users = snapshot.docs;
-      let html = ``;
-      if (snapshot.size == 0) {
-        html = `<tr class="row-highlight is-size-4 has-text-centered"> <td colspan= "6">There are no users signed up.</td></tr>`;
-      }
-      users.forEach((user) => {
-        let email = user.data().user;
-        let status = user.data().status;
-        let skis = user.data().skis;
-        db.collection("users")
-          .where("email", "==", email)
-          .get()
-          .then((snapshot) => {
-            let userdata = snapshot.docs[0].data();
-            let name = userdata.name;
-            let phone = userdata.phone;
-            let address = userdata.address;
-            html += `<tr class="row-highlight">
-                        <td>${name}</td>
-                        <td>${email}</td>
-                        <td>${phone}</td>
-                        <td>${address}</td>
-                        <td>${skis}</td>
-                        <td class="capacity-box capacity-yellow">${status}</td>
-                     </tr>`;
-          });
-      });
-      setTimeout(() => {
-        r_e(
-          "modals"
-        ).innerHTML += `<div class="modal" id="modal_${tripid}${carnumber}">
-        <div class="modal-background" id="modalbg${tripid}${carnumber}"></div>
-        <div
-          class="modal-content p-6 is-bordered"
-          style="
-            backdrop-filter: blur(8px);
-            border: 2px solid #31ada6;
-            border-radius: 20px;
-            width: 80%;
-          "
-        >
-          <p
-            class="subtitle has-text-weight-bold has-text-white has-text-centered"
-          >
-            Users
-          </p>
-          <div class="box">
-            <table class="table is-fullwidth has-text-centered">
-              <thead>
-                <tr>
-                  <th class="has-text-centered">Name</th>
-                  <th class="has-text-centered">Email</th>
-                  <th class="has-text-centered">Phone #</th>
-                  <th class="has-text-centered">Address</th>
-                  <th class="has-text-centered">Skis</th>
-                  <th class="has-text-centered">Status</th>
-                </tr>
-              </thead>
-              <tbody> ${html}</tbody>
-            </table>
-          </div>
-  
-          <button
-            class="modal-close is-large"
-            id="close${tripid}${carnumber}"
-            aria-label="close"
-          ></button>
-        </div>
-      </div>`;
-        showmodal(tripid + carnumber);
-      }, 300);
-    });
+async function getusers(tripid, carnumber) {
+  try {
+    const snapshot = await db
+      .collection("tripsignups")
+      .where("tripid", "==", tripid)
+      .where("carnumber", "==", carnumber)
+      .get();
+
+    let html = ``;
+    const users = snapshot.docs;
+    if (snapshot.size === 0) {
+      html = `<tr class="row-highlight is-size-4 has-text-centered"> <td colspan= "6">There are no users signed up.</td></tr>`;
+    }
+    for (const user of users) {
+      const email = user.data().user;
+      const status = user.data().status;
+      const skis = user.data().skis;
+
+      const userSnapshot = await db
+        .collection("users")
+        .where("email", "==", email)
+        .get();
+
+      const userdata = userSnapshot.docs[0].data();
+      const name = userdata.name;
+      const phone = userdata.phone;
+      const address = userdata.address;
+
+      html += `<tr class="row-highlight">
+                  <td>${name}</td>
+                  <td>${email}</td>
+                  <td>${phone}</td>
+                  <td>${address}</td>
+                  <td>${skis}</td>
+                  <td class="capacity-box capacity-yellow">${status}</td>
+               </tr>`;
+    }
+
+    r_e(
+      "modals"
+    ).innerHTML += `<div class="modal" id="modal_${tripid}${carnumber}">
+    <div class="modal-background" id="modalbg${tripid}${carnumber}"></div>
+    <div
+      class="modal-content p-6 is-bordered"
+      style="
+        backdrop-filter: blur(8px);
+        border: 2px solid #31ada6;
+        border-radius: 20px;
+        width: 80%;
+      "
+    >
+      <p
+        class="subtitle has-text-weight-bold has-text-white has-text-centered"
+      >
+        Users
+      </p>
+      <div class="box">
+        <table class="table is-fullwidth has-text-centered">
+          <thead>
+            <tr>
+              <th class="has-text-centered">Name</th>
+              <th class="has-text-centered">Email</th>
+              <th class="has-text-centered">Phone #</th>
+              <th class="has-text-centered">Address</th>
+              <th class="has-text-centered">Skis</th>
+              <th class="has-text-centered">Status</th>
+            </tr>
+          </thead>
+          <tbody> ${html}</tbody>
+        </table>
+      </div>
+
+      <button
+        class="modal-close is-large"
+        id="close${tripid}${carnumber}"
+        aria-label="close"
+      ></button>
+    </div>
+  </div>`;
+    showmodal(tripid + carnumber);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
 }
 
 function convertTo12Hour(time24) {
