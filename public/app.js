@@ -84,7 +84,7 @@ function showmytrips(userid) {
         r_e("main").innerHTML = `<div class="p-5">
   <section class="section">
     <div class="container">
-      <h1 class="title has-text-centered">My Trips</h1>
+      <p class="title pl-6 has-text-centered">My Trips</p>
       <p style= "text-align: center; color: red; ">
       **Please make sure to pay the full trip amount within 48 hours after signing up and before the trip date, or your reservation will be removed.
       <br>Click the Venmo icon at the bottom of the page to make your payment.**
@@ -238,7 +238,7 @@ function showalltrips() {
               r_e("main").innerHTML = `<div class="p-5">
           <section class="section">
             <div class="container">
-              <h1 class="title has-text-centered">All Trips</h1>
+            <p class="title pl-6 has-text-centered">All Trips</p>
         
         
               <!-- Ski Trip Table -->
@@ -1622,7 +1622,7 @@ function triproster(user) {
       setTimeout(() => {
         r_e("main").innerHTML = `<div class="p-5">
       <div class="p-5">
-        <h1 class="title has-text-centered">Trip Roster</h1>
+      <p class="title pl-6 has-text-centered">Trip Roster</p>
 
         <!-- Ski Trip Table -->
         <div class="container is-fluid">
