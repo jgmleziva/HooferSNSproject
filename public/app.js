@@ -376,45 +376,46 @@ r_e("signup_form").addEventListener("submit", (e) => {
     });
 });
 
-function configure_message_bar(message) {
+function configure_message_bar(user) {
   // show a confirmation message for the user
 
   // show the message bar for only 2 seconds and then hide it back
 
   r_e("message_bar").classList.remove("is-hidden");
 
-  r_e("message_bar").innerHTML = `${message}`;
+  r_e("message_bar").innerHTML = `Signed in as: ${user}`;
 
   // hide the message bar after 2 seconds
+  if (user != "admin@hoofersns.org") {
+    setTimeout(() => {
+      r_e("message_bar").classList.add("is-hidden");
 
-  setTimeout(() => {
-    r_e("message_bar").classList.add("is-hidden");
-
-    // clear the message bar
-    r_e("message_bar").innerHTML = "";
-  }, 100000000000000000);
+      // clear the message bar
+      r_e("message_bar").innerHTML = "";
+    }, 2000);
+  }
 }
 
-auth.onAuthStateChanged((user) => {
+// auth.onAuthStateChanged((user) => {
 
-  // check if a user exists
-  if (user) {
+//   // check if a user exists
+//   if (user) {
 
-    configure_message_bar("Signed in as: " + user.email);
+//     configure_message_bar("Signed in as: " + user.email);
 
-    // add user's email address to the nav bar
-  
-    // r_e("currentuser").innerHTML = auth.currentUser.email;
+//     // add user's email address to the nav bar
 
-    // configure nav bar
+//     // r_e("currentuser").innerHTML = auth.currentUser.email;
 
-    // show all recipes
+//     // configure nav bar
 
-  //   show_recipes(auth.currentUser.email);
-  } else {
+//     // show all recipes
 
-  }
-});
+//   //   show_recipes(auth.currentUser.email);
+//   } else {
+
+//   }
+// });
 
 // sign in users
 r_e("signin_form").addEventListener("submit", (e) => {
@@ -434,7 +435,6 @@ r_e("signin_form").addEventListener("submit", (e) => {
 
     // hide the modal
     r_e("signin_modal").classList.remove("is-active");
-
   });
 });
 
@@ -444,6 +444,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
     r_e("signedout").classList.add("is-hidden");
     document.getElementById("html").style.overflow = "";
+    configure_message_bar(user.email);
     showTrips();
     hideadminfunction();
   } else {
