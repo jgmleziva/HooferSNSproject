@@ -392,7 +392,7 @@ function configure_message_bar(message) {
 
     // clear the message bar
     r_e("message_bar").innerHTML = "";
-  }, infinite);
+  }, 100000000000000000);
 }
 
 auth.onAuthStateChanged((user) => {
@@ -404,7 +404,7 @@ auth.onAuthStateChanged((user) => {
 
     // add user's email address to the nav bar
   
-    r_e("currentuser").innerHTML = auth.currentUser.email;
+    // r_e("currentuser").innerHTML = auth.currentUser.email;
 
     // configure nav bar
 
