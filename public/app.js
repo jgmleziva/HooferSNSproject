@@ -33,6 +33,10 @@ async function showmytrips(userid) {
     for (const signup of mysignups) {
       const mycar = signup.data().carnumber;
       const status = signup.data().status;
+      let boxColor = "capacity-yellow";
+      if (status == "Approved") {
+        boxColor = "capacity-green";
+      }
       const skis = signup.data().skis;
       const tripid = signup.data().tripid;
 
@@ -69,7 +73,7 @@ async function showmytrips(userid) {
         <td>${pickuptime}</td>
         <td>${skis}</td>
         <td>$${price}</td>
-        <td class="capacity-box capacity-yellow">${status}</td>
+        <td class="capacity-box ${boxColor}">${status}</td>
         <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trashsignup${tripid}" onclick="deletesignup(${tripid}, '${userid}')"></i></td>
       </tr>`;
     }
@@ -211,6 +215,7 @@ async function showalltrips() {
         <td class="is-vcentered">${pickuplocation}</td>
         <td class="is-vcentered">${pickuptime}</td>
         <td class="is-vcentered">${carNumber}</td>
+        <td class="is-vcentered">${info.passengers.length}</td>
         <td class="is-vcentered"><button
         id="info${index}"
         class="button view-btn"
@@ -236,7 +241,9 @@ async function showalltrips() {
                   <th class="has-text-centered">Pickup Location</th>
                   <th class="has-text-centered">Pickup Time</th>
                   <th class="has-text-centered">Car #</th>
+                  <th class="has-text-centered"> Passengers</th>
                   <th class="has-text-centered">View Passengers</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -254,6 +261,9 @@ async function showalltrips() {
 
         const passengerList = document.getElementById("passengerList");
         passengerList.innerHTML = "";
+        if (passengers.length == 0) {
+          passengerList.innerHTML = `<p class="header has-text-centered"> There are no passengers. </h1>`;
+        }
         passengers.forEach((passenger) => {
           const listItem = document.createElement("li");
           listItem.innerHTML = `<p> Name: ${passenger.name}, Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${combinedInfo[index].tripID}).where('user', '==', '${passenger.name}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${combinedInfo[index].tripID},'${passenger.name}')"> <option id='status1' value='${passenger.status}'>${passenger.status}</option><option id='status2' value='${passenger.notstatus}'>${passenger.notstatus}</option></select> </p>`;
@@ -416,6 +426,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     r_e("signedout").classList.add("is-hidden");
     document.getElementById("html").style.overflow = "";
     configure_message_bar(user.email);
+    showHomePage();
     showTrips();
     hideadminfunction();
   } else {
@@ -1222,32 +1233,31 @@ async function showTrips() {
       let color = "";
 
       if (users == capacity) {
-        color = "capacity-red";
+        color = "has-text-danger";
       } else if (users >= capacity / 2) {
-        color = "capacity-yellow";
+        color = "has-text-warning";
       } else {
-        color = "capacity-green";
+        color = "has-text-success";
       }
 
       html += `<tr class="row-highlight">
         <!-- Added row-highlight class here -->
-        <td>${eventName}</td>
-        <td>$${price}</td>
-        <td>${location}</td>
-        <td>${date}</td>
-        <td>${starttime} - ${endtime}</td>
+        <td class="is-vcentered is-size-5">${eventName}</td>
+        <td class="is-vcentered is-size-5">$${price}</td>
+        <td class="is-vcentered is-size-5">${location}</td>
+        <td class="is-vcentered is-size-5">${date}</td>
+        <td class="is-vcentered is-size-5" >${starttime} - ${endtime}</td>
         <td>
           <button
             onclick = "moreDetails(${tripID})"
-            style="background-color: #4f8cc2"
-            class="button is-info"
+            class="button is-success is-outlined is-vcentered has-text-weight-bold"
             id="${tripID}" 
           >
             More Details
           </button>
         </td>
-        <td class="${color} capacity-box ">${users}/${capacity}</td>
-        <td><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
+        <td class="has-text-weight-bold ${color} is-size-5 is-vcentered">${users}/${capacity}</td>
+        <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
       </tr>`;
     }
 
@@ -1706,4 +1716,42 @@ function hideadminfunction() {
       functionality.classList.remove("is-hidden");
     });
   }
+}
+
+function showHomePage() {
+  r_e("main").innerHTML = `<section class="section">
+  <div class="container">
+    <div id="tabletitle" class="columns m-0 has-text-centered">
+    <div class="column"></div>
+      <div class="column">
+        <p class="title pl-6">Upcoming Trips</p>
+      </div>
+      <div class="column has-text-right pr-5">
+        <button
+          id="addeventbtn"
+          class="button is-small px-6 py-3 is-success is-rounded admin"
+        >
+          Add Event
+        </button>
+      </div>
+    </div>
+    <!-- Ski Trip Table -->
+    <div class="box">
+      <table class="table is-fullwidth has-text-centered">
+        <thead>
+          <tr>
+            <th class="has-text-centered is-size-5">Event Name</th>
+            <th class="has-text-centered is-size-5">Price</th>
+            <th class="has-text-centered is-size-5">Location</th>
+            <th class="has-text-centered is-size-5">Date</th>
+            <th class="has-text-centered is-size-5">Time</th>
+            <th class="has-text-centered is-size-5">Action</th>
+            <th class="has-text-centered is-size-5">Capacity</th>
+          </tr>
+        </thead>
+        <tbody id="upcomingtrips"></tbody>
+      </table>
+    </div>
+  </div>
+</section>`;
 }
