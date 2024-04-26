@@ -1200,24 +1200,44 @@ async function showTrips() {
     const snapshot = await db.collection("trips").orderBy("date").get();
     const trips = snapshot.docs;
     let html = ``;
+    const tripinfo = [];
+    trips.forEach((d) => {
+      tripinfo.push({
+        tripID: d.data().tripID,
+        date: d.data().date,
+        eventName: d.data().eventName,
+        price: d.data().price,
+        location: d.data().location,
+        starttime: d.data().starttime,
+        endtime: d.data().endtime,
+        capacity: d.data().numberofcars * 4,
+        users: 0,
+      });
+    });
 
-    for (const trip of trips) {
-      const tripID = trip.data().tripID;
-      let users = "";
+    console.log(tripinfo);
 
-      const usersSnapshot = await db
-        .collection("tripsignups")
-        .where("tripid", "==", tripID)
-        .get();
-      users = parseInt(usersSnapshot.docs.length);
+    const usersSnapshot = await db.collection("tripsignups").get();
+    const signups = usersSnapshot.docs;
 
-      const eventName = trip.data().eventName;
-      const price = trip.data().price;
-      const location = trip.data().location;
-      const date = trip.data().date;
-      const starttime = trip.data().starttime;
-      const endtime = trip.data().endtime;
-      const capacity = trip.data().numberofcars * 4;
+    signups.forEach((t) => {
+      const index = tripinfo.findIndex(
+        (item) => item.tripID == t.data().tripid
+      );
+      console.log(t.data().tripid, index);
+      tripinfo[index].users += 1;
+    });
+
+    tripinfo.forEach((trip) => {
+      const eventName = trip.eventName;
+      const price = trip.price;
+      const location = trip.location;
+      const date = trip.date;
+      const starttime = trip.starttime;
+      const endtime = trip.endtime;
+      const capacity = trip.capacity;
+      const users = trip.users;
+      let tripID = trip.tripID;
 
       let color = "";
 
@@ -1228,7 +1248,6 @@ async function showTrips() {
       } else {
         color = "capacity-green";
       }
-
       html += `<tr class="row-highlight">
         <!-- Added row-highlight class here -->
         <td>${eventName}</td>
@@ -1249,8 +1268,7 @@ async function showTrips() {
         <td class="${color} capacity-box ">${users}/${capacity}</td>
         <td><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
       </tr>`;
-    }
-
+    });
     document.getElementById("upcomingtrips").innerHTML = html;
     hideadminfunction();
   } catch (error) {
