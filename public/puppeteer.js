@@ -1,19 +1,35 @@
 // Puppeteer
+const puppeteer = require("puppeteer");
 
-// User Create Account
+async function go() {
+    const browser = await puppeteer.launch({
+        headless: false,
+        slowMo: 50
+    });
+    const page = await browser.newPage();
 
-// User Login
+    // visit site to be tested
+    await page.goto("hooferslocaltrips.web.app");
 
-// User Trip Sign-Up
+    // User Create Account
 
-// User Sign-Out
+    // User Login
 
-// Admin Login
+    // User Trip Sign-Up
 
-// Admin Create Trip
+    // User Sign-Out
 
-// Admin Delete Trip
+    // Admin Login
 
-// Admin Sign-Out
+    // Admin Create Trip
 
+    // Admin Delete Trip
 
+    // Admin Sign-Out
+
+    // Close the browser
+    browser.close();
+}
+
+// run the test
+go();
