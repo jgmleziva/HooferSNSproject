@@ -1721,7 +1721,7 @@ function hideadminfunction() {
 function showHomePage() {
   r_e("main").innerHTML = `<section class="section">
   <div class="container">
-    <div id="tabletitle" class="columns m-0 has-text-centered">
+    <div id="tabletitle" class="columns has-text-centered">
     <div class="column"></div>
       <div class="column">
         <p class="title pl-6">Upcoming Trips</p>
@@ -1736,8 +1736,12 @@ function showHomePage() {
       </div>
     </div>
     <!-- Ski Trip Table -->
-    <div class="box">
-      <table class="table is-fullwidth has-text-centered">
+    <div class="box" style=" background-image: radial-gradient(
+              at top left,
+              #1fafa3e6,
+              #00ffc8be
+            ); border-radius: 12px;">
+      <table class="table is-fullwidth has-text-centered" style="border-radius: 8px;">
         <thead>
           <tr>
             <th class="has-text-centered is-size-5">Event Name</th>
