@@ -16,16 +16,21 @@ async function go() {
     //await page.
 
     // User Login
-
+    await page.click("#signinbutton");
+    await page.type("#email2", "test929@gmail.com");
+    await page.type("#password2", "password");
+    await page.click("#signin_form > div.pt-4 > button.button.is-primary");
 
     // User Trip Sign-Up
-
+    await page.click("#\\31 713733715048");
+    await page.click("#su1713733715048");
+    await page.click("#form1713733715048 > div:nth-child(5) > p > input.radio.has-text-white.mr-1");
+    await page.click("#submit1713733715048");
+    await page.click("#close1713733715048");
 
     // User Sign-Out
-    /*
     await page.click("#navbar > nav > ul > div:nth-child(2) > div > a");
     await page.click("#signoutbutton");
-    */
 
     // Admin Login
     await page.click("#signinbutton");
@@ -47,7 +52,7 @@ async function go() {
     await page.click("#addTrip_Submit");
     await page.click("#aeclose");
 
-    // Admin Delete Trip
+    // Admin Delete Trip - will need to change every time
     await page.click("#trash1714080480010");
 
     // Admin Sign-Out
