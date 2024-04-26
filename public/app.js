@@ -1043,16 +1043,7 @@ function update_doc(ele, id) {
   });
 }
 
-// Show Add Event Modal
-r_e("addeventbtn").addEventListener("click", () => {
-  r_e("addevent_modal").classList.add("is-active");
-  r_e("aemodalbg").addEventListener("click", () => {
-    r_e("addevent_modal").classList.remove("is-active");
-  });
-  r_e("aeclose").addEventListener("click", () => {
-    r_e("addevent_modal").classList.remove("is-active");
-  });
-});
+
 
 // Add trip to database
 function addTrip(trip) {
@@ -1767,4 +1758,15 @@ function showHomePage() {
   </div>
 </section>
 `;
+// Show Add Event Modal
+r_e("addeventbtn").addEventListener("click", () => {
+  r_e("addevent_modal").classList.add("is-active");
+  r_e("aemodalbg").addEventListener("click", () => {
+    r_e("addevent_modal").classList.remove("is-active");
+  });
+  r_e("aeclose").addEventListener("click", () => {
+    r_e("addevent_modal").classList.remove("is-active");
+  });
+});
 }
+
