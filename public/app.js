@@ -1729,7 +1729,7 @@ function showHomePage() {
     <div id="tabletitle" class="columns has-text-centered">
       <div class="column"></div>
       <div class="column">
-        <p class="title pl-6">Upcoming Trips</p>
+        <p class="title">Upcoming Trips</p>
       </div>
       <div class="column has-text-right pr-5">
         <button id="addeventbtn" class="button is-small px-6 py-3 is-success is-rounded admin">
