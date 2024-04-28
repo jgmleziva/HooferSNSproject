@@ -1043,8 +1043,6 @@ function update_doc(ele, id) {
   });
 }
 
-
-
 // Add trip to database
 function addTrip(trip) {
   db.collection("trips").add(trip);
@@ -1241,7 +1239,8 @@ async function showTrips() {
         <td>
           <button
             onclick = "moreDetails(${tripID})"
-            class="button is-success is-outlined is-vcentered has-text-weight-bold"
+            class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded"
+            style = "border-width: 3px;"
             id="${tripID}" 
           >
             More Details
@@ -1758,15 +1757,14 @@ function showHomePage() {
   </div>
 </section>
 `;
-// Show Add Event Modal
-r_e("addeventbtn").addEventListener("click", () => {
-  r_e("addevent_modal").classList.add("is-active");
-  r_e("aemodalbg").addEventListener("click", () => {
-    r_e("addevent_modal").classList.remove("is-active");
+  // Show Add Event Modal
+  r_e("addeventbtn").addEventListener("click", () => {
+    r_e("addevent_modal").classList.add("is-active");
+    r_e("aemodalbg").addEventListener("click", () => {
+      r_e("addevent_modal").classList.remove("is-active");
+    });
+    r_e("aeclose").addEventListener("click", () => {
+      r_e("addevent_modal").classList.remove("is-active");
+    });
   });
-  r_e("aeclose").addEventListener("click", () => {
-    r_e("addevent_modal").classList.remove("is-active");
-  });
-});
 }
-
