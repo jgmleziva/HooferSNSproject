@@ -1722,20 +1722,7 @@ function hideadminfunction() {
 function showHomePage() {
   r_e("main").innerHTML = `<section class="section">
   <div class="container">
-    <!-- Welcome Section -->
-    <div class="box" style="background-color: #f5f5f5; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-      <h2 class="title is-3 has-text-centered">Sign Up Info and Policies</h2>
-      <ul style="list-style-type: disc; margin-left: 20px;">
-        <li>Below you will find upcoming trips available for sign up. Please click the more details button to learn more about the trip, then you can sign up from there.</li>
-        <li>Cars will wait at a maximum of 5 minutes before departing without you. Please arrive at the pickup location 10-15 minutes early to load the car. </li>
-        <li>Trip time's are listed in the description. You will be picked up from the pickup location of the car you sign up for. Either Memorial Union or Union South.</li>
-        <li>Once you have signed up for a trip you will have 48 hours to complete payment on Venmo @HoofersSNS (linked in icon in footer). Failure to complete payment within this time will result in removal from the trip.</li>
-        <li>Please refer to your My Trips page to see which trips you have signed up for.</li>
-        <li>Refer to the Account Info page to change any of your contact information or preferences.</li>
-        <li>Please contact vplocaltrips@hoofersns.org with any questions or concerns about your sign ups or if you need to cancel.</li>
-        <li>Please note all trips are <b>NONREFUNDABLE</b>.</li>
-      </ul>
-    </div>
+    
     <!-- Upcoming Trips Section -->
     <div id="tabletitle" class="columns has-text-centered">
       <div class="column"></div>
