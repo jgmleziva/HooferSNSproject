@@ -17,6 +17,13 @@ function userTripConfirmDelete(trip, user) {
   }
 }
 
+function adminTripConfirmDelete(trip) {
+  const result = confirm("Are you sure you want to delete?");
+  if(result == true) {
+      deletetrip(trip);
+  }
+}
+
 // Show Trip Sign Up Modals
 function showmodal(tripid) {
   r_e("modal_" + tripid).classList.add("is-active");
@@ -1265,7 +1272,7 @@ async function showTrips() {
           </button>
         </td>
         <td class="has-text-weight-bold ${color} is-size-5 is-vcentered">${users}/${capacity}</td>
-        <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
+        <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="adminTripConfirmDelete(${tripID})"></i></td>
       </tr>`;
     }
 
