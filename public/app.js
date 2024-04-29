@@ -829,6 +829,7 @@ async function moreDetails(tripid) {
       .get();
     const data2 = infoSnapshot.docs;
     const occupied = data2.length;
+    const availability = capacity - occupied;
 
     data2.forEach((t) => {
       const index = carinfo.findIndex(
@@ -921,7 +922,7 @@ async function moreDetails(tripid) {
                   </div>
                   <div class="has-text-left">
                     <span class="title is-4">Availability: </span>
-                    <span class="is-size-4">${occupied}/${capacity}</span>
+                    <span class="is-size-4">${availability}/${capacity}</span>
                   </div>
                 </div>
               </div>
