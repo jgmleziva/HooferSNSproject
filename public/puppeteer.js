@@ -21,7 +21,7 @@ async function go() {
   await page.type("#password2", "password");
   await page.click("#signin_form > div.pt-4 > button.button.is-primary");
 
-  // User Trip Sign-Up
+  // User Trip Sign-Up - will need to be updated
   await page.click("#\\31 713733715048");
   await page.click("#su1713733715048");
   await page.click(

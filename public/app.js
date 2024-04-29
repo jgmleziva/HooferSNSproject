@@ -10,6 +10,13 @@ function r_e(id) {
   return document.querySelector(`#${id}`);
 }
 
+function userTripConfirmDelete(trip, user) {
+  const result = confirm("Are you sure you want to delete?");
+  if(result == true) {
+      deletesignup(trip, user);
+  }
+}
+
 // Show Trip Sign Up Modals
 function showmodal(tripid) {
   r_e("modal_" + tripid).classList.add("is-active");
@@ -74,7 +81,7 @@ async function showmytrips(userid) {
         <td>${skis}</td>
         <td>$${price}</td>
         <td class="capacity-box ${boxColor}">${status}</td>
-        <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trashsignup${tripid}" onclick="deletesignup(${tripid}, '${userid}')"></i></td>
+        <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trashsignup${tripid}" onclick="userTripConfirmDelete(${tripid},'${userid}')"></i></td>
       </tr>`;
     }
 
