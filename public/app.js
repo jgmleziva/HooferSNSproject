@@ -462,6 +462,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     showTrips();
     adminfunction();
     driverfunction();
+    populateDrivers(1);
   } else {
     r_e("signedin").classList.add("is-hidden");
 
@@ -2079,5 +2080,3 @@ function populateDrivers(numberofcars) {
       });
     });
 }
-
-populateDrivers(1);
