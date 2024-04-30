@@ -13,24 +13,24 @@ function r_e(id) {
 // Used to confirm before a user deletes themselves from a trip
 function userTripConfirmDelete(trip, user) {
   const result = confirm("Are you sure you want to delete?");
-  if (result == true) {
-    deletesignup(trip, user);
+  if(result == true) {
+      deletesignup(trip, user);
   }
 }
 
 // Used to confirm before admins delete a trip
 function adminTripConfirmDelete(trip) {
   const result = confirm("Are you sure you want to delete?");
-  if (result == true) {
-    deletetrip(trip);
+  if(result == true) {
+      deletetrip(trip);
   }
 }
 
 // Used to confirm before admins delete user from trip
 function adminUserConfirmDelete(trip, user) {
   const result = confirm("Are you sure you want to delete?");
-  if (result == true) {
-    admindeletesignup(trip, user);
+  if(result == true) {
+      admindeletesignup(trip, user);
   }
 }
 
