@@ -2071,6 +2071,7 @@ function populateDrivers(numberofcars) {
     .where("access_level", "==", 1)
     .get()
     .then((snapshot) => {
+      r_e("car" + numberofcars.toString() + "driver").innerHTML = ``;
       users = snapshot.docs;
       users.forEach((user) => {
         let name = user.data().name;
