@@ -693,13 +693,13 @@ r_e("accountinfo").addEventListener("click", async () => {
           <div class="container">
               <p class="title has-text-centered">Account Information</p>
               <form>
+              <div class="field"> 
+              <label class="label is-size-5"> Email Address: </label>
+              <div id="email_address" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"></div>
+            </div>
                   <div class="field"> 
                       <label class="label is-size-5"> Name: </label>
                       <div id="full_name" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"</div>
-                  </div>
-                  <div class="field"> 
-                      <label class="label is-size-5"> Email Address: </label>
-                      <div id="email_address" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"></div>
                   </div>
                   <div class="field"> 
                       <label class="label is-size-5"> Phone # </label>
