@@ -111,8 +111,8 @@ async function showmytrips(userid) {
           <br>Click the Venmo icon at the bottom of the page to make your payment.**
           </p>
           <!-- Ski Trip Table -->
-          <div class="box">
-            <table class="table is-fullwidth has-text-centered">
+          <div class="box" style="background-image: radial-gradient(at top left, #1fafa3e6, #00ffc8be); border-radius: 12px; margin-top: 20px;">
+      <table class="table is-fullwidth has-text-centered" style="border-radius: 8px;">
               <thead>
                 <tr>
                   <th class="has-text-centered">Trip Date</th>
@@ -255,8 +255,8 @@ async function showalltrips() {
         <div class="container">
         <p class="title pl-6 has-text-centered">All Trips</p>
           <!-- Ski Trip Table -->
-          <div class="box">
-            <table class="table is-fullwidth has-text-centered">
+          <div class="box" style="background-image: radial-gradient(at top left, #1fafa3e6, #00ffc8be); border-radius: 12px; margin-top: 20px;">
+      <table class="table is-fullwidth has-text-centered" style="border-radius: 8px;">
               <thead>
                 <tr>
                   <th class="has-text-centered">Trip Date</th>
