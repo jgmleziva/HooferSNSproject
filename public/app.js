@@ -1146,7 +1146,7 @@ function submitTrip() {
   var day = parts[2];
 
   // Rearrange the components into the desired format
-  date = month + "/" + day + "/" + year;
+  date = year + "/" + month + "/" + day;
   let starttime = convertTo12Hour(r_e("trip_starttime").value);
   let endtime = convertTo12Hour(r_e("trip_endtime").value);
   let description = r_e("trip_description").value;
@@ -1265,15 +1265,12 @@ async function showTrips() {
         users: 0,
       });
     });
-    console.log(tripinfo);
     const usersSnapshot = await db.collection("tripsignups").get();
     const signups = usersSnapshot.docs;
     signups.forEach((t) => {
-      console.log(t.data());
       const index = tripinfo.findIndex(
         (item) => item.tripID == t.data().tripid
       );
-      console.log(tripinfo[index]);
 
       tripinfo[index].users += 1;
     });
@@ -1865,7 +1862,6 @@ function adminfunction() {
   let adminfunctionality = document.querySelectorAll(".admin");
   let notadminfunctionality = document.querySelectorAll(".notadmin");
   if (auth.currentUser.email != "admin@hoofersns.org") {
-    console.log(auth.currentUser.email);
     adminfunctionality.forEach((functionality) => {
       functionality.classList.add("is-hidden");
     });
@@ -1873,7 +1869,6 @@ function adminfunction() {
       functionality.classList.remove("is-hidden");
     });
   } else {
-    console.log(auth.currentUser.email);
     adminfunctionality.forEach((functionality) => {
       functionality.classList.remove("is-hidden");
     });
