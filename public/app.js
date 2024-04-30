@@ -1265,7 +1265,7 @@ async function showTrips() {
         users: [],
       });
     });
-    console.log(tripinfo);
+    // console.log(tripinfo);
     const usersSnapshot = await db.collection("tripsignups").get();
     const signups = usersSnapshot.docs;
     signups.forEach((t) => {
@@ -1868,7 +1868,7 @@ function adminfunction() {
   let adminfunctionality = document.querySelectorAll(".admin");
   let notadminfunctionality = document.querySelectorAll(".notadmin");
   if (auth.currentUser.email != "admin@hoofersns.org") {
-    console.log(auth.currentUser.email);
+    // console.log(auth.currentUser.email);
     adminfunctionality.forEach((functionality) => {
       functionality.classList.add("is-hidden");
     });
@@ -1876,7 +1876,7 @@ function adminfunction() {
       functionality.classList.remove("is-hidden");
     });
   } else {
-    console.log(auth.currentUser.email);
+    // console.log(auth.currentUser.email);
     adminfunctionality.forEach((functionality) => {
       functionality.classList.remove("is-hidden");
     });
