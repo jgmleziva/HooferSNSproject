@@ -1593,9 +1593,9 @@ async function cardetails(tripid, car) {
 //   }
 // }
 
-db.collection("cars")
-  .get()
-  .then((snapshot) => {});
+// db.collection("cars")
+//   .get()
+//   .then((snapshot) => {});
 
 function closemodal(id) {
   r_e(id).classList.remove("is-active");
