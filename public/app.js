@@ -1230,64 +1230,134 @@ function calculateColor(users, capacity) {
 
 // Get Upcoming Trips
 
+let lastDocument = null;
 async function showTrips() {
   try {
+    let initialCount = 5;
+    let firsttripcount = 0;
     const snapshot = await db.collection("trips").orderBy("date").get();
-    const trips = snapshot.docs;
+    const tot_trips = snapshot.docs.length;
+    const trips = snapshot.docs.slice(0, initialCount); // Only take the first 'initialCount' trips
     let html = ``;
+    const tripinfo = [];
+    trips.forEach((d) => {
+      tripinfo.push({
+        tripID: d.data().tripID,
+        date: d.data().date,
+        eventName: d.data().eventName,
+        price: d.data().price,
+        location: d.data().location,
+        starttime: d.data().starttime,
+        endtime: d.data().endtime,
+        capacity: d.data().numberofcars * 4,
+        users: 0,
+      });
+      firsttripcount += 1;
+    });
 
-    for (const trip of trips) {
-      const tripID = trip.data().tripID;
-      let users = "";
+    let loadedCount = initialCount;
 
-      const usersSnapshot = await db
-        .collection("tripsignups")
-        .where("tripid", "==", tripID)
-        .get();
-      users = parseInt(usersSnapshot.docs.length);
+    renderTrips(tripinfo);
 
-      const eventName = trip.data().eventName;
-      const price = trip.data().price;
-      const location = trip.data().location;
-      const date = trip.data().date;
-      const starttime = trip.data().starttime;
-      const endtime = trip.data().endtime;
-      const capacity = trip.data().numberofcars * 4;
+    document
+      .getElementById("seeMoreButton")
+      .addEventListener("click", async () => {
+        try {
+          const snapshot = await db
+            .collection("trips")
+            .orderBy("date")
+            .startAfter(lastDocument)
+            .limit(5)
+            .get();
+          const additionalTrips = snapshot.docs;
 
-      let color = "";
+          additionalTrips.forEach((d) => {
+            tripinfo.push({
+              tripID: d.data().tripID,
+              date: d.data().date,
+              eventName: d.data().eventName,
+              price: d.data().price,
+              location: d.data().location,
+              starttime: d.data().starttime,
+              endtime: d.data().endtime,
+              capacity: d.data().numberofcars * 4,
+              users: 0,
+            });
+          });
 
-      if (users == capacity) {
-        color = "has-text-danger";
-      } else if (users >= capacity / 2) {
-        color = "has-text-warning";
-      } else {
-        color = "has-text-success";
-      }
+          loadedCount += additionalTrips.length;
+          lastDocument = snapshot.docs[snapshot.docs.length - 1];
 
-      html += `<tr class="row-highlight">
-        <!-- Added row-highlight class here -->
-        <td class="is-vcentered is-size-5">${eventName}</td>
-        <td class="is-vcentered is-size-5">$${price}</td>
-        <td class="is-vcentered is-size-5">${location}</td>
-        <td class="is-vcentered is-size-5">${date}</td>
-        <td class="is-vcentered is-size-5" >${starttime} - ${endtime}</td>
-        <td>
-          <button
-            onclick = "moreDetails(${tripID})"
-            class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded"
-            style = "border-width: 3px;"
-            id="${tripID}" 
-          >
-            More Details
-          </button>
+          console.log(additionalTrips);
+
+          renderTrips(tripinfo);
+          const seeMoreButton = document.getElementById("seeMoreButton");
+          console.log(additionalTrips.length, initialCount);
+          if (additionalTrips.length < initialCount) {
+            seeMoreButton.classList.add("is-hidden");
+          }
+        } catch (error) {
+          console.error("Error fetching additional trips:", error);
+        }
+      });
+
+    function renderTrips(tripinfo) {
+      let html = ``;
+      tripinfo.forEach((trip) => {
+        const eventName = trip.eventName;
+        const price = trip.price;
+        const location = trip.location;
+        const date = trip.date;
+        const starttime = trip.starttime;
+        const endtime = trip.endtime;
+        const capacity = trip.capacity;
+        const users = trip.users;
+        const tripID = trip.tripID;
+
+        let color = "";
+
+        if (users == capacity) {
+          color = "has-text-danger";
+        } else if (users >= capacity / 2) {
+          color = "has-text-warning";
+        } else {
+          color = "has-text-success";
+        }
+        html += `<tr class="row-highlight">
+            <!-- Added row-highlight class here -->
+            <td class="is-vcentered is-size-5">${eventName}</td>
+            <td class="is-vcentered is-size-5">$${price}</td>
+            <td class="is-vcentered is-size-5">${location}</td>
+            <td class="is-vcentered is-size-5">${date}</td>
+            <td class="is-vcentered is-size-5">${starttime} - ${endtime}</td>
+            <td>
+              <button
+                onclick="moreDetails(${tripID})"
+                class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded"
+                style="border-width: 3px;"
+                id="${tripID}"
+              >
+                More Details
+              </button>
+            </td>
+            <td class="has-text-weight-bold ${color} is-size-5 is-vcentered">${users}/${capacity}</td>
+            <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="adminTripConfirmDelete(${tripID})"></i></td>
+          </tr>`;
+      });
+
+      html += `<tr>
+        <td colspan="8" class="has-text-centered">
+          <button id="seeMoreButton" class="button is-info is-success is-outlined is-vcentered has-text-weight-bold">See More</button>
         </td>
-        <td class="has-text-weight-bold ${color} is-size-5 is-vcentered">${users}/${capacity}</td>
-        <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="adminTripConfirmDelete(${tripID})"></i></td>
       </tr>`;
-    }
 
-    document.getElementById("upcomingtrips").innerHTML = html;
-    hideadminfunction();
+      document.getElementById("upcomingtrips").innerHTML = html;
+      hideadminfunction();
+      lastDocument = trips[trips.length - 1];
+      if (tot_trips <= 5) {
+        document.getElementById("seeMoreButton").classList.add("is-hidden");
+      }
+    }
   } catch (error) {
     console.error("Error fetching trips:", error);
   }
