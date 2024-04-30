@@ -706,7 +706,7 @@ r_e("accountinfo").addEventListener("click", async () => {
                       <div id="phone_number" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"></div>
                   </div>
                   <div class="field"> 
-                      <label class="labe is-size-5"> RecHub Username: </label>
+                      <label class="label is-size-5"> RecHub Username: </label>
                       <div id="rechub" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"></div>
                   </div>
                   <div class="field"> 
