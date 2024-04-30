@@ -1704,13 +1704,13 @@ async function triproster(user) {
       <div class="p-3" style="background-image: radial-gradient(at top left, #1fafa3e6, #00ffc8be); border-radius: 12px;">
       <div class="card" style="border-radius: 8px"   onclick="getusers(${tripID},(${carnumber}).toString())" style="cursor: pointer;" >
           <div class="card-content">
-            <p class="has-text-centered is-size-5">${eventName}</p>
-            <p>Trip Location: ${location}</p>
-            <p>Date: ${date}</p>
-            <p>Car #: ${carnumber}</p>
-            <p>Pickup Location: ${pickuplocation}</p>
-            <p>Pickup Time: ${pickuptime}</p>
-            <p>Capacity: ${users}/${capacity}</p>
+            <p class="has-text-centered is-size-4 has-text-weight-bold">${eventName}</p>
+            <p class="is-size-5">Trip Location: ${location}</p>
+            <p class="is-size-5">Date: ${date}</p>
+            <p class="is-size-5">Car #: ${carnumber}</p>
+            <p class="is-size-5">Pickup Location: ${pickuplocation}</p>
+            <p class="is-size-5">Pickup Time: ${pickuptime}</p>
+            <p class="is-size-5">Capacity: ${users}/${capacity}</p>
           </div>
           </div>
         </div>
