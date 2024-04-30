@@ -1751,6 +1751,12 @@ async function getusers(tripid, carnumber) {
     for (const user of users) {
       const email = user.data().user;
       const status = user.data().status;
+      let color = "";
+      if (status == "Approved") {
+        color = "has-text-success";
+      } else {
+        color = "has-text-warning";
+      }
       const skis = user.data().skis;
 
       const userSnapshot = await db
@@ -1769,7 +1775,7 @@ async function getusers(tripid, carnumber) {
                   <td>${phone}</td>
                   <td>${address}</td>
                   <td>${skis}</td>
-                  <td class="capacity-box capacity-yellow">${status}</td>
+                  <td class=" has-text-weight-bold ${color} is-size-5 is-vcentered">${status}</td>
                </tr>`;
     }
 
