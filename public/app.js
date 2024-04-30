@@ -10,6 +10,7 @@ function r_e(id) {
   return document.querySelector(`#${id}`);
 }
 
+// Used to confirm before a user deletes themselves from a trip
 function userTripConfirmDelete(trip, user) {
   const result = confirm("Are you sure you want to delete?");
   if(result == true) {
@@ -17,10 +18,19 @@ function userTripConfirmDelete(trip, user) {
   }
 }
 
+// Used to confirm before admins delete a trip
 function adminTripConfirmDelete(trip) {
   const result = confirm("Are you sure you want to delete?");
   if(result == true) {
       deletetrip(trip);
+  }
+}
+
+// Used to confirm before admins delete user from trip
+function adminUserConfirmDelete(trip, user) {
+  const result = confirm("Are you sure you want to delete?");
+  if(result == true) {
+      admindeletesignup(trip, user);
   }
 }
 
@@ -1821,7 +1831,7 @@ async function getPassengers(tripid, carnumber) {
                   <td>${address}</td>
                   <td>${skis}</td>
                   <td> Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${tripid}).where('user', '==', '${email}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${tripid},'${email}')"> <option id='status1' value='${status}'>${status}</option><option id='status2' value='${notstatus}'>${notstatus}</option></select> </td>
-                  <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash" onclick="async function go() {await admindeletesignup(${tripid}, '${email}'); await getPassengers(${tripid}, ${carnumber});} go()"></i></td>
+                  <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash" onclick="async function go() {await adminUserConfirmDelete(${tripid}, '${email}'); await getPassengers(${tripid}, ${carnumber});} go()"></i></td>
                </tr>`;
     }
 
