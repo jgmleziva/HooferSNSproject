@@ -13,24 +13,24 @@ function r_e(id) {
 // Used to confirm before a user deletes themselves from a trip
 function userTripConfirmDelete(trip, user) {
   const result = confirm("Are you sure you want to delete?");
-  if(result == true) {
-      deletesignup(trip, user);
+  if (result == true) {
+    deletesignup(trip, user);
   }
 }
 
 // Used to confirm before admins delete a trip
 function adminTripConfirmDelete(trip) {
   const result = confirm("Are you sure you want to delete?");
-  if(result == true) {
-      deletetrip(trip);
+  if (result == true) {
+    deletetrip(trip);
   }
 }
 
 // Used to confirm before admins delete user from trip
 function adminUserConfirmDelete(trip, user) {
   const result = confirm("Are you sure you want to delete?");
-  if(result == true) {
-      admindeletesignup(trip, user);
+  if (result == true) {
+    admindeletesignup(trip, user);
   }
 }
 
@@ -436,13 +436,18 @@ r_e("signin_form").addEventListener("submit", (e) => {
 
   // send email/password to firebase for authentication
 
-  auth.signInWithEmailAndPassword(email, password).then((user) => {
-    // reset the form
-    r_e("signin_form").reset();
+  auth
+    .signInWithEmailAndPassword(email, password)
+    .then((user) => {
+      // reset the form
+      r_e("signin_form").reset();
 
-    // hide the modal
-    r_e("signin_modal").classList.remove("is-active");
-  });
+      // hide the modal
+      r_e("signin_modal").classList.remove("is-active");
+    })
+    .catch((error) => {
+      alert("Your email or password is incorrect.");
+    });
 });
 
 firebase.auth().onAuthStateChanged(function (user) {
@@ -867,7 +872,7 @@ async function moreDetails(tripid) {
       const passengernum = carinfo[index].passengers.length;
 
       if ((i - 1) % 3 === 0) {
-        carColumnsHTML += `<div class="columns is-centered">`;
+        carColumnsHTML += `<div class="columns is-centered" id="carcolumns">`;
       }
 
       if (passengernum < 4) {
@@ -930,7 +935,7 @@ async function moreDetails(tripid) {
           <div class="columns">
             <div class="column has-text-centered is-flex is-flex-direction-column">
               <div class="has-text-left mx-auto">
-                <div class="title is-3 is-underlined is-marginless">${eventName}</div>
+                <div class="title is-3 is-underlined has-text-centered is-marginless">${eventName}</div>
                 <div>
                   <div class="mt-3 has-text-left">
                     <span class="title is-4">Price: </span>
@@ -1002,14 +1007,13 @@ async function moreDetails(tripid) {
             <label class="label has-text-white">Payment Link: <a href="https://venmo.com/" > <img src="venmo_icon.png"  style="height: 20px" alt=""><a/></label>
           </div>
           <div class="pt-4">
-            <button class="button is-primary" id="submit${tripid}" onclick="submittripsignup(${tripid}); closemodal('modal_${tripid}'); restrictsignup(${tripid});">Submit</button>
+            <button class="button is-primary" id="submit${tripid}" onclick="submittripsignup(${tripid}); restrictsignup(${tripid});">Submit</button>
           </div>
         </form>
         <button class="modal-close is-large" id="close${tripid}" aria-label="close"></button>
       </div>
     </div>`;
 
-    r_e("info_modal").classList.add("is-active");
     r_e("infomodalbg").addEventListener("click", () => {
       r_e("info_modal").classList.remove("is-active");
     });
@@ -1022,6 +1026,10 @@ async function moreDetails(tripid) {
   } catch (error) {
     console.error("Error fetching trip details:", error);
   }
+}
+
+function show_info() {
+  r_e("info_modal").classList.add("is-active");
 }
 
 function save_name(ele, id) {
@@ -1087,8 +1095,9 @@ function addCar(car) {
   db.collection("cars").add(car);
 }
 
-function addsignup(signup) {
-  db.collection("tripsignups").add(signup);
+async function addsignup(signup) {
+  await db.collection("tripsignups").add(signup);
+  location.reload();
 }
 
 // Get trip sign up info and submit it
@@ -1097,7 +1106,16 @@ function submittripsignup(tripid) {
   let user = auth.currentUser.email;
   let carnumber = r_e("carnumber" + tripid).value;
   let date = Date();
-  let skis = document.querySelector('input[name="skis"]:checked').value;
+  let skis;
+  try {
+    skis = document.querySelector('input[name="skis"]:checked').value;
+  } catch (error) {
+    // Handle the error here
+    // For example, you can show an alert to the user
+    alert("Please select whether you need skis or not.");
+    return; // Exit the function early if skis are not selected
+  }
+
   let signup = {
     tripid: tripid,
     user: user,
@@ -1106,18 +1124,11 @@ function submittripsignup(tripid) {
     skis: skis,
     status: "Pending",
   };
-  addsignup(signup);
 
-  // db.collection("cars")
-  //   .where("tripID", "==", tripid)
-  //   .where("carnumber", "==", parseInt(carnumber))
-  //   .get()
-  //   .then((snapshot) => {
-  //     doc = snapshot.docs[0].id;
-  //     db.collection("cars")
-  //       .doc(doc)
-  //       .update({ users: firebase.firestore.FieldValue.arrayUnion(user) });
-  //   });
+  // Call addsignup() only if skis are selected
+  addsignup(signup);
+  alert("Signed Up!");
+  closemodal(`modal_${tripid}`);
 }
 
 // Get trip information from submit button
@@ -1234,7 +1245,6 @@ let lastDocument = null;
 async function showTrips() {
   try {
     let initialCount = 5;
-    let firsttripcount = 0;
     const snapshot = await db.collection("trips").orderBy("date").get();
     const tot_trips = snapshot.docs.length;
     const trips = snapshot.docs.slice(0, initialCount); // Only take the first 'initialCount' trips
@@ -1252,7 +1262,15 @@ async function showTrips() {
         capacity: d.data().numberofcars * 4,
         users: 0,
       });
-      firsttripcount += 1;
+    });
+    const usersSnapshot = await db.collection("tripsignups").get();
+    const signups = usersSnapshot.docs;
+    signups.forEach((t) => {
+      const index = tripinfo.findIndex(
+        (item) => item.tripID == t.data().tripid
+      );
+      console.log(t.data().tripid, index);
+      tripinfo[index].users += 1;
     });
 
     let loadedCount = initialCount;
@@ -1284,11 +1302,18 @@ async function showTrips() {
               users: 0,
             });
           });
+          const usersSnapshot = await db.collection("tripsignups").get();
+          const signups = usersSnapshot.docs;
+          signups.forEach((t) => {
+            const index = tripinfo.findIndex(
+              (item) => item.tripID == t.data().tripid
+            );
+            console.log(t.data().tripid, index);
+            tripinfo[index].users += 1;
+          });
 
           loadedCount += additionalTrips.length;
           lastDocument = snapshot.docs[snapshot.docs.length - 1];
-
-          console.log(additionalTrips);
 
           renderTrips(tripinfo);
           const seeMoreButton = document.getElementById("seeMoreButton");
@@ -1332,7 +1357,7 @@ async function showTrips() {
             <td class="is-vcentered is-size-5">${starttime} - ${endtime}</td>
             <td>
               <button
-                onclick="moreDetails(${tripID})"
+                onclick="moreDetails(${tripID}); show_info()"
                 class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded"
                 style="border-width: 3px;"
                 id="${tripID}"
@@ -1368,8 +1393,50 @@ r_e("addTrip_Submit").addEventListener("click", (e) => {
   // prevent the page from auth refresh
   e.preventDefault();
 
+  if (!validateForm()) {
+    // If form validation fails, return false to prevent submission
+    alert("Please enter info for all fields");
+    return false;
+  }
+
   submitTrip();
 });
+
+function validateForm() {
+  // Get references to the required fields
+  let eventName = r_e("eventName");
+  let tripPrice = r_e("trip_price");
+  let tripLocation = r_e("trip_location");
+  let tripDate = r_e("trip_date");
+  let tripStartTime = r_e("trip_starttime");
+  let tripEndTime = r_e("trip_endtime");
+  let tripDescription = r_e("trip_description");
+  let carNumber = r_e("carnumber");
+  let car1Driver = r_e("car1driver");
+  let car1PickupLocation = r_e("car1pickuplocation");
+  let car1PickupTime = r_e("car1pickuptime");
+
+  // Check if any of the required fields are empty
+  if (
+    eventName.value === "" ||
+    tripPrice.value === "" ||
+    tripLocation.value === "" ||
+    tripDate.value === "" ||
+    tripStartTime.value === "" ||
+    tripEndTime.value === "" ||
+    tripDescription.value === "" ||
+    carNumber.value === "" ||
+    car1Driver.value === "" ||
+    car1PickupLocation.value === "" ||
+    car1PickupTime.value === ""
+  ) {
+    // If any required field is empty, return false to indicate validation failure
+    return false;
+  }
+
+  // If all required fields are filled out, return true to indicate validation success
+  return true;
+}
 
 // Show Car Drivers on add events modal
 
@@ -1536,7 +1603,6 @@ db.collection("cars")
 
 function closemodal(id) {
   r_e(id).classList.remove("is-active");
-  alert("Submitted");
 }
 
 async function deletetrip(tripid) {
@@ -1656,7 +1722,7 @@ async function triproster(user) {
 
     r_e("main").innerHTML = `<div class="p-5">
       <div class="p-5">
-      <p class="title pl-6 has-text-centered">Trip Roster</p>
+      <p class="title has-text-centered">Trip Roster</p>
 
         <!-- Ski Trip Table -->
         <div class="container is-fluid">
