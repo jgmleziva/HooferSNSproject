@@ -18,6 +18,64 @@
   <body>
     <!--  Modals -->
     <div id="modals">
+      <!-- Passenger Modal -->
+      <div id="passengerModal"></div>
+
+      <!-- Sign Up Info Modal -->
+      <div class="modal" id="info_modal">
+        <div class="modal-background" id="infomodalbg"></div>
+        <div
+          class="modal-content p-6 is-bordered has-text-white"
+          style="
+            backdrop-filter: blur(8px);
+            border: 2px solid #31ada6;
+            border-radius: 20px;
+            width: 50%;
+          "
+        >
+          <h2 class="title is-3 has-text-centered has-text-white">
+            Sign Up Info and Policies
+          </h2>
+          <ul style="list-style-type: disc; margin-left: 20px">
+            <li class="pb-2">
+              The following page shows all the relevant information about your
+              selected trip. Please read through all the information carefully
+              before signing up for the trip.
+            </li>
+            <li class="pb-2">
+              Once you have signed up for a trip you will have 48 hours to
+              complete payment on Venmo @HoofersSNS.
+            </li>
+            <li class="pb-2">
+              Failure to complete payment within this time will result in
+              removal from the trip.
+            </li>
+            <li class="pb-2">
+              Please arrive at the pickup location 15 minutes early to load the
+              car.
+            </li>
+            <li class="pb-2">
+              Cars will wait at a maximum of 5 minutes before departing without
+              you.
+            </li>
+            <li class="pb-2">
+              Please refer to the My Trips page to see which trips you have
+              signed up for.
+            </li>
+            <li class="pb-2">
+              Please contact vplocaltrips@hoofersns.org with any questions or
+              concerns about your sign ups or if you need to cancel.
+            </li>
+            <li>Please note all trips are <b>NONREFUNDABLE</b>.</li>
+          </ul>
+          <button
+            class="modal-close is-large"
+            id="infoclose"
+            aria-label="close"
+          ></button>
+        </div>
+      </div>
+
       <!-- Sign-Up Modal -->
       <div class="modal" id="signup_modal">
         <div class="modal-background" id="sumodalbg"></div>
@@ -101,6 +159,36 @@
               </div>
             </div>
 
+            <!-- Trip Leader Checkbox -->
+            <div class="field">
+              <label class="checkbox has-text-white">
+                <input type="checkbox" id="trip_leader_checkbox" />
+                Are you a trip leader?
+              </label>
+            </div>
+
+            <!-- Password Field for Trip Leader -->
+            <div
+              class="field"
+              id="trip_leader_password_field"
+              style="display: none"
+            >
+              <label class="label has-text-white"
+                >Password for Trip Leader</label
+              >
+              <div class="control has-icons-left">
+                <input
+                  class="input"
+                  type="password"
+                  placeholder="Password"
+                  id="trip_leader_password"
+                />
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+            </div>
+
             <div class="pt-4">
               <!-- Submit Button -->
               <button class="button is-primary">Submit</button>
@@ -115,6 +203,25 @@
           ></button>
         </div>
       </div>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const tripLeaderCheckbox = document.getElementById(
+            "trip_leader_checkbox"
+          );
+          const tripLeaderPasswordField = document.getElementById(
+            "trip_leader_password_field"
+          );
+
+          tripLeaderCheckbox.addEventListener("change", function () {
+            if (tripLeaderCheckbox.checked) {
+              tripLeaderPasswordField.style.display = "block";
+            } else {
+              tripLeaderPasswordField.style.display = "none";
+            }
+          });
+        });
+      </script>
 
       <!-- Sign-In Modal -->
       <div class="modal" id="signin_modal">
@@ -182,6 +289,7 @@
             backdrop-filter: blur(8px);
             border: 2px solid #31ada6;
             border-radius: 20px;
+            width: 60%;
           "
         >
           <p
@@ -192,6 +300,17 @@
           <form action="" id="addevent_form">
             <div class="columns">
               <div class="column">
+                <div class="field">
+                  <label class="label has-text-white">Event Name</label>
+                  <div class="control">
+                    <input
+                      id="eventName"
+                      class="input"
+                      type="text"
+                      placeholder="Event Name"
+                    />
+                  </div>
+                </div>
                 <div class="field">
                   <label class="label has-text-white">Price</label>
                   <div class="control">
@@ -229,25 +348,36 @@
                   </p>
                 </div>
                 <div class="field">
-                  <label class="label has-text-white">Time</label>
+                  <label class="label has-text-white">Start Time</label>
                   <p class="control has-icons-left">
                     <input
                       class="input"
                       type="time"
-                      placeholder="Mount Everest"
-                      id="trip_time"
+                      placeholder=""
+                      id="trip_starttime"
+                    />
+                  </p>
+                </div>
+                <div class="field">
+                  <label class="label has-text-white">End Time</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="time"
+                      placeholder=""
+                      id="trip_endtime"
                     />
                   </p>
                 </div>
                 <div class="field">
                   <label class="label has-text-white">Trip Description</label>
                   <p class="control has-icons-left">
-                    <input
-                      class="input"
+                    <textarea
+                      class="textarea"
                       type="text"
                       placeholder="Description"
                       id="trip_description"
-                    />
+                    ></textarea>
                   </p>
                 </div>
               </div>
@@ -296,6 +426,17 @@
                     </select>
                   </p>
                 </div>
+                <div class="field">
+                  <label class="label has-text-white">Car 1 Pickup Time</label>
+                  <p class="control has-icons-left">
+                    <input
+                      class="input"
+                      type="time"
+                      placeholder=""
+                      id="car1pickuptime"
+                    />
+                  </p>
+                </div>
                 <div id="additionalcars" class="field"></div>
               </div>
             </div>
@@ -321,7 +462,7 @@
     <!-- Start of Content -->
     <div id="Content">
       <!-- Signed Out Content -->
-      <div id="signedout">
+      <div id="signedout" class="is-hidden">
         <div class="mybanner">
           <div class="mynavbar">
             <img src="logo.jpg" class="mylogo" alt="" />
@@ -353,130 +494,121 @@
       </div>
 
       <!-- Signed In Content -->
-      <div id="signedin">
-        <!-- Navbar -->
-        <div id="navbar">
-          <nav>
-            <ul class="nav">
-              <div
-                class="navbar-brand"
-                style="
-                  float: inline-start;
-                  padding-left: 20px;
-                  padding-bottom: 20px;
-                  padding-top: 20px;
-                "
-              >
-                <a href="index.html">
-                  <figure class="image is-96x96">
-                    <img
-                      src="logo.jpg"
-                      class="is-rounded"
-                      width="100px"
-                      alt=""
-                    />
-                  </figure>
-                </a>
-              </div>
-              <div
-                style="
-                  float: right;
-                  padding-right: 20px;
-                  padding-bottom: 20px;
-                  padding-top: 20px;
-                "
-              >
-                <div class="dropdown">
-                  <a href="#">
+
+      <div id="signedin" class="is-hidden">
+        <div id="content-wrap" style="padding-bottom: 4rem">
+          <!-- Navbar -->
+          <div
+            id="navbar"
+            style="box-shadow: 0px 6px 15px rgba(100, 100, 100, 1)"
+          >
+            <nav>
+              <ul class="nav">
+                <div
+                  class="navbar-brand"
+                  style="
+                    float: inline-start;
+                    padding-left: 20px;
+                    padding-bottom: 20px;
+                    padding-top: 20px;
+                  "
+                >
+                  <a href="index.html">
                     <figure class="image is-96x96">
                       <img
-                        src="profile.png"
+                        src="logo.jpg"
                         class="is-rounded"
                         width="100px"
                         alt=""
                       />
                     </figure>
                   </a>
-                  <div class="dropdown-content">
-                    <a href="#" id="accountinfo">Account Info</a>
-                    <a href="#" id="mytrips">My Trips</a>
-                    <a href="#" id="triproster">Trip Roster</a>
-                    <a href="#" id="signoutbutton">Sign Out</a>
+                </div>
+                <div
+                  style="
+                    float: right;
+                    padding-right: 20px;
+                    padding-bottom: 20px;
+                    padding-top: 20px;
+                  "
+                >
+                  <div class="dropdown">
+                    <a href="#">
+                      <figure class="image">
+                        <img
+                          src="profile.png"
+                          class="is-rounded"
+                          style="width: 96px; height: 96px"
+                          alt=""
+                        />
+                      </figure>
+                    </a>
+                    <div class="dropdown-content">
+                      <a href="#" id="accountinfo">Account Info</a>
+                      <a href="#" id="alltrips" class="admin">Manage Trips</a>
+                      <a href="#" id="mytrips">My Trips</a>
+                      <a href="#" id="triproster" class="admin">Trip Roster</a>
+                      <a href="#" id="signoutbutton">Sign Out</a>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <h1
-                style="text-align: center; float: center"
-                class="has-text-weight-bold"
-              >
-                Ski and Snowboard Local Trips
-              </h1>
-            </ul>
-          </nav>
-        </div>
+                <h1
+                  style="text-align: center; float: center"
+                  class="has-text-weight-bold"
+                >
+                  Ski and Snowboard Local Trips
+                </h1>
+              </ul>
+            </nav>
+          </div>
+          <div
+            id="message_bar"
+            class="is-hidden has-text-weight-bold has-text-centered has-background-info-light"
+          ></div>
 
-        <!-- Main -->
-        <div id="main" class="p-5">
-          <section class="section">
-            <div class="container">
-              <div id="tabletitle" class="columns m-0">
-                <div class="column">
-                  <p class="title pl-6">Upcoming Trips</p>
-                </div>
-                <div class="column has-text-right pr-5">
-                  <button
-                    id="addeventbtn"
-                    class="button is-small px-6 py-3 is-success is-rounded"
-                  >
-                    Add Event
-                  </button>
-                </div>
-              </div>
-              <!-- Ski Trip Table -->
-              <div class="box">
-                <table class="table is-fullwidth has-text-centered">
-                  <thead>
-                    <tr>
-                      <th class="has-text-centered">Price</th>
-                      <th class="has-text-centered">Location</th>
-                      <th class="has-text-centered">Date</th>
-                      <th class="has-text-centered">Time</th>
-                      <th class="has-text-centered">Action</th>
-                      <th class="has-text-centered">Capacity</th>
-                    </tr>
-                  </thead>
-                  <tbody id="upcomingtrips"></tbody>
-                </table>
-              </div>
-            </div>
-          </section>
+          <!-- Main -->
+          <div
+            id="main"
+            class="p-5"
+            style="padding-bottom: 4rem; margin-bottom: 2rem"
+          ></div>
         </div>
-
         <!-- Footer -->
-        <div id="footer" class="navbar has-background-grey p-5">
+        <div
+          id="footer"
+          class="navbar p-5"
+          style="
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            margin-top: 1rem;
+            background-image: radial-gradient(
+              circle at 10%,
+              #535353,
+              #040404fb
+            );
+          "
+        >
           <div class="navbar-start">
-            <p class="has-text-black m-auto is-vcentered">
+            <p class="has-text-white m-auto is-vcentered">
               Copyright &copy; 2024
             </p>
           </div>
           <div class="navbar-end">
-            <a href="https://www.facebook.com/hoofersns/"
+            <a href="https://www.facebook.com/hoofersns/" class="is-vcentered"
               ><i
-                class="fa-brands fa-facebook fa-2x has-text-white px-3 m-auto"
+                class="fa-brands fa-facebook fa-2x has-text-white px-3 m-auto py-1"
               ></i
             ></a>
             <a href="https://www.instagram.com/hoofer_sns/"
               ><i
-                class="fa-brands fa-instagram fa-2x has-text-white px-3 m-auto"
+                class="fa-brands fa-instagram fa-2x has-text-white px-3 m-auto py-1"
               ></i
             ></a>
-            <a href="#">
-              <img
-                src="venmo_icon.png"
-                class="px-3"
-                style="height: 32px"
-                alt=""
-              />
+            <a href="#"
+              ><i class="px-3 py-1 fa-brands"
+                ><img src="venmo_icon.png" style="height: 35px" alt=""
+              /></i>
             </a>
           </div>
         </div>

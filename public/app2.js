@@ -13,24 +13,24 @@ function r_e(id) {
 // Used to confirm before a user deletes themselves from a trip
 function userTripConfirmDelete(trip, user) {
   const result = confirm("Are you sure you want to delete?");
-  if(result == true) {
-      deletesignup(trip, user);
+  if (result == true) {
+    deletesignup(trip, user);
   }
 }
 
 // Used to confirm before admins delete a trip
 function adminTripConfirmDelete(trip) {
   const result = confirm("Are you sure you want to delete?");
-  if(result == true) {
-      deletetrip(trip);
+  if (result == true) {
+    deletetrip(trip);
   }
 }
 
 // Used to confirm before admins delete user from trip
 function adminUserConfirmDelete(trip, user) {
   const result = confirm("Are you sure you want to delete?");
-  if(result == true) {
-      admindeletesignup(trip, user);
+  if (result == true) {
+    admindeletesignup(trip, user);
   }
 }
 
@@ -105,14 +105,14 @@ async function showmytrips(userid) {
     document.getElementById("main").innerHTML = `<div class="p-5">
       <section class="section">
         <div class="container">
-          <p class="title has-text-centered">My Trips</p>
+          <p class="title pl-6 has-text-centered">My Trips</p>
           <p style= "text-align: center; color: red; ">
           **Please make sure to pay the full trip amount within 48 hours after signing up and before the trip date, or your reservation will be removed.
           <br>Click the Venmo icon at the bottom of the page to make your payment.**
           </p>
           <!-- Ski Trip Table -->
-          <div class="box" style="background-image: radial-gradient(at top left, #1fafa3e6, #00ffc8be); border-radius: 12px; margin-top: 20px;">
-      <table class="table is-fullwidth has-text-centered" style="border-radius: 8px;">
+          <div class="box">
+            <table class="table is-fullwidth has-text-centered">
               <thead>
                 <tr>
                   <th class="has-text-centered">Trip Date</th>
@@ -253,10 +253,10 @@ async function showalltrips() {
     document.getElementById("main").innerHTML = `<div class="p-5">
       <section class="section">
         <div class="container">
-        <p class="title has-text-centered">All Trips</p>
+        <p class="title pl-6 has-text-centered">All Trips</p>
           <!-- Ski Trip Table -->
-          <div class="box" style="background-image: radial-gradient(at top left, #1fafa3e6, #00ffc8be); border-radius: 12px; margin-top: 20px;">
-      <table class="table is-fullwidth has-text-centered" style="border-radius: 8px;">
+          <div class="box">
+            <table class="table is-fullwidth has-text-centered">
               <thead>
                 <tr>
                   <th class="has-text-centered">Trip Date</th>
@@ -683,7 +683,7 @@ r_e("accountinfo").addEventListener("click", async () => {
   r_e("main").innerHTML = `<div class="p-5">
       <section class="section">
           <div class="container">
-              <p class="title has-text-centered">Account Information</p>
+              <p class="title pl-6 has-text-centered">Account Information</p>
               <form>
                   <div class="field"> 
                       <label class="label"> Name: </label>
@@ -1656,7 +1656,7 @@ async function triproster(user) {
 
     r_e("main").innerHTML = `<div class="p-5">
       <div class="p-5">
-      <p class="title has-text-centered">Trip Roster</p>
+      <p class="title pl-6 has-text-centered">Trip Roster</p>
 
         <!-- Ski Trip Table -->
         <div class="container is-fluid">
