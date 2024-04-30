@@ -13,24 +13,24 @@ function r_e(id) {
 // Used to confirm before a user deletes themselves from a trip
 function userTripConfirmDelete(trip, user) {
   const result = confirm("Are you sure you want to delete?");
-  if(result == true) {
-      deletesignup(trip, user);
+  if (result == true) {
+    deletesignup(trip, user);
   }
 }
 
 // Used to confirm before admins delete a trip
 function adminTripConfirmDelete(trip) {
   const result = confirm("Are you sure you want to delete?");
-  if(result == true) {
-      deletetrip(trip);
+  if (result == true) {
+    deletetrip(trip);
   }
 }
 
 // Used to confirm before admins delete user from trip
 function adminUserConfirmDelete(trip, user) {
   const result = confirm("Are you sure you want to delete?");
-  if(result == true) {
-      admindeletesignup(trip, user);
+  if (result == true) {
+    admindeletesignup(trip, user);
   }
 }
 
@@ -1277,32 +1277,32 @@ async function showTrips() {
       let color = "";
 
       if (users == capacity) {
-        color = "capacity-red";
+        color = "has-text-danger";
       } else if (users >= capacity / 2) {
-        color = "capacity-yellow";
+        color = "has-text-warning";
       } else {
-        color = "capacity-green";
+        color = "has-text-success";
       }
       html += `<tr class="row-highlight">
-        <!-- Added row-highlight class here -->
-        <td>${eventName}</td>
-        <td>$${price}</td>
-        <td>${location}</td>
-        <td>${date}</td>
-        <td>${starttime} - ${endtime}</td>
-        <td>
-          <button
-            onclick = "moreDetails(${tripID})"
-            style="background-color: #4f8cc2"
-            class="button is-info"
-            id="${tripID}" 
-          >
-            More Details
-          </button>
-        </td>
-        <td class="${color} capacity-box ">${users}/${capacity}</td>
-        <td><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
-      </tr>`;
+          <!-- Added row-highlight class here -->
+          <td class="is-vcentered is-size-5">${eventName}</td>
+          <td class="is-vcentered is-size-5">$${price}</td>
+          <td class="is-vcentered is-size-5">${location}</td>
+          <td class="is-vcentered is-size-5">${date}</td>
+          <td class="is-vcentered is-size-5" >${starttime} - ${endtime}</td>
+          <td>
+            <button
+              onclick = "moreDetails(${tripID})"
+              class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded"
+              style = "border-width: 3px;"
+              id="${tripID}" 
+            >
+              More Details
+            </button>
+          </td>
+          <td class="has-text-weight-bold ${color} is-size-5 is-vcentered">${users}/${capacity}</td>
+          <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="adminTripConfirmDelete(${tripID})"></i></td>
+        </tr>`;
     });
     document.getElementById("upcomingtrips").innerHTML = html;
     hideadminfunction();

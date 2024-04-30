@@ -10,6 +10,30 @@ function r_e(id) {
   return document.querySelector(`#${id}`);
 }
 
+// Used to confirm before a user deletes themselves from a trip
+function userTripConfirmDelete(trip, user) {
+  const result = confirm("Are you sure you want to delete?");
+  if (result == true) {
+    deletesignup(trip, user);
+  }
+}
+
+// Used to confirm before admins delete a trip
+function adminTripConfirmDelete(trip) {
+  const result = confirm("Are you sure you want to delete?");
+  if (result == true) {
+    deletetrip(trip);
+  }
+}
+
+// Used to confirm before admins delete user from trip
+function adminUserConfirmDelete(trip, user) {
+  const result = confirm("Are you sure you want to delete?");
+  if (result == true) {
+    admindeletesignup(trip, user);
+  }
+}
+
 // Show Trip Sign Up Modals
 function showmodal(tripid) {
   r_e("modal_" + tripid).classList.add("is-active");
@@ -33,6 +57,10 @@ async function showmytrips(userid) {
     for (const signup of mysignups) {
       const mycar = signup.data().carnumber;
       const status = signup.data().status;
+      let boxColor = "capacity-yellow";
+      if (status == "Approved") {
+        boxColor = "capacity-green";
+      }
       const skis = signup.data().skis;
       const tripid = signup.data().tripid;
 
@@ -69,8 +97,8 @@ async function showmytrips(userid) {
         <td>${pickuptime}</td>
         <td>${skis}</td>
         <td>$${price}</td>
-        <td class="capacity-box capacity-yellow">${status}</td>
-        <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trashsignup${tripid}" onclick="deletesignup(${tripid}, '${userid}')"></i></td>
+        <td class="capacity-box ${boxColor}">${status}</td>
+        <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trashsignup${tripid}" onclick="userTripConfirmDelete(${tripid},'${userid}')"></i></td>
       </tr>`;
     }
 
@@ -211,9 +239,10 @@ async function showalltrips() {
         <td class="is-vcentered">${pickuplocation}</td>
         <td class="is-vcentered">${pickuptime}</td>
         <td class="is-vcentered">${carNumber}</td>
+        <td class="is-vcentered">${info.passengers.length}</td>
         <td class="is-vcentered"><button
         id="info${index}"
-        class="button view-btn"
+        class="button view-btn" onclick="getPassengers(${info.tripID}, ${carNumber})"
       >
         View
       </button></td>
@@ -236,7 +265,9 @@ async function showalltrips() {
                   <th class="has-text-centered">Pickup Location</th>
                   <th class="has-text-centered">Pickup Time</th>
                   <th class="has-text-centered">Car #</th>
+                  <th class="has-text-centered"> Passengers</th>
                   <th class="has-text-centered">View Passengers</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -248,37 +279,42 @@ async function showalltrips() {
       </section>
     </div>`;
 
-    document.querySelectorAll(".view-btn").forEach((button, index) => {
-      button.addEventListener("click", () => {
-        const passengers = combinedInfo[index].passengers;
+    // document.querySelectorAll(".view-btn").forEach((button, index) => {
+    //   button.addEventListener("click", () => {
+    //     const passengers = combinedInfo[index].passengers;
 
-        const passengerList = document.getElementById("passengerList");
-        passengerList.innerHTML = "";
-        passengers.forEach((passenger) => {
-          const listItem = document.createElement("li");
-          listItem.innerHTML = `<p> Name: ${passenger.name}, Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${combinedInfo[index].tripID}).where('user', '==', '${passenger.name}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${combinedInfo[index].tripID},'${passenger.name}')"> <option id='status1' value='${passenger.status}'>${passenger.status}</option><option id='status2' value='${passenger.notstatus}'>${passenger.notstatus}</option></select> </p>`;
-          passengerList.appendChild(listItem);
-        });
+    //     const passengerList = document.getElementById("passengerList");
+    //     passengerList.innerHTML = "";
+    //     if (passengers.length == 0) {
+    //       passengerList.innerHTML = `<p class="header has-text-centered"> There are no passengers. </h1>`;
+    //     }
+    //     passengers.forEach((passenger) => {
+    //       const listItem = document.createElement("tr");
+    //       listItem.innerHTML = `<td> ${passenger.name}</td>
+    //       <td> Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${combinedInfo[index].tripID}).where('user', '==', '${passenger.name}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${combinedInfo[index].tripID},'${passenger.name}')"> <option id='status1' value='${passenger.status}'>${passenger.status}</option><option id='status2' value='${passenger.notstatus}'>${passenger.notstatus}</option></select> </td>
+    //       <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash" onclick="deletetrip()"></i></td>`;
+    //       passengerList.appendChild(listItem);
+    //     });
 
-        const modal = document.getElementById("passengerModal");
-        modal.classList.add("is-active");
-      });
-    });
+    //     const modal = document.getElementById("passengerModal");
+    //     modal.classList.add("is-active");
+    //   });
+    // });
 
-    document.getElementById("closeModal").addEventListener("click", () => {
-      const modal = document.getElementById("passengerModal");
-      modal.classList.remove("is-active");
-    });
+    // document.getElementById("closeModal").addEventListener("click", () => {
+    //   const modal = document.getElementById("passengerModal");
+    //   modal.classList.remove("is-active");
+    // });
 
-    document.getElementById("passmodal-bg").addEventListener("click", () => {
-      const modal = document.getElementById("passengerModal");
-      modal.classList.remove("is-active");
-    });
+    // document.getElementById("passmodal-bg").addEventListener("click", () => {
+    //   const modal = document.getElementById("passengerModal");
+    //   modal.classList.remove("is-active");
+    // });
 
-    document.getElementById("xcloseModal").addEventListener("click", () => {
-      const modal = document.getElementById("passengerModal");
-      modal.classList.remove("is-active");
-    });
+    // document.getElementById("xcloseModal").addEventListener("click", () => {
+    //   const modal = document.getElementById("passengerModal");
+    //   modal.classList.remove("is-active");
+    // });
   } catch (error) {
     console.error("Error fetching trips:", error);
   }
@@ -416,6 +452,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     r_e("signedout").classList.add("is-hidden");
     document.getElementById("html").style.overflow = "";
     configure_message_bar(user.email);
+    showHomePage();
     showTrips();
     hideadminfunction();
   } else {
@@ -816,6 +853,7 @@ async function moreDetails(tripid) {
       .get();
     const data2 = infoSnapshot.docs;
     const occupied = data2.length;
+    const availability = capacity - occupied;
 
     data2.forEach((t) => {
       const index = carinfo.findIndex(
@@ -908,7 +946,7 @@ async function moreDetails(tripid) {
                   </div>
                   <div class="has-text-left">
                     <span class="title is-4">Availability: </span>
-                    <span class="is-size-4">${occupied}/${capacity}</span>
+                    <span class="is-size-4">${availability}/${capacity}</span>
                   </div>
                 </div>
               </div>
@@ -971,6 +1009,14 @@ async function moreDetails(tripid) {
       </div>
     </div>`;
 
+    r_e("info_modal").classList.add("is-active");
+    r_e("infomodalbg").addEventListener("click", () => {
+      r_e("info_modal").classList.remove("is-active");
+    });
+    r_e("infoclose").addEventListener("click", () => {
+      r_e("info_modal").classList.remove("is-active");
+    });
+
     await cardetails(tripid, parseInt(r_e("carnumber" + tripid).value));
     restrictsignup(tripid);
   } catch (error) {
@@ -1031,17 +1077,6 @@ function update_doc(ele, id) {
     e.hidden = "";
   });
 }
-
-// Show Add Event Modal
-r_e("addeventbtn").addEventListener("click", () => {
-  r_e("addevent_modal").classList.add("is-active");
-  r_e("aemodalbg").addEventListener("click", () => {
-    r_e("addevent_modal").classList.remove("is-active");
-  });
-  r_e("aeclose").addEventListener("click", () => {
-    r_e("addevent_modal").classList.remove("is-active");
-  });
-});
 
 // Add trip to database
 function addTrip(trip) {
@@ -1194,11 +1229,14 @@ function calculateColor(users, capacity) {
 */
 
 // Get Upcoming Trips
-
+let lastDocument = null;
 async function showTrips() {
   try {
+    let initialCount = 5;
+    let firsttripcount = 0;
     const snapshot = await db.collection("trips").orderBy("date").get();
-    const trips = snapshot.docs;
+    const tot_trips = snapshot.docs.length;
+    const trips = snapshot.docs.slice(0, initialCount); // Only take the first 'initialCount' trips
     let html = ``;
     const tripinfo = [];
     trips.forEach((d) => {
@@ -1213,64 +1251,112 @@ async function showTrips() {
         capacity: d.data().numberofcars * 4,
         users: 0,
       });
+      firsttripcount += 1;
     });
 
-    console.log(tripinfo);
+    let loadedCount = initialCount;
 
-    const usersSnapshot = await db.collection("tripsignups").get();
-    const signups = usersSnapshot.docs;
+    renderTrips(tripinfo);
 
-    signups.forEach((t) => {
-      const index = tripinfo.findIndex(
-        (item) => item.tripID == t.data().tripid
-      );
-      console.log(t.data().tripid, index);
-      tripinfo[index].users += 1;
-    });
+    document
+      .getElementById("seeMoreButton")
+      .addEventListener("click", async () => {
+        try {
+          const snapshot = await db
+            .collection("trips")
+            .orderBy("date")
+            .startAfter(lastDocument)
+            .limit(5)
+            .get();
+          const additionalTrips = snapshot.docs;
 
-    tripinfo.forEach((trip) => {
-      const eventName = trip.eventName;
-      const price = trip.price;
-      const location = trip.location;
-      const date = trip.date;
-      const starttime = trip.starttime;
-      const endtime = trip.endtime;
-      const capacity = trip.capacity;
-      const users = trip.users;
-      let tripID = trip.tripID;
+          additionalTrips.forEach((d) => {
+            tripinfo.push({
+              tripID: d.data().tripID,
+              date: d.data().date,
+              eventName: d.data().eventName,
+              price: d.data().price,
+              location: d.data().location,
+              starttime: d.data().starttime,
+              endtime: d.data().endtime,
+              capacity: d.data().numberofcars * 4,
+              users: 0,
+            });
+          });
 
-      let color = "";
+          loadedCount += additionalTrips.length;
+          lastDocument = snapshot.docs[snapshot.docs.length - 1];
 
-      if (users == capacity) {
-        color = "capacity-red";
-      } else if (users >= capacity / 2) {
-        color = "capacity-yellow";
-      } else {
-        color = "capacity-green";
-      }
-      html += `<tr class="row-highlight">
-        <!-- Added row-highlight class here -->
-        <td>${eventName}</td>
-        <td>$${price}</td>
-        <td>${location}</td>
-        <td>${date}</td>
-        <td>${starttime} - ${endtime}</td>
-        <td>
-          <button
-            onclick = "moreDetails(${tripID})"
-            style="background-color: #4f8cc2"
-            class="button is-info"
-            id="${tripID}" 
-          >
-            More Details
-          </button>
+          console.log(additionalTrips);
+
+          renderTrips(tripinfo);
+          const seeMoreButton = document.getElementById("seeMoreButton");
+          console.log(additionalTrips.length, initialCount);
+          if (additionalTrips.length < initialCount) {
+            seeMoreButton.classList.add("is-hidden");
+          }
+        } catch (error) {
+          console.error("Error fetching additional trips:", error);
+        }
+      });
+
+    function renderTrips(tripinfo) {
+      let html = ``;
+      tripinfo.forEach((trip) => {
+        const eventName = trip.eventName;
+        const price = trip.price;
+        const location = trip.location;
+        const date = trip.date;
+        const starttime = trip.starttime;
+        const endtime = trip.endtime;
+        const capacity = trip.capacity;
+        const users = trip.users;
+        const tripID = trip.tripID;
+
+        let color = "";
+
+        if (users == capacity) {
+          color = "has-text-danger";
+        } else if (users >= capacity / 2) {
+          color = "has-text-warning";
+        } else {
+          color = "has-text-success";
+        }
+        html += `<tr class="row-highlight">
+            <!-- Added row-highlight class here -->
+            <td class="is-vcentered is-size-5">${eventName}</td>
+            <td class="is-vcentered is-size-5">$${price}</td>
+            <td class="is-vcentered is-size-5">${location}</td>
+            <td class="is-vcentered is-size-5">${date}</td>
+            <td class="is-vcentered is-size-5">${starttime} - ${endtime}</td>
+            <td>
+              <button
+                onclick="moreDetails(${tripID})"
+                class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded"
+                style="border-width: 3px;"
+                id="${tripID}"
+              >
+                More Details
+              </button>
+            </td>
+            <td class="has-text-weight-bold ${color} is-size-5 is-vcentered">${users}/${capacity}</td>
+            <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="adminTripConfirmDelete(${tripID})"></i></td>
+          </tr>`;
+      });
+
+      html += `<tr>
+        <td colspan="8" class="has-text-centered">
+          <button id="seeMoreButton" class="button is-info is-success is-outlined is-vcentered has-text-weight-bold">See More</button>
         </td>
-        <td class="${color} capacity-box ">${users}/${capacity}</td>
-        <td><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="deletetrip(${tripID})"></i></td>
       </tr>`;
-    });
-    document.getElementById("upcomingtrips").innerHTML = html;
-    hideadminfunction();
+
+      document.getElementById("upcomingtrips").innerHTML = html;
+      hideadminfunction();
+      lastDocument = trips[trips.length - 1];
+      if (tot_trips <= 5) {
+        document.getElementById("seeMoreButton").classList.add("is-hidden");
+      }
+    }
   } catch (error) {
     console.error("Error fetching trips:", error);
   }
@@ -1569,7 +1655,7 @@ async function triproster(user) {
 
     r_e("main").innerHTML = `<div class="p-5">
       <div class="p-5">
-      <p class="title pl-6 has-text-centered">Trip Roster</p>
+      <p class="title has-text-centered">Trip Roster</p>
 
         <!-- Ski Trip Table -->
         <div class="container is-fluid">
@@ -1724,4 +1810,169 @@ function hideadminfunction() {
       functionality.classList.remove("is-hidden");
     });
   }
+}
+
+function showHomePage() {
+  r_e("main").innerHTML = `<section class="section">
+  <div class="container">
+    
+    <!-- Upcoming Trips Section -->
+    <div id="tabletitle" class="columns has-text-centered">
+      <div class="column"></div>
+      <div class="column">
+        <p class="title">Upcoming Trips</p>
+      </div>
+      <div class="column has-text-right pr-5">
+        <button id="addeventbtn" class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded admin" style="border-width: 3px;">
+          Add Event
+        </button>
+      </div>
+    </div>
+    <!-- Ski Trip Table -->
+    <div class="box" style="background-image: radial-gradient(at top left, #1fafa3e6, #00ffc8be); border-radius: 12px; margin-top: 20px;">
+      <table class="table is-fullwidth has-text-centered" style="border-radius: 8px;">
+        <thead>
+          <tr>
+            <th class="has-text-centered is-size-5">Event Name</th>
+            <th class="has-text-centered is-size-5">Price</th>
+            <th class="has-text-centered is-size-5">Location</th>
+            <th class="has-text-centered is-size-5">Date</th>
+            <th class="has-text-centered is-size-5">Time</th>
+            <th class="has-text-centered is-size-5">Action</th>
+            <th class="has-text-centered is-size-5">Capacity</th>
+          </tr>
+        </thead>
+        <tbody id="upcomingtrips"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+`;
+  // Show Add Event Modal
+  r_e("addeventbtn").addEventListener("click", () => {
+    r_e("addevent_modal").classList.add("is-active");
+    r_e("aemodalbg").addEventListener("click", () => {
+      r_e("addevent_modal").classList.remove("is-active");
+    });
+    r_e("aeclose").addEventListener("click", () => {
+      r_e("addevent_modal").classList.remove("is-active");
+    });
+  });
+}
+
+async function getPassengers(tripid, carnumber) {
+  try {
+    let snapshot = await db
+      .collection("tripsignups")
+      .where("tripid", "==", tripid)
+      .where("carnumber", "==", carnumber.toString())
+      .get();
+    let html = ``;
+    let users = snapshot.docs;
+    if (snapshot.size == 0) {
+      html = `<tr class="row-highlight is-size-4 has-text-centered"> <td colspan= "6">There are no users signed up.</td></tr>`;
+    }
+    for (let user of users) {
+      let email = user.data().user;
+      let status = user.data().status;
+      let notstatus = "";
+      if (status == "Pending") {
+        notstatus = "Approved";
+      } else {
+        notstatus = "Pending";
+      }
+      let skis = user.data().skis;
+
+      let userSnapshot = await db
+        .collection("users")
+        .where("email", "==", email)
+        .get();
+
+      let userdata = userSnapshot.docs[0].data();
+      let name = userdata.name;
+      let phone = userdata.phone;
+      let address = userdata.address;
+
+      html += `<tr class="row-highlight">
+                  <td>${name}</td>
+                  <td>${email}</td>
+                  <td>${phone}</td>
+                  <td>${address}</td>
+                  <td>${skis}</td>
+                  <td> Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${tripid}).where('user', '==', '${email}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${tripid},'${email}')"> <option id='status1' value='${status}'>${status}</option><option id='status2' value='${notstatus}'>${notstatus}</option></select> </td>
+                  <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash" onclick="async function go() {await adminUserConfirmDelete(${tripid}, '${email}'); await getPassengers(${tripid}, ${carnumber});} go()"></i></td>
+               </tr>`;
+    }
+
+    r_e(
+      "passengerModal"
+    ).innerHTML = `<div class="modal" id="passenger_${tripid}${carnumber}">
+    <div class="modal-background" id="passengermodalbg${tripid}${carnumber}"></div>
+    <div
+      class="modal-content p-6 is-bordered"
+      style="
+        backdrop-filter: blur(8px);
+        border: 2px solid #31ada6;
+        border-radius: 20px;
+        width: 80%;
+      "
+    >
+      <p
+        class="subtitle has-text-weight-bold has-text-white has-text-centered"
+      >
+        Users
+      </p>
+      <div class="box">
+        <table class="table is-fullwidth has-text-centered">
+          <thead>
+            <tr>
+              <th class="has-text-centered">Name</th>
+              <th class="has-text-centered">Email</th>
+              <th class="has-text-centered">Phone #</th>
+              <th class="has-text-centered">Address</th>
+              <th class="has-text-centered">Skis</th>
+              <th class="has-text-centered">Status</th>
+            </tr>
+          </thead>
+          <tbody> ${html}</tbody>
+        </table>
+      </div>
+
+      <button
+        class="modal-close is-large"
+        id="passengerclose${tripid}${carnumber}"
+        aria-label="close"
+      ></button>
+    </div>
+  </div>`;
+    passengershowmodal(tripid.toString() + carnumber.toString());
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
+}
+
+function passengershowmodal(tripid) {
+  r_e("passenger_" + tripid).classList.add("is-active");
+  r_e("passengermodalbg" + tripid).addEventListener("click", () => {
+    r_e("passenger_" + tripid).classList.remove("is-active");
+  });
+  r_e("passengerclose" + tripid).addEventListener("click", () => {
+    r_e("passenger_" + tripid).classList.remove("is-active");
+  });
+}
+
+function admindeletesignup(tripid, user) {
+  db.collection("tripsignups")
+    .where("tripid", "==", tripid)
+    .where("user", "==", user)
+    .get()
+    .then((snapshot) => {
+      signup = snapshot.docs[0].id;
+      db.collection("tripsignups")
+        .doc(signup)
+        .delete()
+        .then(() => {
+          alert("User has been deleted");
+        });
+    });
 }
