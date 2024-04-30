@@ -473,7 +473,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 // Sign out Users
 r_e("signoutbutton").addEventListener("click", () => {
-  auth.signOut().then(() => {});
+  auth.signOut();
 });
 
 // Possible Delete?
@@ -581,14 +581,14 @@ async function fetchUserFullName() {
 
   let html = ``;
   data.forEach((d) => {
-    html += `<p id="${d.id}">${d.data().name}
+    html += `<p id="${d.id}" class=" is-size-5">${d.data().name}
           <input type="hidden" value="${d.data().name}" />
           <button hidden="hidden" onclick="save_name(this, '${
             d.id
           }')">Save</button>
           <button onclick="update_doc(this, '${
             d.id
-          }')" class="is-pulled-right button is-info is-small">Update</button>
+          }')" class="is-pulled-right button is-primary is-small is-rounded " style="border-width:3px">Update</button>
       </p>`;
   });
 
@@ -604,7 +604,7 @@ async function fetchUserEmailAddress() {
 
   let html = ``;
   data.forEach((d) => {
-    html += `<p id="${d.id}">${d.data().email}</p>`;
+    html += `<p id="${d.id}" class=" is-size-5">${d.data().email}</p>`;
   });
 
   document.querySelector("#email_address").innerHTML += html;
@@ -619,14 +619,14 @@ async function fetchUserPhoneNumber() {
 
   let html = ``;
   data.forEach((d) => {
-    html += `<p id="${d.id}">${d.data().phone}
+    html += `<p id="${d.id}" class=" is-size-5">${d.data().phone}
           <input type="hidden" value="${d.data().phone}" />
           <button hidden="hidden" onclick="save_phone(this, '${
             d.id
           }')">Save</button>
           <button onclick="update_doc(this, '${
             d.id
-          }')" class="is-pulled-right button is-info is-small">Update</button>
+          }')" class="is-pulled-right button is-primary is-small is-rounded ">Update</button>
       </p>`;
   });
 
@@ -642,14 +642,14 @@ async function fetchUserRecHubUsername() {
 
   let html = ``;
   data.forEach((d) => {
-    html += `<p id="${d.id}">${d.data().rechub_username}
+    html += `<p id="${d.id}" class=" is-size-5">${d.data().rechub_username}
           <input type="hidden" value="${d.data().rechub_username}" />
           <button hidden="hidden" onclick="save_rechub(this, '${
             d.id
           }')">Save</button>
           <button onclick="update_doc(this, '${
             d.id
-          }')" class="is-pulled-right button is-info is-small">Update</button>
+          }')" class="is-pulled-right button is-primary is-small is-rounded ">Update</button>
       </p>`;
   });
 
@@ -665,14 +665,14 @@ async function fetchUserAddress() {
 
   let html = ``;
   data.forEach((d) => {
-    html += `<p id="${d.id}">${d.data().address}
+    html += `<p id="${d.id}" class=" is-size-5">${d.data().address}
           <input type="hidden" value="${d.data().address}" />
           <button hidden="hidden" onclick="save_address(this, '${
             d.id
           }')">Save</button>
           <button onclick="update_doc(this, '${
             d.id
-          }')" class="is-pulled-right button is-info is-small">Update</button>
+          }')" class="is-pulled-right button is-primary is-small is-rounded is-vcentered">Update</button>
       </p>`;
   });
 
@@ -694,24 +694,24 @@ r_e("accountinfo").addEventListener("click", async () => {
               <p class="title has-text-centered">Account Information</p>
               <form>
                   <div class="field"> 
-                      <label class="label"> Name: </label>
-                      <div id="full_name" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
+                      <label class="label is-size-5"> Name: </label>
+                      <div id="full_name" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"</div>
                   </div>
                   <div class="field"> 
-                      <label class="label"> Email Address: </label>
-                      <div id="email_address" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
+                      <label class="label is-size-5"> Email Address: </label>
+                      <div id="email_address" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"></div>
                   </div>
                   <div class="field"> 
-                      <label class="label"> Phone # </label>
-                      <div id="phone_number" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
+                      <label class="label is-size-5"> Phone # </label>
+                      <div id="phone_number" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"></div>
                   </div>
                   <div class="field"> 
-                      <label class="label"> RecHub Username: </label>
-                      <div id="rechub" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
+                      <label class="labe is-size-5"> RecHub Username: </label>
+                      <div id="rechub" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"></div>
                   </div>
                   <div class="field"> 
-                      <label class="label"> Address: </label>
-                      <div id="user_address" class="has-background-lightgray p-4 m-3 has-background-grey-lighter"></div>
+                      <label class="label is-size-5"> Address: </label>
+                      <div id="user_address" class="has-background-lightgray p-4 m-3 has-background-grey-lighter" style="border-radius:10px"></div>
                   </div>
               </form>
           </div>
