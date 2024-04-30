@@ -53,13 +53,15 @@ async function showmytrips(userid) {
       .get();
     const mysignups = snapshot.docs;
     let html = ``;
-
+    if (mysignups.length == 0) {
+      html = `<tr class="row-highlight is-size-4 has-text-centered"> <td colspan= "10">You have not signed up for any trips.</td></tr>`;
+    }
     for (const signup of mysignups) {
       const mycar = signup.data().carnumber;
       const status = signup.data().status;
-      let boxColor = "capacity-yellow";
+      let color = "has-text-warning";
       if (status == "Approved") {
-        boxColor = "capacity-green";
+        color = "has-text-success";
       }
       const skis = signup.data().skis;
       const tripid = signup.data().tripid;
@@ -88,43 +90,42 @@ async function showmytrips(userid) {
 
       html += `<tr class="row-highlight">
         <!-- Added row-highlight class here -->
-        <td>${date}</td>
-        <td>${eventName}</td>
-        <td>${location}</td>
-        <td>${startTime} - ${endTime}</td>
-        <td>${driver}</td>
-        <td>${pickuplocation}</td>
-        <td>${pickuptime}</td>
-        <td>${skis}</td>
-        <td>$${price}</td>
-        <td class="capacity-box ${boxColor}">${status}</td>
-        <td><i style="cursor: pointer;" class="fa-solid fa-trash" id="trashsignup${tripid}" onclick="userTripConfirmDelete(${tripid},'${userid}')"></i></td>
+        <td class="is-vcentered is-size-6">${date}</td>
+        <td class="is-vcentered is-size-6">${eventName}</td>
+        <td class="is-vcentered is-size-6">${location}</td>
+        <td class="is-vcentered is-size-6">${startTime} - ${endTime}</td>
+        <td class="is-vcentered is-size-6">${driver}</td>
+        <td class="is-vcentered is-size-6">${pickuplocation}</td>
+        <td class="is-vcentered is-size-6">${pickuptime}</td>
+        <td class="is-vcentered is-size-6">${skis}</td>
+        <td class="is-vcentered is-size-6">$${price}</td>
+        <td class="has-text-weight-bold ${color} is-size-5 is-vcentered">${status}</td>
+        <td class="is-vcentered" ><i style="cursor: pointer;" class="fa-solid fa-trash " id="trashsignup${tripid}" onclick="userTripConfirmDelete(${tripid},'${userid}')"></i></td>
       </tr>`;
     }
 
-    document.getElementById("main").innerHTML = `<div class="p-5">
-      <section class="section">
-        <div class="container">
+    document.getElementById("main").innerHTML = `
+      <section class="section px-5">
+        <div class="container mx-0" style="max-width:100%">
           <p class="title has-text-centered">My Trips</p>
           <p style= "text-align: center; color: red; ">
-          **Please make sure to pay the full trip amount within 48 hours after signing up and before the trip date, or your reservation will be removed.
-          <br>Click the Venmo icon at the bottom of the page to make your payment.**
+          Payment is required within 48 hours of signing up.
           </p>
           <!-- Ski Trip Table -->
           <div class="box" style="background-image: radial-gradient(at top left, #1fafa3e6, #00ffc8be); border-radius: 12px; margin-top: 20px;">
       <table class="table is-fullwidth has-text-centered" style="border-radius: 8px;">
               <thead>
                 <tr>
-                  <th class="has-text-centered">Trip Date</th>
-                  <th class="has-text-centered">Event Name</th>
-                  <th class="has-text-centered">Location</th>
-                  <th class="has-text-centered">Event Time</th>
-                  <th class="has-text-centered">Driver</th>
-                  <th class="has-text-centered">Pickup Location</th>
-                  <th class="has-text-centered">Pickup Time</th>
-                  <th class="has-text-centered">Skis</th>
-                  <th class="has-text-centered">Price</th>
-                  <th class="has-text-centered">Payment Status</th>
+                  <th class="has-text-centered is-size-5">Trip Date</th>
+                  <th class="has-text-centered is-size-5">Event Name</th>
+                  <th class="has-text-centered is-size-5">Location</th>
+                  <th class="has-text-centered is-size-5">Event Time</th>
+                  <th class="has-text-centered is-size-5">Driver</th>
+                  <th class="has-text-centered is-size-5">Pickup Location</th>
+                  <th class="has-text-centered is-size-5">Pickup Time</th>
+                  <th class="has-text-centered is-size-5">Skis</th>
+                  <th class="has-text-centered is-size-5">Price</th>
+                  <th class="has-text-centered is-size-5">Payment</th>
                 </tr>
               </thead>
               <tbody>
@@ -134,7 +135,7 @@ async function showmytrips(userid) {
           </div>
         </div>
       </section>
-    </div>`;
+    `;
   } catch (error) {
     console.error("Error fetching trips:", error);
   }
@@ -149,7 +150,7 @@ function updateModal(tripid, user) {
 }
 async function showalltrips() {
   try {
-    const carSnapshot = await db.collection("cars").get();
+    const carSnapshot = await db.collection("cars").orderBy("tripID").get();
     const driversinfo = [];
     const data = carSnapshot.docs;
     const carinfo = [];
@@ -192,7 +193,6 @@ async function showalltrips() {
       });
     });
 
-
     const tripinf = await db.collection("trips").get();
     const tripdata = tripinf.docs;
     const tripinfo = [];
@@ -233,16 +233,17 @@ async function showalltrips() {
       let pickuptime = info.pickuptime;
       html += `<tr class="row-highlight has-text-centered">
         <!-- Added row-highlight class here -->
-        <td class="is-vcentered">${date}</td>
-        <td class="is-vcentered">${eventName}</td>
-        <td class="is-vcentered">${driver}</td>
-        <td class="is-vcentered">${pickuplocation}</td>
-        <td class="is-vcentered">${pickuptime}</td>
-        <td class="is-vcentered">${carNumber}</td>
-        <td class="is-vcentered">${info.passengers.length}</td>
-        <td class="is-vcentered"><button
+        <td class="is-vcentered is-size-5">${date}</td>
+        <td class="is-vcentered is-size-5">${eventName}</td>
+        <td class="is-vcentered is-size-5">${driver}</td>
+        <td class="is-vcentered is-size-5">${pickuplocation}</td>
+        <td class="is-vcentered is-size-5">${pickuptime}</td>
+        <td class="is-vcentered is-size-5">${carNumber}</td>
+        <td class="is-vcentered is-size-5">${info.passengers.length}</td>
+        <td class="is-vcentered is-size-5"><button
         id="info${index}"
-        class="button view-btn" onclick="getPassengers(${info.tripID}, ${carNumber})"
+        class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded"
+        style="border-width: 3px;" onclick="getPassengers(${info.tripID}, ${carNumber})"
       >
         View
       </button></td>
@@ -250,23 +251,23 @@ async function showalltrips() {
       index++;
     });
 
-    document.getElementById("main").innerHTML = `<div class="p-5">
+    document.getElementById("main").innerHTML = `
       <section class="section">
         <div class="container">
-        <p class="title has-text-centered">All Trips</p>
+        <p class="title has-text-centered">All Cars</p>
           <!-- Ski Trip Table -->
           <div class="box" style="background-image: radial-gradient(at top left, #1fafa3e6, #00ffc8be); border-radius: 12px; margin-top: 20px;">
       <table class="table is-fullwidth has-text-centered" style="border-radius: 8px;">
               <thead>
                 <tr>
-                  <th class="has-text-centered">Trip Date</th>
-                  <th class="has-text-centered">Event Name</th>
-                  <th class="has-text-centered">Driver</th>
-                  <th class="has-text-centered">Pickup Location</th>
-                  <th class="has-text-centered">Pickup Time</th>
-                  <th class="has-text-centered">Car #</th>
-                  <th class="has-text-centered"> Passengers</th>
-                  <th class="has-text-centered">View Passengers</th>
+                  <th class="has-text-centered is-size-5">Trip Date</th>
+                  <th class="has-text-centered is-size-5">Event Name</th>
+                  <th class="has-text-centered is-size-5">Driver</th>
+                  <th class="has-text-centered is-size-5">Pickup Location</th>
+                  <th class="has-text-centered is-size-5">Pickup Time</th>
+                  <th class="has-text-centered is-size-5">Car #</th>
+                  <th class="has-text-centered is-size-5"> Passengers</th>
+                  <th class="has-text-centered is-size-5">View Passengers</th>
                   
                 </tr>
               </thead>
@@ -277,7 +278,7 @@ async function showalltrips() {
           </div>
         </div>
       </section>
-    </div>`;
+    `;
 
     // document.querySelectorAll(".view-btn").forEach((button, index) => {
     //   button.addEventListener("click", () => {
@@ -459,7 +460,8 @@ firebase.auth().onAuthStateChanged(function (user) {
     configure_message_bar(user.email);
     showHomePage();
     showTrips();
-    hideadminfunction();
+    adminfunction();
+    driverfunction();
   } else {
     r_e("signedin").classList.add("is-hidden");
 
@@ -685,7 +687,7 @@ async function getallinfo() {
 }
 // Event listener
 r_e("accountinfo").addEventListener("click", async () => {
-  r_e("main").innerHTML = `<div class="p-5">
+  r_e("main").innerHTML = `
       <section class="section">
           <div class="container">
               <p class="title has-text-centered">Account Information</p>
@@ -713,7 +715,7 @@ r_e("accountinfo").addEventListener("click", async () => {
               </form>
           </div>
       </section>
-  </div>`;
+  `;
 
   // Call the async functions to fetch user information
   await getallinfo();
@@ -815,7 +817,7 @@ async function moreDetails(tripid) {
     const tripdata = tripSnapshot.docs;
 
     let signupoption = `<button
-      class="button is-success mt-2"
+    class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded mt-2" style="border-width: 3px"
       id="su${tripid}"
       onclick="showmodal(${tripid})"
     >
@@ -1007,7 +1009,7 @@ async function moreDetails(tripid) {
             <label class="label has-text-white">Payment Link: <a href="https://venmo.com/" > <img src="venmo_icon.png"  style="height: 20px" alt=""><a/></label>
           </div>
           <div class="pt-4">
-            <button class="button is-primary" id="submit${tripid}" onclick="submittripsignup(${tripid}); restrictsignup(${tripid});">Submit</button>
+            <button class="button is-primary is-outlined is-vcentered has-text-weight-bold is-rounded" style="border-width: 3px" id="submit${tripid}" onclick="submittripsignup(${tripid}); restrictsignup(${tripid}); return false;">Submit</button>
           </div>
         </form>
         <button class="modal-close is-large" id="close${tripid}" aria-label="close"></button>
@@ -1097,7 +1099,7 @@ function addCar(car) {
 
 async function addsignup(signup) {
   await db.collection("tripsignups").add(signup);
-  location.reload();
+  // location.reload();
 }
 
 // Get trip sign up info and submit it
@@ -1263,12 +1265,15 @@ async function showTrips() {
         users: 0,
       });
     });
+    console.log(tripinfo);
     const usersSnapshot = await db.collection("tripsignups").get();
     const signups = usersSnapshot.docs;
     signups.forEach((t) => {
+      console.log(t.data());
       const index = tripinfo.findIndex(
         (item) => item.tripID == t.data().tripid
       );
+      console.log(tripinfo[index]);
 
       tripinfo[index].users += 1;
     });
@@ -1372,12 +1377,12 @@ async function showTrips() {
 
       html += `<tr>
         <td colspan="8" class="has-text-centered">
-          <button id="seeMoreButton" class="button is-info is-success is-outlined is-vcentered has-text-weight-bold">See More</button>
+          <button id="seeMoreButton" class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded" style="border-width: 3px">See More</button>
         </td>
       </tr>`;
 
       document.getElementById("upcomingtrips").innerHTML = html;
-      hideadminfunction();
+      adminfunction();
       lastDocument = trips[trips.length - 1];
       if (tot_trips <= 5) {
         document.getElementById("seeMoreButton").classList.add("is-hidden");
@@ -1446,15 +1451,11 @@ r_e("carnumber").addEventListener("input", (e) => {
     r_e("additionalcars").innerHTML = ``;
   }
   if (numberofcars == 2) {
+    populateDrivers(2);
     r_e("additionalcars").innerHTML = `<div class="field">
-    <label class="label has-text-white">Car #2 Driver Name</label>
+    <label class="label has-text-white">Car #2 Driver</label>
     <p class="control has-icons-left">
-      <input
-        class="input"
-        type="text"
-        placeholder="John Smith"
-        id="car2driver"
-      />
+    <select class="input" name="driver2" id="car2driver"></select>
       <span class="icon is-small is-left">
         <i class="fa-solid fa-user"></i>
       </span>
@@ -1486,15 +1487,12 @@ r_e("carnumber").addEventListener("input", (e) => {
                 </div>`;
   }
   if (numberofcars == 3) {
+    populateDrivers(2);
+    populateDrivers(3);
     r_e("additionalcars").innerHTML = `<div class="field">
-    <label class="label has-text-white">Car #2 Driver Name</label>
+    <label class="label has-text-white">Car #2 Driver</label>
     <p class="control has-icons-left">
-      <input
-        class="input"
-        type="text"
-        placeholder="John Smith"
-        id="car2driver"
-      />
+    <select class="input" name="driver2" id="car2driver"></select>
       <span class="icon is-small is-left">
         <i class="fa-solid fa-user"></i>
       </span>
@@ -1525,14 +1523,9 @@ r_e("carnumber").addEventListener("input", (e) => {
                   </p>
                 </div>
   <div class="field">
-    <label class="label has-text-white">Car #3 Driver Name</label>
+    <label class="label has-text-white">Car #3 Driver</label>
     <p class="control has-icons-left">
-      <input
-        class="input"
-        type="text"
-        placeholder="John Smith"
-        id="car3driver"
-      />
+    <select class="input" name="driver2" id="car3driver"></select>
       <span class="icon is-small is-left">
         <i class="fa-solid fa-user"></i>
       </span>
@@ -1705,8 +1698,9 @@ async function triproster(user) {
 
       const users = userSnapshot.docs.length;
 
-      html += `<div class="column is-one-third">
-        <div class="card" onclick="getusers(${tripID},(${carnumber}).toString())" style="cursor: pointer;" >
+      html += `<div class="column is-one-third p-2" >
+      <div class="p-3" style="background-image: radial-gradient(at top left, #1fafa3e6, #00ffc8be); border-radius: 12px;">
+      <div class="card" style="border-radius: 8px"   onclick="getusers(${tripID},(${carnumber}).toString())" style="cursor: pointer;" >
           <div class="card-content">
             <p class="has-text-centered is-size-5">${eventName}</p>
             <p>Trip Location: ${location}</p>
@@ -1715,6 +1709,7 @@ async function triproster(user) {
             <p>Pickup Location: ${pickuplocation}</p>
             <p>Pickup Time: ${pickuptime}</p>
             <p>Capacity: ${users}/${capacity}</p>
+          </div>
           </div>
         </div>
       </div>`;
@@ -1866,17 +1861,40 @@ function deletesignup(tripid, user) {
 // Trash - id = trash (list of nums), fa-solid fa-trash
 // Add event - id = addeventbtn
 
-function hideadminfunction() {
+function adminfunction() {
   let adminfunctionality = document.querySelectorAll(".admin");
+  let notadminfunctionality = document.querySelectorAll(".notadmin");
   if (auth.currentUser.email != "admin@hoofersns.org") {
+    console.log(auth.currentUser.email);
     adminfunctionality.forEach((functionality) => {
       functionality.classList.add("is-hidden");
     });
+    notadminfunctionality.forEach((functionality) => {
+      functionality.classList.remove("is-hidden");
+    });
   } else {
+    console.log(auth.currentUser.email);
     adminfunctionality.forEach((functionality) => {
       functionality.classList.remove("is-hidden");
     });
+    notadminfunctionality.forEach((functionality) => {
+      functionality.classList.add("is-hidden");
+    });
   }
+}
+
+function driverfunction() {
+  db.collection("users")
+    .where("email", "==", auth.currentUser.email)
+    .get()
+    .then((snapshot) => {
+      let user = snapshot.docs[0];
+      if (user.data().access_level == 1) {
+        r_e("triproster").classList.remove("is-hidden");
+      } else {
+        r_e("triproster").classList.add("is-hidden");
+      }
+    });
 }
 
 function showHomePage() {
@@ -1943,10 +1961,13 @@ async function getPassengers(tripid, carnumber) {
       let email = user.data().user;
       let status = user.data().status;
       let notstatus = "";
+      let color = "";
       if (status == "Pending") {
         notstatus = "Approved";
+        color = "is-warning";
       } else {
         notstatus = "Pending";
+        color = "is-success";
       }
       let skis = user.data().skis;
 
@@ -1961,12 +1982,12 @@ async function getPassengers(tripid, carnumber) {
       let address = userdata.address;
 
       html += `<tr class="row-highlight">
-                  <td>${name}</td>
-                  <td>${email}</td>
-                  <td>${phone}</td>
-                  <td>${address}</td>
-                  <td>${skis}</td>
-                  <td> Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${tripid}).where('user', '==', '${email}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${tripid},'${email}')"> <option id='status1' value='${status}'>${status}</option><option id='status2' value='${notstatus}'>${notstatus}</option></select> </td>
+                  <td class="is-vcentered is-size-5">${name}</td>
+                  <td class="is-vcentered is-size-5">${email}</td>
+                  <td class="is-vcentered is-size-5">${phone}</td>
+                  <td class="is-vcentered is-size-5">${address}</td>
+                  <td class="is-vcentered is-size-5">${skis}</td>
+                  <td class="is-vcentered is-size-5"> <div class="select ${color} is-rounded is-small is-inline-block" ><select name="currentStatus" class="is-hovered" style="border-width:2px" id="currentStatus" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${tripid}).where('user', '==', '${email}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${tripid},'${email}')"> <option id='status1' value='${status}'>${status}</option><option id='status2' value='${notstatus}'>${notstatus}</option></select> </div></td>
                   <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash" onclick="async function go() {await adminUserConfirmDelete(${tripid}, '${email}'); await getPassengers(${tripid}, ${carnumber});} go()"></i></td>
                </tr>`;
     }
@@ -1979,7 +2000,7 @@ async function getPassengers(tripid, carnumber) {
       class="modal-content p-6 is-bordered"
       style="
         backdrop-filter: blur(8px);
-        border: 2px solid #31ada6;
+        border: 3px solid #31ada6;
         border-radius: 20px;
         width: 80%;
       "
@@ -1993,12 +2014,12 @@ async function getPassengers(tripid, carnumber) {
         <table class="table is-fullwidth has-text-centered">
           <thead>
             <tr>
-              <th class="has-text-centered">Name</th>
-              <th class="has-text-centered">Email</th>
-              <th class="has-text-centered">Phone #</th>
-              <th class="has-text-centered">Address</th>
-              <th class="has-text-centered">Skis</th>
-              <th class="has-text-centered">Status</th>
+              <th class="has-text-centered is-size-5">Name</th>
+              <th class="has-text-centered is-size-5">Email</th>
+              <th class="has-text-centered is-size-5">Phone #</th>
+              <th class="has-text-centered is-size-5">Address</th>
+              <th class="has-text-centered is-size-5">Skis</th>
+              <th class="has-text-centered is-size-5">Payment</th>
             </tr>
           </thead>
           <tbody> ${html}</tbody>
@@ -2043,3 +2064,20 @@ function admindeletesignup(tripid, user) {
         });
     });
 }
+
+function populateDrivers(numberofcars) {
+  db.collection("users")
+    .where("access_level", "==", 1)
+    .get()
+    .then((snapshot) => {
+      users = snapshot.docs;
+      users.forEach((user) => {
+        let name = user.data().name;
+        r_e(
+          "car" + numberofcars.toString() + "driver"
+        ).innerHTML += `<option value='${name}'> ${name}</option>`;
+      });
+    });
+}
+
+populateDrivers(1);

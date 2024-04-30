@@ -28,7 +28,7 @@
           class="modal-content p-6 is-bordered has-text-white"
           style="
             backdrop-filter: blur(8px);
-            border: 2px solid #31ada6;
+            border: 3px solid #31ada6;
             border-radius: 20px;
             width: 50%;
           "
@@ -83,7 +83,7 @@
           class="modal-content p-6 is-bordered"
           style="
             backdrop-filter: blur(8px);
-            border: 2px solid #31ada6;
+            border: 3px solid #31ada6;
             border-radius: 20px;
           "
         >
@@ -232,7 +232,7 @@
           class="modal-content p-6 is-bordered"
           style="
             backdrop-filter: blur(8px);
-            border: 2px solid #31ada6;
+            border: 3px solid #31ada6;
             border-radius: 20px;
           "
         >
@@ -287,7 +287,7 @@
           class="modal-content p-6 is-bordered"
           style="
             backdrop-filter: blur(8px);
-            border: 2px solid #31ada6;
+            border: 3px solid #31ada6;
             border-radius: 20px;
             width: 60%;
           "
@@ -392,29 +392,29 @@
                 <div class="field">
                   <label class="label has-text-white"
                     >Number of Cars
-                    <select
-                      name="car#"
-                      required
-                      id="carnumber"
-                      class="ml-3 select"
-                      oninput="console.log(r_e('carnumber').value)"
-                    >
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
+                    <div class="select is-rounded is-small">
+                      <select
+                        name="car#"
+                        required
+                        id="carnumber"
+                        class="ml-3 select"
+                        oninput="console.log(r_e('carnumber').value)"
+                      >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
+                    </div>
                   </label>
                 </div>
                 <div class="field">
-                  <label class="label has-text-white">Car #1 Driver Name</label>
+                  <label class="label has-text-white">Car #1 Driver</label>
                   <p class="control has-icons-left">
-                    <input
+                    <select
                       class="input"
-                      type="text"
-                      placeholder="John Smith"
+                      name="drivers"
                       id="car1driver"
-                      required
-                    />
+                    ></select>
                     <span class="icon is-small is-left">
                       <i class="fa-solid fa-user"></i>
                     </span>
@@ -432,8 +432,10 @@
                       required
                     >
                       <option value="Memorial Union">Memorial Union</option>
-                      <option value="Union South">Union South</option>
-                    </select>
+                      <option value="Union South">Union South</option></select
+                    ><span class="icon is-small is-left">
+                      <i class="fa-solid fa-location-dot"></i>
+                    </span>
                   </p>
                 </div>
                 <div class="field">
@@ -555,8 +557,10 @@
                     <div class="dropdown-content">
                       <a href="#" id="accountinfo">Account Info</a>
                       <a href="#" id="alltrips" class="admin">Manage Trips</a>
-                      <a href="#" id="mytrips">My Trips</a>
-                      <a href="#" id="triproster" class="admin">Trip Roster</a>
+                      <a href="#" id="mytrips" class="notadmin">My Trips</a>
+                      <a href="#" id="triproster" class="is-hidden"
+                        >Trip Roster</a
+                      >
                       <a href="#" id="signoutbutton">Sign Out</a>
                     </div>
                   </div>
