@@ -1229,6 +1229,7 @@ function calculateColor(users, capacity) {
 */
 
 // Get Upcoming Trips
+
 let lastDocument = null;
 async function showTrips() {
   try {
@@ -1655,7 +1656,7 @@ async function triproster(user) {
 
     r_e("main").innerHTML = `<div class="p-5">
       <div class="p-5">
-      <p class="title has-text-centered">Trip Roster</p>
+      <p class="title pl-6 has-text-centered">Trip Roster</p>
 
         <!-- Ski Trip Table -->
         <div class="container is-fluid">
