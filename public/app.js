@@ -192,7 +192,7 @@ async function showalltrips() {
       });
     });
 
-    console.log(carinfo);
+
     const tripinf = await db.collection("trips").get();
     const tripdata = tripinf.docs;
     const tripinfo = [];
@@ -1269,7 +1269,7 @@ async function showTrips() {
       const index = tripinfo.findIndex(
         (item) => item.tripID == t.data().tripid
       );
-      console.log(t.data().tripid, index);
+
       tripinfo[index].users += 1;
     });
 
@@ -1308,7 +1308,7 @@ async function showTrips() {
             const index = tripinfo.findIndex(
               (item) => item.tripID == t.data().tripid
             );
-            console.log(t.data().tripid, index);
+
             tripinfo[index].users += 1;
           });
 
@@ -1317,7 +1317,7 @@ async function showTrips() {
 
           renderTrips(tripinfo);
           const seeMoreButton = document.getElementById("seeMoreButton");
-          console.log(additionalTrips.length, initialCount);
+
           if (additionalTrips.length < initialCount) {
             seeMoreButton.classList.add("is-hidden");
           }
