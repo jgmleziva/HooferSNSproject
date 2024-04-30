@@ -192,7 +192,6 @@ async function showalltrips() {
       });
     });
 
-
     const tripinf = await db.collection("trips").get();
     const tripdata = tripinf.docs;
     const tripinfo = [];
@@ -1260,17 +1259,21 @@ async function showTrips() {
         starttime: d.data().starttime,
         endtime: d.data().endtime,
         capacity: d.data().numberofcars * 4,
-        users: 0,
+        users: [],
       });
     });
     const usersSnapshot = await db.collection("tripsignups").get();
     const signups = usersSnapshot.docs;
     signups.forEach((t) => {
-      const index = tripinfo.findIndex(
-        (item) => item.tripID == t.data().tripid
-      );
+      try {
+        const index = tripinfo.findIndex(
+          (item) => item.tripID == t.data().tripid
+        );
 
-      tripinfo[index].users += 1;
+        if (!tripinfo[index].users.includes(t.data().user)) {
+          tripinfo[index].users.push(t.data().user);
+        }
+      } catch (error) {}
     });
 
     let loadedCount = initialCount;
@@ -1299,7 +1302,7 @@ async function showTrips() {
               starttime: d.data().starttime,
               endtime: d.data().endtime,
               capacity: d.data().numberofcars * 4,
-              users: 0,
+              users: [],
             });
           });
           const usersSnapshot = await db.collection("tripsignups").get();
@@ -1308,8 +1311,9 @@ async function showTrips() {
             const index = tripinfo.findIndex(
               (item) => item.tripID == t.data().tripid
             );
-
-            tripinfo[index].users += 1;
+            if (!tripinfo[index].users.includes(t.data().user)) {
+              tripinfo[index].users.push(t.data().user);
+            }
           });
 
           loadedCount += additionalTrips.length;
@@ -1336,7 +1340,7 @@ async function showTrips() {
         const starttime = trip.starttime;
         const endtime = trip.endtime;
         const capacity = trip.capacity;
-        const users = trip.users;
+        const users = trip.users.length;
         const tripID = trip.tripID;
 
         let color = "";
