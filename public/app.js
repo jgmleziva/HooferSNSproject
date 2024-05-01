@@ -1223,7 +1223,7 @@ async function showTrips() {
       });
 
       html += `<tr>
-        <td colspan="8" class="has-text-centered">
+        <td colspan="9" class="has-text-centered">
           <button id="seeMoreButton" class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded" style="border-width: 3px">See More</button>
         </td>
       </tr>`;
