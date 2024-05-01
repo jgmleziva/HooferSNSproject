@@ -1870,8 +1870,6 @@ function deletesignup(tripid, user) {
 }
 
 // Hide admin functionality
-// Trash - id = trash (list of nums), fa-solid fa-trash
-// Add event - id = addeventbtn
 
 function adminfunction() {
   let adminfunctionality = document.querySelectorAll(".admin");
