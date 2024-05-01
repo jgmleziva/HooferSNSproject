@@ -2110,6 +2110,8 @@ async function showUpdateTrip(tripid) {
   let car3location = "";
   let car3time = "";
   let doc = "";
+  let carInputs = "";
+  let drivers = [];
   await db
     .collection("trips")
     .where("tripID", "==", tripid)
@@ -2126,7 +2128,112 @@ async function showUpdateTrip(tripid) {
       starttime = formatTimeToHHmm(data.starttime);
       endtime = formatTimeToHHmm(data.endtime);
       description = data.description;
+      numberofcars = parseInt(data.numberofcars);
+      console.log(numberofcars);
     });
+  await db
+    .collection("users")
+    .where("access_level", "==", 1)
+    .get()
+    .then((snapshot) => {
+      users = snapshot.docs;
+      users.forEach((user) => {
+        let name = user.data().name;
+        drivers.push(name);
+      });
+    });
+  const carSnapshot = await db
+    .collection("cars")
+    .where("tripID", "==", tripid)
+    .get();
+  const driversinfo = [];
+  const data = carSnapshot.docs;
+
+  data.forEach((d) => {
+    driversinfo.push({
+      driver: d.data().driver,
+      pickuptime: d.data().pickuptime,
+      pickuplocation: d.data().pickuplocation,
+      carnumber: d.data().carnumber,
+    });
+  });
+  console.log(driversinfo);
+  for (let i = 1; i <= numberofcars; i++) {
+    // Find the driver info for the current car number (i)
+    let driverInfo = driversinfo.find((info) => info.carnumber === i);
+
+    // Initialize variables to hold driver, location, and time values
+    let driver = "";
+    let location = "";
+    let time = "";
+
+    // If driver info is found for the current car number, update the variables
+    if (driverInfo) {
+      driver = driverInfo.driver;
+      location = driverInfo.pickuplocation;
+      time = formatTimeToHHmm(driverInfo.pickuptime);
+    }
+    console.log(doc);
+    // Concatenate input fields with the corresponding values
+    carInputs += `
+      <div class="field">
+        <label class="label has-text-white">Car ${i} Driver</label>
+        <div class="control">
+        <select
+        id="updateCar${i}Driver"
+        class="input"
+        type="text"
+        value="${driver}" >`;
+
+    carInputs += `<option value="${driver}" selected>${driver}</option>`;
+    drivers.forEach((otherDriver) => {
+      if (otherDriver !== driver) {
+        carInputs += `<option value="${otherDriver}">${otherDriver}</option>`;
+      }
+    });
+
+    carInputs += `
+    </select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label has-text-white">Car ${i} Location</label>
+        <div class="control">
+          <select
+            id="updateCar${i}Location"
+            class="input"
+            type="text"
+            value="${location}"
+
+          >`;
+    carInputs += `<option value="${location}">${location}</option>`;
+
+    // Add other options to the select dropdown
+    const otherLocations = ["Memorial Union", "Union South"];
+    otherLocations.forEach((loc) => {
+      if (loc !== location) {
+        carInputs += `<option value="${loc}">${loc}</option>`;
+      }
+    });
+    carInputs += `
+          </select>
+        </div>
+
+      </div>
+      <div class="field">
+        <label class="label has-text-white">Car ${i} Time</label>
+        <p class="control has-icons-left">
+        <input
+          class="input"
+          type="time"
+          value=${time}
+          id="updateCar${i}Time"
+
+        />
+      </p>
+      </div>
+    `;
+  }
   r_e(
     "updatemodal"
   ).innerHTML = `<div class="modal is-active" id="updateevent_modal">
@@ -2234,11 +2341,12 @@ async function showUpdateTrip(tripid) {
               >${description}</textarea>
             </p>
           </div>
+          ${carInputs}
         </div>
       </div>
       <div class="has-text-centered">
         <!-- Submit Button -->
-        <button class="button is-primary" onclick="updateTrip('${doc}'); alert('Trip has been updated!'); showTrips(); r_e('updateevent_modal').classList.remove('is-active');" type="button">
+        <button class="button is-primary" onclick="updateTrip('${doc}',${numberofcars}, ${tripid}); alert('Trip has been updated!'); showTrips(); r_e('updateevent_modal').classList.remove('is-active');" type="button">
           Submit
         </button>
       </div>
@@ -2252,8 +2360,10 @@ async function showUpdateTrip(tripid) {
 </div>`;
 }
 
-function updateTrip(doc) {
-  db.collection("trips")
+async function updateTrip(doc, numberofcars, tripid) {
+  // Update trip details in the trips collection
+  await db
+    .collection("trips")
     .doc(doc)
     .update({
       eventName: r_e("updateEventName").value,
@@ -2264,6 +2374,32 @@ function updateTrip(doc) {
       endtime: convertTo12Hour(r_e("updateTripEndTime").value),
       description: r_e("updateTripDescription").value,
     });
+
+  // Update car details in the cars collection
+  for (let i = 1; i <= numberofcars; i++) {
+    // Retrieve car details from the DOM elements
+    const driver = r_e("updateCar" + i + "Driver").value;
+    const location = r_e("updateCar" + i + "Location").value;
+    const time = r_e("updateCar" + i + "Time").value;
+    // console.log(i, driver, location, time);
+
+    // Update car details in the cars collection based on car number
+    const carQuerySnapshot = await db
+      .collection("cars")
+      .where("tripID", "==", tripid)
+      .where("carnumber", "==", i)
+      .get();
+
+    if (!carQuerySnapshot.empty) {
+      const docRef = carQuerySnapshot.docs[0].ref;
+      await docRef.update({
+        driver: driver,
+        pickuplocation: location,
+        pickuptime: convertTo12Hour(time),
+      });
+      console.log(driver, location, time);
+    }
+  }
 }
 
 function formatTimeToHHmm(timeString) {
