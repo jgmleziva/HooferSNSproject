@@ -1,3 +1,7 @@
+/*
+Testing worked before but with link modification non-code errors are thrown
+*/
+
 // Puppeteer
 const puppeteer = require("puppeteer");
 
@@ -13,25 +17,20 @@ async function go() {
 
   // User Login
   await page.click("#signinbutton");
-  await page.type("#email2", "testryan5@gmail.com");
+  await page.type("#email2", "test929@gmail.com");
   await page.type("#password2", "password");
   await page.click("#signin_form > div.pt-4 > button.button.is-primary");
-
-  // Update User Info
-  await page.click("#accountinfo");
-  await page.click("#\\37 OvsFHejaoiF1MnVawuE > button.is-pulled-right.button.is-primary.is-small.is-rounded");
-  await page.click("");
-
-  /*
+ 
   // User Trip Sign-Up - will need to be updated
-  await page.click("#\\31 714425522289"); //Selector here never registers and does not work
+  await page.click("");
+  await page.click("#T1714425522289"); 
   await page.click("#su714425522289");
   await page.click(
     "#form714425522289 > div:nth-child(5) > p > input.radio.has-text-white.mr-1"
   );
   await page.click("#submit714425522289");
   await page.click("#close714425522289");
-  */
+  
 
   // User Sign-Out
   await page.click("#navbar > nav > ul > div:nth-child(2) > div > a");
