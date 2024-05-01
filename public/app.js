@@ -883,7 +883,6 @@ function show_info() {
   r_e("info_modal").classList.add("is-active");
 }
 
-
 // saves name when updating user account info
 
 function save_name(ele, id) {
@@ -1210,7 +1209,7 @@ async function showTrips() {
                 onclick="moreDetails(${tripID}); show_info()"
                 class="button is-success is-outlined is-vcentered has-text-weight-bold is-rounded"
                 style="border-width: 3px;"
-                id="${tripID}"
+                id="T${tripID}"
               >
                 More Details
               </button>
