@@ -9,11 +9,7 @@ async function go() {
   const page = await browser.newPage();
 
   // Visit Site To Be Tested
-  await page.goto("https://hooferslocaltrips.web.app/");
-
-  // User Create Account
-  //await page.click("#signupbutton");
-  //await page.
+  await page.goto("https://hooferslocaltrips.firebaseapp.com/");
 
   // User Login
   await page.click("#signinbutton");
@@ -33,6 +29,7 @@ async function go() {
   // User Sign-Out
   await page.click("#navbar > nav > ul > div:nth-child(2) > div > a");
   await page.click("#signoutbutton");
+
 
   // Admin Login
   await page.click("#signinbutton");
@@ -55,7 +52,7 @@ async function go() {
   await page.click("#aeclose");
 
   // Admin Delete Trip - will need to change every time
-  await page.click("#trash1714080480010");
+  //await page.click("#trash1714080480010");
 
   // Admin Sign-Out
   await page.click("#navbar > nav > ul > div:nth-child(2) > div > a");
