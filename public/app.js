@@ -279,43 +279,6 @@ async function showalltrips() {
         </div>
       </section>
     `;
-
-    // document.querySelectorAll(".view-btn").forEach((button, index) => {
-    //   button.addEventListener("click", () => {
-    //     const passengers = combinedInfo[index].passengers;
-
-    //     const passengerList = document.getElementById("passengerList");
-    //     passengerList.innerHTML = "";
-    //     if (passengers.length == 0) {
-    //       passengerList.innerHTML = `<p class="header has-text-centered"> There are no passengers. </h1>`;
-    //     }
-    //     passengers.forEach((passenger) => {
-    //       const listItem = document.createElement("tr");
-    //       listItem.innerHTML = `<td> ${passenger.name}</td>
-    //       <td> Status: <Select name="currentStatus" id="currentStatus" class="select" oninput="async function update() { await db.collection('tripsignups').where('tripid', '==', ${combinedInfo[index].tripID}).where('user', '==', '${passenger.name}').get().then((snapshot)=>{db.collection('tripsignups').doc(snapshot.docs[0].id).update({status: r_e('currentStatus').value})}); await alert('Status has been updated')} update(); updateModal(${combinedInfo[index].tripID},'${passenger.name}')"> <option id='status1' value='${passenger.status}'>${passenger.status}</option><option id='status2' value='${passenger.notstatus}'>${passenger.notstatus}</option></select> </td>
-    //       <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash" onclick="deletetrip()"></i></td>`;
-    //       passengerList.appendChild(listItem);
-    //     });
-
-    //     const modal = document.getElementById("passengerModal");
-    //     modal.classList.add("is-active");
-    //   });
-    // });
-
-    // document.getElementById("closeModal").addEventListener("click", () => {
-    //   const modal = document.getElementById("passengerModal");
-    //   modal.classList.remove("is-active");
-    // });
-
-    // document.getElementById("passmodal-bg").addEventListener("click", () => {
-    //   const modal = document.getElementById("passengerModal");
-    //   modal.classList.remove("is-active");
-    // });
-
-    // document.getElementById("xcloseModal").addEventListener("click", () => {
-    //   const modal = document.getElementById("passengerModal");
-    //   modal.classList.remove("is-active");
-    // });
   } catch (error) {
     console.error("Error fetching trips:", error);
   }
@@ -404,27 +367,6 @@ function configure_message_bar(user) {
   }
 }
 
-// auth.onAuthStateChanged((user) => {
-
-//   // check if a user exists
-//   if (user) {
-
-//     configure_message_bar("Signed in as: " + user.email);
-
-//     // add user's email address to the nav bar
-
-//     // r_e("currentuser").innerHTML = auth.currentUser.email;
-
-//     // configure nav bar
-
-//     // show all recipes
-
-//   //   show_recipes(auth.currentUser.email);
-//   } else {
-
-//   }
-// });
-
 // sign in users
 r_e("signin_form").addEventListener("submit", (e) => {
   // prevent the page from auth refresh
@@ -475,100 +417,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 r_e("signoutbutton").addEventListener("click", () => {
   auth.signOut();
 });
-
-// Possible Delete?
-
-// r_e("moredetailsbtn").addEventListener("click", () => {
-//   r_e("main").innerHTML = `<section class="section">
-//   <div class="container is-fluid">
-//     <div class="columns">
-//       <div class="column">
-//         <div class="box">
-//           <div class="has-text-centered">
-//             <div class="title is-3 is-underlined is-marginless">
-//               Trip Location
-//             </div>
-
-//             <div class="is-size-3">Mountain Resort A</div>
-//           </div>
-
-//           <div>
-//             <div class="mt-3">
-//               <span class="title is-4">Date: </span>
-//               <span class="is-size-4">03/12/2024</span>
-//             </div>
-//             <div>
-//               <span class="title is-4">Availability: </span>
-//               <span class="is-size-4">13/18</span>
-//             </div>
-//           </div>
-//           <div class="has-text-centered mt-3">
-//             <div class="title is-4 is-underlined is-marginless">
-//               Trip Description
-//             </div>
-//           </div>
-
-//           <div class="is-size-6">
-//             Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-//             Aliquid voluptatem harum itaque adipisci suscipit quisquam ea
-//             dolores temporibus incidunt consequatur, ducimus unde
-//             exercitationem fuga? Tempora.
-//           </div>
-//           <div class="has-text-centered mt-3">
-//             <span class="button is-success">Sign Up</span>
-//           </div>
-//         </div>
-//       </div>
-//       <div class="column">
-//         <div class="box">
-//           <div class="has-text-centered">
-//             <div class="title is-4">Car 1</div>
-//           </div>
-//           <div class="is-size-5">
-//             <span>Driver:</span>
-//             <span>Name</span>
-//           </div>
-//           <div class="is-size-5">
-//             <span>Pickup Location:</span>
-//             <span>Union South</span>
-//           </div>
-//         </div>
-//       </div>
-//       <div class="column">
-//         <div class="box">
-//           <div class="has-text-centered">
-//             <div class="title is-4">Car 2</div>
-//           </div>
-//           <div class="is-size-5">
-//             <span>Driver:</span>
-//             <span>Name</span>
-//           </div>
-//           <div class="is-size-5">
-//             <span>Pickup Location:</span>
-//             <span>Memorial Union</span>
-//           </div>
-//         </div>
-//       </div>
-//       <div class="column">
-//         <div class="box">
-//           <div class="has-text-centered">
-//             <div class="title is-4">Car 3</div>
-//           </div>
-//           <div class="is-size-5">
-//             <span>Driver:</span>
-//             <span>Name</span>
-//           </div>
-//           <div class="is-size-5">
-//             <span>Pickup Location:</span>
-//             <span>Memorial Union South</span>
-//           </div>
-//           <div></div>
-//         </div>
-//       </div>
-//     </div>
-//   </div>
-// </section>`;
-// });
 
 // Show Account Info
 // Define async functions to fetch user information
@@ -1035,6 +883,9 @@ function show_info() {
   r_e("info_modal").classList.add("is-active");
 }
 
+
+// saves name when updating user account info
+
 function save_name(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
   event.preventDefault();
@@ -1045,6 +896,8 @@ function save_name(ele, id) {
     })
     .then(() => alert("Your account has been updated."));
 }
+
+// saves phone # when updating user account info
 function save_phone(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
   event.preventDefault();
@@ -1055,6 +908,8 @@ function save_phone(ele, id) {
     })
     .then(() => alert("Your account has been updated."));
 }
+
+// saves rechub username when updating user account info
 function save_rechub(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
   event.preventDefault();
@@ -1065,6 +920,8 @@ function save_rechub(ele, id) {
     })
     .then(() => alert("Your account has been updated."));
 }
+
+// saves address when updating user account info
 function save_address(ele, id) {
   let inputs = ele.parentNode.querySelectorAll("input");
   event.preventDefault();
@@ -1226,21 +1083,6 @@ function submitTrip() {
   r_e("car1pickuptime").value = "";
   r_e("additionalcars").innerHTML = ``;
 }
-
-//Calculate Capacity Color
-/*
-function calculateColor(users, capacity) {
-    if (Number(users) == Number(capacity)) {
-      return "capacity-box capacity-red"
-    }
-    else if (Number(users) >= Number(capacity)/2) {
-      return "capacity-box capacity-yellow"
-    }
-    else  {
-      return "capacity-box capacity-green"
-    }
-}
-*/
 
 // Get Upcoming Trips
 
@@ -1583,22 +1425,6 @@ async function cardetails(tripid, car) {
       });
   }
 }
-
-// function addoptions(tripid, num) {
-//   if (num == 2) {
-//     r_e("carnumber" + tripid).innerHTML += `<option value="2">2</option>`;
-//   }
-//   if (num == 3) {
-//     r_e(
-//       "carnumber" + tripid
-//     ).innerHTML += `<option value="2">2</option> <option value="3">3</option>
-//     `;
-//   }
-// }
-
-// db.collection("cars")
-//   .get()
-//   .then((snapshot) => {});
 
 function closemodal(id) {
   r_e(id).classList.remove("is-active");
