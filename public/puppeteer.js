@@ -18,13 +18,13 @@ async function go() {
   await page.click("#signin_form > div.pt-4 > button.button.is-primary");
 
   // User Trip Sign-Up - will need to be updated
-  await page.click("#\\31 713733715048");
-  await page.click("#su1713733715048");
+  await page.click("#\\31 714425522289");
+  await page.click("#su714425522289");
   await page.click(
-    "#form1713733715048 > div:nth-child(5) > p > input.radio.has-text-white.mr-1"
+    "#form714425522289 > div:nth-child(5) > p > input.radio.has-text-white.mr-1"
   );
-  await page.click("#submit1713733715048");
-  await page.click("#close1713733715048");
+  await page.click("#submit714425522289");
+  await page.click("#close714425522289");
 
   // User Sign-Out
   await page.click("#navbar > nav > ul > div:nth-child(2) > div > a");
