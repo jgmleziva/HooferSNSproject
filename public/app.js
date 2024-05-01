@@ -1375,7 +1375,10 @@ async function showTrips() {
             </td>
             <td class="has-text-weight-bold ${color} is-size-5 is-vcentered">${users}/${capacity}</td>
             <td class="is-vcentered has-text-danger"><i style="cursor: pointer;" class="fa-solid fa-trash admin" id="trash${tripID}" onclick="adminTripConfirmDelete(${tripID})"></i></td>
-          </tr>`;
+            <td class="is-vcentered has-text-info">
+              <i style="cursor: pointer;" class="fa-solid fa-pen admin" id="edit${tripID}" onclick ="showUpdateTrip(${tripID})"></i> 
+            </td>
+            </tr>`;
       });
 
       html += `<tr>
@@ -2087,3 +2090,194 @@ function populateDrivers(numberofcars) {
       });
     });
 }
+
+async function showUpdateTrip(tripid) {
+  let eventName = "";
+  let price = "";
+  let location = "";
+  let date = "";
+  let starttime = "";
+  let endtime = "";
+  let description = "";
+  let numberofcars = "";
+  let car1driver = "";
+  let car1location = "";
+  let car1time = "";
+  let car2driver = "";
+  let car2location = "";
+  let car2time = "";
+  let car3driver = "";
+  let car3location = "";
+  let car3time = "";
+  let doc = "";
+  await db
+    .collection("trips")
+    .where("tripID", "==", tripid)
+    .get()
+    .then((snapshot) => {
+      doc = snapshot.docs[0].id;
+      let data = snapshot.docs[0].data();
+      console.log(data);
+      eventName = data.eventName;
+      price = data.price;
+      location = data.location;
+      date = data.date;
+      console.log(data.starttime);
+      starttime = formatTimeToHHmm(data.starttime);
+      endtime = formatTimeToHHmm(data.endtime);
+      description = data.description;
+    });
+  r_e(
+    "updatemodal"
+  ).innerHTML = `<div class="modal is-active" id="updateevent_modal">
+  <div class="modal-background" onclick="r_e('updateevent_modal').classList.remove('is-active')"></div>
+  <div
+    class="modal-content p-6 is-bordered"
+    style="
+      backdrop-filter: blur(8px);
+      border: 3px solid #31ada6;
+      border-radius: 20px;
+      width: 60%;
+    "
+  >
+    <p
+      class="subtitle has-text-weight-bold has-text-white has-text-centered"
+    >
+      Update Event
+    </p>
+    <form>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label has-text-white">Event Name</label>
+            <div class="control">
+              <input
+                id="updateEventName"
+                class="input"
+                type="text"
+                value='${eventName}'
+                required
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Price</label>
+            <div class="control">
+              <input
+                id="updateTripPrice"
+                class="input"
+                type="number"
+                value=${price}
+                required
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Location</label>
+            <p class="control has-icons-left">
+              <input
+                class="input"
+                type="text"
+                value='${location}'
+                id="updateTripLocation"
+                required
+              />
+              <span class="icon is-small is-left">
+                <i class="fa-solid fa-location-dot"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Date</label>
+            <p class="control has-icons-left">
+              <input
+                class="input"
+                type="date"
+                value=${date.replace(/\//g, "-")}
+                id="updateTripDate"
+                required
+              />
+            </p>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Start Time</label>
+            <p class="control has-icons-left">
+              <input
+                class="input"
+                type="time"
+                value=${starttime}
+                id="updateTripStartTime"
+                required
+              />
+            </p>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">End Time</label>
+            <p class="control has-icons-left">
+              <input
+                class="input"
+                type="time"
+                value=${endtime}
+                id="updateTripEndTime"
+                required
+              />
+            </p>
+          </div>
+          <div class="field">
+            <label class="label has-text-white">Trip Description</label>
+            <p class="control has-icons-left">
+              <textarea
+                class="input"
+                type="text"
+                id="updateTripDescription"
+                required
+              >${description}</textarea>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="has-text-centered">
+        <!-- Submit Button -->
+        <button class="button is-primary" onclick="updateTrip('${doc}'); alert('Trip has been updated!'); showTrips(); r_e('updateevent_modal').classList.remove('is-active');" type="button">
+          Submit
+        </button>
+      </div>
+    </form>
+    <button
+      class="modal-close is-large"
+      aria-label="close"
+      onclick="r_e('updateevent_modal').classList.remove('is-active')"
+    ></button>
+  </div>
+</div>`;
+}
+
+function updateTrip(doc) {
+  db.collection("trips")
+    .doc(doc)
+    .update({
+      eventName: r_e("updateEventName").value,
+      price: r_e("updateTripPrice").value,
+      location: r_e("updateTripLocation").value,
+      date: r_e("updateTripDate").value.replace(/-/g, "/"),
+      starttime: convertTo12Hour(r_e("updateTripStartTime").value),
+      endtime: convertTo12Hour(r_e("updateTripEndTime").value),
+      description: r_e("updateTripDescription").value,
+    });
+}
+
+function formatTimeToHHmm(timeString) {
+  // Parse the time string
+  let parsedTime = new Date("2000-01-01 " + timeString); // Assuming a fixed date for parsing
+
+  // Extract hours and minutes
+  let hours = parsedTime.getHours().toString().padStart(2, "0"); // Pad with leading zero if needed
+  let minutes = parsedTime.getMinutes().toString().padStart(2, "0"); // Pad with leading zero if needed
+
+  // Format the time as HH:mm
+  let formattedTime = hours + ":" + minutes;
+
+  return formattedTime;
+}
+
+formatTimeToHHmm("6:30 PM");
