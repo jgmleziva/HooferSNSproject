@@ -1659,7 +1659,10 @@ function submitTrip() {
     addCar(car3);
   }
 
+  alert("Trip has been submitted");
+
   // Clear form
+  r_e("eventName").value = "";
   r_e("trip_price").value = "";
   r_e("trip_location").value = "";
   r_e("trip_date").value = "";
